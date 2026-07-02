@@ -1,0 +1,9 @@
+{
+  "name": "seggom-email",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "세꼼 이메일 발송 서버리스 함수 (Resend)",
+  "dependencies": {
+    "@netlify/blobs": "^8.1.0"
+  }
+}

@@ -1,0 +1,30 @@
+# 세꼼 — Netlify 배포 설정
+# 정적 사이트(프로토타입 HTML) + 서버리스 함수(이메일)를 한 폴더에서 배포.
+
+[build]
+  publish = "public"          # index.html 등 정적 파일 위치
+  functions = "netlify/functions"
+
+[functions]
+  node_bundler = "esbuild"    # @netlify/blobs import 번들링
+
+# 함수 호출 경로 단축 (선택): /api/send-email → 실제 /.netlify/functions/send-email
+[[redirects]]
+  from = "/api/send-email"
+  to = "/.netlify/functions/send-email"
+  status = 200
+
+[[redirects]]
+  from = "/api/verify-otp"
+  to = "/.netlify/functions/verify-otp"
+  status = 200
+
+[[redirects]]
+  from = "/api/save-lead"
+  to = "/.netlify/functions/save-lead"
+  status = 200
+
+[[redirects]]
+  from = "/api/list-leads"
+  to = "/.netlify/functions/list-leads"
+  status = 200
