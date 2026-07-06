@@ -28,3 +28,8 @@
   from = "/api/list-leads"
   to = "/.netlify/functions/list-leads"
   status = 200
+
+[[redirects]]
+  from = "/api/sims"
+  to = "/.netlify/functions/sims"
+  status = 200
