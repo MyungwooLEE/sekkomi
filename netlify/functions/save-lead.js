@@ -30,7 +30,7 @@ export default async (req) => {
   let body;
   try { body = await req.json(); } catch { return json(400, { error: "bad json" }); }
   const { kind, record } = body || {};
-  if (kind !== "survey" && kind !== "free_email") return json(400, { error: "invalid kind" });
+  if (!["survey", "free_email", "calc"].includes(kind)) return json(400, { error: "invalid kind" });
   if (!record || typeof record !== "object") return json(400, { error: "no record" });
 
   // 과도한 페이로드 차단(스팸/남용)
@@ -39,12 +39,12 @@ export default async (req) => {
 
   const ts = Date.now();
   const id = ts + "-" + Math.random().toString(36).slice(2, 8);
-  const entry = {
-    id, kind, ts,
+  // 익명 계산(calc)은 개인정보 최소화 위해 IP·UA 저장 안 함
+  const meta = kind === "calc" ? {} : {
     ua: (req.headers.get("user-agent") || "").slice(0, 200),
     ip: req.headers.get("x-nf-client-connection-ip") || "",
-    ...record,
   };
+  const entry = { id, kind, ts, ...meta, ...record };
   try {
     await getStore("seggom-leads").set(id, JSON.stringify(entry));
     return json(200, { ok: true, id });
