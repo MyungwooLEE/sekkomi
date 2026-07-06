@@ -584,7 +584,7 @@ details.dis div{margin-top:8px;line-height:1.8}
   <div id="s06Body"></div>
   <div class="s06-foot">
     <div class="nmore" id="s06More"></div>
-    <button class="btn-main" onclick="openPaySheet()">설문 답하고 전체 시나리오 열기 (베타 무료)</button>
+    <button class="btn-main gate-cta" onclick="openPaySheet()">설문 답하고 전체 시나리오 열기 (베타 무료)</button>
   </div>
 </div>
 
@@ -592,7 +592,7 @@ details.dis div{margin-top:8px;line-height:1.8}
 <div class="screen" id="s07">
   <div class="s06-top" style="padding-bottom:10px"><div class="s06-nav"><button class="backbtn" id="s07Back">←</button><b style="font-size:15.5px">전체 시나리오</b></div></div>
   <div class="scroll" id="s07Body"></div>
-  <div class="s06-foot"><button class="btn-main" onclick="openPaySheet()">설문 답하고 전체 시나리오 열기 (베타 무료)</button></div>
+  <div class="s06-foot"><button class="btn-main gate-cta" onclick="openPaySheet()">설문 답하고 전체 시나리오 열기 (베타 무료)</button></div>
 </div>
 
 <!-- ===== S11 paid scenario consultation (chat) ===== -->
@@ -680,7 +680,9 @@ let answerLog=[];
 function logAns(v){answerLog.push(v);saveState()}
 
 /* ====== screens ====== */
-function show(id){document.querySelectorAll('.screen').forEach(e=>e.classList.remove('on'));$('#'+id).classList.add('on')}
+function show(id){document.querySelectorAll('.screen').forEach(e=>e.classList.remove('on'));$('#'+id).classList.add('on');updateGateBtns();}
+/* 잠금 상태(PAID)에 따라 고정 게이트 버튼 문구 갱신 — 설문 완료자에겐 '설문' 문구 제거 */
+function updateGateBtns(){try{document.querySelectorAll('.gate-cta').forEach(b=>{b.textContent=(typeof PAID!=='undefined'&&PAID)?'시나리오 상담 열기 →':'설문 답하고 전체 시나리오 열기 (베타 무료)';});}catch(e){}}
 
 /* ====== chat primitives ====== */
 const chat=$('#chatScroll');
