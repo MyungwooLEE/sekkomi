@@ -2453,19 +2453,20 @@ SCRIPT.decide11=async(sc,g)=>{
     await c2bot('금리는 연 몇 %인가요?',g);
     A.sim.loanRate=await c2num({hint:'연 금리 (%)',ph:'예: 4.3',fmt:v=>v+'%',min:0,decimal:true},g);
   }else{A.sim.loanBal=0;A.sim.loanRate=0;}
-  await c2bot('미루는 동안 집값도 오르거나 내릴 수 있죠. 1년에 몇 % 정도 오를 거라 보세요? (모르겠으면 그냥 0%로 두셔도 돼요)',g);
-  const expPick=await c2chips([{label:'연 0% (제자리)',value:0},{label:'연 2%',value:2},{label:'연 4%',value:4},{label:'연 6% 이상',value:6}],g);
-  A.sim.expRise=expPick;
+  await c2bot('미루는 동안 집값도 오르거나 내릴 수 있죠. 이 집, <b>1년에 얼마쯤</b> 오를 것 같으세요? (모르겠으면 0을 넣으세요)',g);
+  A.sim.expRiseAmt=await c2num({hint:'1년 예상 상승액 (만원)',ph:'예: 3000',fmt:fmtMan,min:0},g);
   await c2bot('좋아요. 이제 매도 시점을 미뤄보면서 <b>세금 절감 + 시세 상승 − 보유비용</b>의 진짜 순손익을 보여드릴게요.',g);
-  await c2card(sliderCard({label:'매도 시점',min:0,max:36,value:12,fmtVal:v=>(v===0?'지금':v+'개월 뒤'),
-    compute:v=>{const alt=calc({saleDate:addMonths(A.saleDate.y,A.saleDate.m,v),resOverride:A.currentlyLiving?A.resMonthsAtSale+v:A.resMonthsNow});
+  await c2card(sliderCard({label:'매도 시점',min:0,max:36,value:12,
+    fmtVal:v=>{const sd=addMonths(A.saleDate.y,A.saleDate.m,v);return (v===0?'지금':v+'개월 뒤')+' · '+fmtYM(sd.y,sd.m);},
+    compute:v=>{const sd=addMonths(A.saleDate.y,A.saleDate.m,v);
+      const alt=calc({saleDate:sd,resOverride:A.currentlyLiving?A.resMonthsAtSale+v:A.resMonthsNow});
       const taxSave=A.R.total-alt.total, hold=holdingCostFor(v);
-      const rise=Math.round(A.salePrice*(A.sim.expRise/100)*(v/12)); // 기대 시세 상승(세전, 간이)
+      const rise=Math.round((A.sim.expRiseAmt||0)*(v/12)); // 기대 시세 상승(1년 예상액 × 기간, 세전 간이)
       const net=taxSave+rise-hold;
-      return {big:(net>=0?'+':'−')+fmtMan(Math.abs(net)),sub:'미룰 때 순손익 (세금절감 + 시세상승 − 보유비용)',
-        rows:'<span>세금 절감 '+fmtMan(taxSave)+'</span><span>시세 상승 +'+fmtMan(rise)+'</span></div><div class="r"><span>보유 비용 −'+fmtMan(hold)+'</span><span>기대 연 '+A.sim.expRise+'%</span>',
-        verd:net>0?{cls:'rc-good',txt:'✓ '+v+'개월 미루면 순이득 '+fmtMan(net)}:{cls:'rc-bad',txt:v+'개월 미루면 순손해 '+fmtMan(-net)},
-        snap:{scnId:'decide11',scnName:'매도 연기 시뮬',headline:(v===0?'지금':v+'개월 뒤')+'(기대 '+A.sim.expRise+'%) → 순'+(net>=0?'이득 ':'손해 ')+fmtMan(Math.abs(net)),param:v+'개월 연기 · 기대 연 '+A.sim.expRise+'%'}};}}),g);
+      return {big:(net>=0?'+':'−')+fmtMan(Math.abs(net)),sub:fmtYM(sd.y,sd.m)+' 매도 시 순손익 (세금절감 + 시세상승 − 보유비용)',
+        rows:'<span>세금 절감 '+fmtMan(taxSave)+'</span><span>시세 상승 +'+fmtMan(rise)+'</span></div><div class="r"><span>보유 비용 −'+fmtMan(hold)+'</span><span>기대 연 '+fmtMan(A.sim.expRiseAmt||0)+'</span>',
+        verd:net>0?{cls:'rc-good',txt:'✓ '+v+'개월 미루면('+fmtYM(sd.y,sd.m)+') 순이득 '+fmtMan(net)}:{cls:'rc-bad',txt:v+'개월 미루면('+fmtYM(sd.y,sd.m)+') 순손해 '+fmtMan(-net)},
+        snap:{scnId:'decide11',scnName:'매도 연기 시뮬',headline:fmtYM(sd.y,sd.m)+' 매도(기대 연 '+fmtMan(A.sim.expRiseAmt||0)+') → 순'+(net>=0?'이득 ':'손해 ')+fmtMan(Math.abs(net)),param:v+'개월 연기 · 기대 연 '+fmtMan(A.sim.expRiseAmt||0)}};}}),g);
   await c2simGate(g);
   await c2bot('시세 상승은 본인 예상이에요. 다만 집값이 올라도 그만큼 세금도 늘 수 있다는 점은 같이 보셔야 해요.',g);
   await c2traps(sc,g); await c2actions(sc,g); await c2finish(sc,g);
