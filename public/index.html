@@ -1435,7 +1435,7 @@ async function runLoading(){
     ['장기보유공제와 거주 공제를 적용 중이에요.','보유 '+Math.floor(holdM/12)+'년 기준 공제율 계산 중...',1800,700],
     [A.totalHouses>1?'다주택 보유 상태를 정리 중이에요.':'1세대 1주택 비과세 요건을 따져볼게요.',(A.own==='single'?'단독명의':'공동명의')+', 거주 '+R.resM+'개월',1900,800],
     ['양도 시점의 조정지역과 다주택 중과 여부를 확인 중이에요.',fmtYM(A.saleDate.y,A.saleDate.m)+' 양도 기준',1800,600],
-    ['마지막으로 절세 시나리오를 찾고 있어요.','입력하신 조건과 시나리오 10종을 대조 중...',2400,900],
+    ['마지막으로 절세 시나리오를 찾고 있어요.','입력하신 조건에 맞는 시나리오를 찾는 중...',2400,900],
     ['분석 완료! 결과를 보여드릴게요.',null,900,400],
   ];
   for(let i=0;i<steps.length;i++){
@@ -2109,7 +2109,7 @@ function svMultiHTML(key,opts){
 }
 function openSurvey(){
   const n=(A.S&&A.S.length)||0;
-  let h='<div class="sv-hero"><div class="t">결제 대신, 잠깐 의견을 들려주세요</div>'
+  let h='<div class="sv-hero"><div class="t">열기 전에, 짧은 의견만 들려주세요</div>'
     +'<div class="s">세꼼이는 지금 베타예요. 아래 설문에 답해주시면 '+n+'개 절세 시나리오를 모두 무료로 열어드려요. 남겨주신 의견으로 더 정확하게 다듬을게요.</div>'
     +'<div class="badge">⏱ 약 1분 · 베타 한정 무료</div></div>';
   h+='<div class="sv-q"><div class="ql">여기까지 써보신 만족도는요?<span class="req">*</span></div>'
@@ -2118,12 +2118,12 @@ function openSurvey(){
     +svRadioHTML('vsOthers',[{v:'better',l:'훨씬 낫다'},{v:'similar',l:'비슷하다'},{v:'worse',l:'별로다'},{v:'na',l:'안 써봤다'}])+'</div>';
   h+='<div class="sv-q"><div class="ql">가장 마음에 든 점은? <span class="qsub">(복수 선택)</span></div>'
     +svMultiHTML('liked',[{v:'detail',l:'꼼꼼한 질문'},{v:'result',l:'결과 설명'},{v:'scenario',l:'절세 시나리오'},{v:'chat',l:'대화형'},{v:'sim',l:'직접 시뮬레이션'}])+'</div>';
-  h+='<div class="sv-value"><div class="svv-t">🔓 유료로 열리는 것</div><ul>'
+  h+='<div class="sv-value"><div class="svv-t">🔓 설문에 답하면 열리는 것</div><ul>'
     +'<li>시나리오별 세꼼이 1:1 채팅 상담</li>'
     +'<li>언제·얼마에 팔지 직접 돌려보는 시뮬레이터</li>'
     +'<li>놓치기 쉬운 함정 + 이번 주 실행 체크리스트</li>'
     +'<li>원하시면 전문 세무사 연결</li></ul></div>';
-  h+='<div class="sv-q"><div class="ql">이런 서비스라면, 유료여도 이용해보실 생각이 있으세요?<span class="req">*</span></div>'
+  h+='<div class="sv-q"><div class="ql">만약 유료로 전환된다면, 그래도 이용하실 생각이 있으세요?<span class="req">*</span></div>'
     +svRadioHTML('buyIntent',[{v:'yes',l:'네, 이용할게요'},{v:'maybe',l:'고민될 것 같아요'},{v:'no',l:'아니요'}])+'</div>';
   h+='<div class="sv-q"><div class="ql">이런 서비스라면, 얼마가 적정하다고 보세요?</div>'
     +'<div class="qsub">손잡이를 움직여 정해주세요. 0원(무료여야 한다)도 괜찮아요.</div>'
@@ -2143,7 +2143,7 @@ function openSurvey(){
     +'<textarea id="svFree" placeholder="자유롭게 적어주세요"></textarea></div>';
   $('#svBody').innerHTML=h;
   $('#svErr').textContent='';
-  $('#svNote').textContent='제출하면 '+n+'개 시나리오가 모두 열려요 · 응답은 이 브라우저에 저장됩니다';
+  $('#svNote').textContent='제출하면 '+n+'개 시나리오가 모두 열려요 · 답변은 개인정보처리방침에 따라 안전하게 처리돼요';
   $('#svBody').scrollTop=0;
   show('sv');
 }
@@ -2692,16 +2692,16 @@ function openMyPage(){
       h+='<div class="dday-card"><div class="dd-l">거주 2년까지</div>'
         +'<div class="dd-n">D-'+lack+'<span>개월</span></div>'
         +'<div class="dd-s">'+fmtYM(dd.y,dd.m)+' 충족 예상 · 채우면 최대 '+fmtMan(ddayS.save||0)+' 절세</div>'
-        +'<button class="dd-alarm'+(A._alarm?' on':'')+'" onclick="toggleAlarm()">'+(A._alarm?'✓ 임박하면 메일로 알려드릴게요':'🔔 D-30·D-7 되면 알림 받기')+'</button></div>';
+        +'<button class="dd-alarm'+(A._alarm?' on':'')+'" onclick="toggleAlarm()">'+(A._alarm?'✓ 알림 신청됨 · 준비되면 안내드려요':'🔔 거주 2년 임박 알림 신청하기')+'</button></div>';
     }
   }
   h+='<div class="mp-prop"><div class="addr">'+A.address.road+'</div>'
     +'<div style="margin-top:4px">예상 양도세 <span class="tax">'+fmtMan(A.R.total)+'</span> · 매도 희망가 '+fmtMan(A.salePrice)+'</div>'
     +'<div style="color:var(--sub);font-size:14px;margin-top:4px">절세 플랜 '+A.S.length+'개 이용 가능</div></div>';
-  h+='<div class="mp-alert"><div><b>세법이 바뀌면 다시 계산해서 알려드려요</b><br><span>지난 3주에도 규제지역·중과가 바뀌었어요. 변동 시 이 물건 기준으로 재계산해 메일로 보내드려요.</span></div></div>';
+  h+='<div class="mp-alert"><div><b>세법 변동을 계속 지켜보고 있어요</b><br><span>최근에도 규제지역·다주택 중과 기준이 자주 바뀌었어요. 변동 시 이 물건 기준으로 다시 확인해드리는 알림을 준비 중이에요.</span></div></div>';
   h+='<div class="mp-sec-t">내 시뮬레이션 ('+ARCH.length+')</div>';
   if(!ARCH.length){
-    h+='<div class="mp-empty">아직 저장한 시뮬레이션이 없어요.<br>시나리오에서 조건을 바꿔본 뒤 <b>＋ 이 시뮬레이션 저장</b>을 누르면<br>이곳에 모여요. 팔까 말까 고민을 한곳에 쌓아보세요.</div>';
+    h+='<div class="mp-empty">아직 저장한 시뮬레이션이 없어요.<br>시나리오에서 조건을 바꿔본 뒤 <b>＋ 이 결과 저장</b>을 누르면<br>이곳에 모여요. 팔까 말까 고민을 한곳에 쌓아보세요.</div>';
   }else{
     ARCH.forEach((a,i)=>{
       h+='<div class="arch-card"><div class="ac-top"><span class="ac-scn">'+a.scnName+'</span><span class="ac-when">'+whenStr(a.ts)+'</span></div>'
@@ -2711,14 +2711,14 @@ function openMyPage(){
     });
   }
   h+='<div style="margin-top:18px"><button class="btn-ghost" onclick="show(\'s11\')">← 시나리오로 돌아가기</button></div>';
-  h+='<div class="mp-foot-note">실제 서비스에서는 로그아웃·알림 설정·결제 정보·데이터 내보내기 등이 함께 제공돼요.<br>※ 시뮬레이션 기록은 이 브라우저에만 저장됩니다.</div>';
+  h+='<div class="mp-foot-note">※ 저장한 시뮬레이션 기록은 이 기기에 보관돼요. 브라우저 데이터를 지우면 함께 삭제됩니다.</div>';
   b.innerHTML=h;show('s12');
 }
 function reopenArch(id){const i=A.S.findIndex(s=>s.id===id);if(i<0){alert('이 시나리오는 현재 조건에 해당하지 않아요');return;}s11Cur=i;s11From='s12';renderS11();show('s11');}
 function toggleAlarm(){
+  if(!A._alarm&&!A.email){ alert('알림 신청은 결과 이메일을 남기신 뒤에 가능해요.'); return; }
   A._alarm=!A._alarm;
   if(A._alarm){
-    if(!A.email){A.email=prompt('알림 받을 이메일을 알려주세요');if(!A.email){A._alarm=false;openMyPage();return;}}
     seggomSave('free_email',{email:A.email,alarm:'dday',address:A.address&&A.address.road,tax:fmtMan(A.R.total),
       context:{addr:A.address&&A.address.road,tax:A.R.total,scenarios:(A.S||[]).length}});
   }
