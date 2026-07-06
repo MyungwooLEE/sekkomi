@@ -1878,13 +1878,13 @@ function renderS05(){
     });
   }
 
-  /* ── ④ 가치 + CTA 존 ── */
-  html+='<div class="value-card"><h4>지금은 베타 — 설문만 답하면 전부 무료</h4><ul>'+
+  /* ── ④ 가치 + CTA 존 (PAID면 잠금해제 상태로) ── */
+  html+='<div class="value-card"><h4>'+(PAID?'🔓 전체 시나리오 이용 중':'지금은 베타 — 설문만 답하면 전부 무료')+'</h4><ul>'+
     '<li>✓ 절세 시나리오 '+S.length+'개 전체 잠금 해제</li>'+
     '<li>✓ 시나리오별 채팅 상담 + 직접 시뮬레이션</li>'+
     '<li>✓ 원하시면 전문 세무사 연결</li></ul>'+
-    '<div class="say">짧은 설문에 답해주시면 모든 시나리오를 열어드려요.</div></div>';
-  html+='<div class="cta-fix"><button class="btn-main" onclick="openS07()">전체 시나리오 보기 (베타 무료)</button>'+
+    '<div class="say">'+(PAID?'이미 열려 있어요. 아무 시나리오나 눌러 상담을 이어가세요.':'짧은 설문에 답해주시면 모든 시나리오를 열어드려요.')+'</div></div>';
+  html+='<div class="cta-fix"><button class="btn-main" onclick="openS07()">전체 시나리오 '+(PAID?'열기':'보기 (베타 무료)')+'</button>'+
     '<button class="btn-ghost" onclick="resetAll()">다시 계산하기</button></div>';
   b.innerHTML=html;
   countUpAmount();
@@ -2009,21 +2009,23 @@ function openS07(){
   const convLead=z?(isLoss?'이 손해를 세금으로 바꾸는 법, 지금 열어보세요':'0원을 끝까지 지키는 법, 지금 열어보세요')
     :(maxSave>0?'잠긴 '+fmtMan(maxSave)+', 설문 1분이면 열려요':'잠긴 절세법, 설문 1분이면 열려요');
   h+='<div class="conv-card">'
-    +'<div class="conv-badge">베타 한정 · 결제 없이 무료</div>'
-    +'<div class="conv-h">'+convLead+'</div>'
+    +'<div class="conv-badge">'+(PAID?'🔓 전체 이용 중':'베타 한정 · 결제 없이 무료')+'</div>'
+    +'<div class="conv-h">'+(PAID?'전부 열려 있어요. 아무 시나리오나 눌러보세요':convLead)+'</div>'
     +'<ul class="conv-ul"><li>🔓 잠긴 절세액과 실행법 전부 공개</li>'
     +'<li>💬 세꼼이와 1:1 채팅으로 내 케이스만 파고들기</li>'
     +'<li>🧮 슬라이더로 “언제 팔지” 직접 시뮬레이션</li>'
     +'<li>🤝 원하시면 전문 세무사까지 연결</li></ul>'
-    +'<button class="btn-main conv-cta" onclick="openPaySheet()">설문 답하고 전부 열기 →</button>'
-    +'<div class="conv-foot">약 1분이면 끝 · 지금은 베타라 무료예요</div>'
+    +'<button class="btn-main conv-cta" onclick="openPaySheet()">'+(PAID?'시나리오 상담 열기 →':'설문 답하고 전부 열기 →')+'</button>'
+    +(PAID?'':'<div class="conv-foot">약 1분이면 끝 · 지금은 베타라 무료예요</div>')
     +'</div>';
   b.innerHTML=h;show('s07');
 }
 /* 베타: 결제 없음. 모든 잠금 해제는 설문 게이트로만. */
 let payPendingScn=null;
 function openPaySheet(scnId){            // 이름은 유지(많은 곳에서 호출) — 동작은 설문 게이트
-  payPendingScn=scnId||(A.S&&A.S[s06Cur]&&A.S[s06Cur].id);
+  const id=scnId||(A.S&&A.S[s06Cur]&&A.S[s06Cur].id)||(A.S&&A.S[0]&&A.S[0].id);
+  if(PAID){ openS11(id,'s05'); return; } // 이미 잠금 해제 — 설문 건너뛰고 바로 상담
+  payPendingScn=id;
   openSurvey();
 }
 function prepaySubmit(id){
@@ -2065,7 +2067,7 @@ function b64e(s){return btoa(unescape(encodeURIComponent(s)));}
 function b64d(s){return decodeURIComponent(escape(atob(s)));}
 function encodeState(){const o={};STATE_KEYS.forEach(k=>{if(A[k]!==undefined)o[k]=A[k];});return b64e(JSON.stringify(o));}
 /* 메일 링크는 쿼리(?r=)로 — Gmail 등 리다이렉트가 #프래그먼트를 떨어뜨리는 문제 회피 */
-function resultUrl(){try{return location.origin+'/?r='+encodeURIComponent(encodeState());}catch(e){return location.origin;}}
+function resultUrl(unlocked){try{return location.origin+'/?r='+encodeURIComponent(encodeState())+(unlocked?'&u=1':'');}catch(e){return location.origin;}}
 function restoreState(enc){try{const o=JSON.parse(b64d(enc));STATE_KEYS.forEach(k=>{if(o[k]!==undefined)A[k]=o[k];});return true;}catch(e){return false;}}
 function tryResumeFromUrl(){
   let enc=null;
@@ -2073,6 +2075,7 @@ function tryResumeFromUrl(){
   if(!enc){ const m=(location.hash||'').match(/[#&]r=([^&]+)/); if(m){ try{enc=decodeURIComponent(m[1]);}catch(_){enc=m[1];} } } // 구버전(#r=) 호환
   if(!enc)return false;
   if(!restoreState(enc))return false;
+  try{ if(new URLSearchParams(location.search).get('u')==='1')PAID=true; }catch(e){} // 설문 완료자 링크 → 잠금 해제 상태로 복원
   try{ A.R=calc(); A.S=buildScenarios(); renderS05(); show('s05'); return true; }catch(e){ console.warn('[세꼼] 결과 복원 실패:',e&&e.message); return false; }
 }
 window.addEventListener('load',tryResumeFromUrl);
@@ -2160,7 +2163,7 @@ function submitSurvey(){
   A.email=email.trim();
   /* 서버 저장(영속) + 메일(고객 감사 + 관리자 알림). 배포 시 실제 동작, 로컬은 패스 */
   seggomSave("survey",rec);
-  seggomMail("survey_thanks",rec.email,{taxConnect:rec.taxConnect,url:resultUrl()});
+  seggomMail("survey_thanks",rec.email,{taxConnect:rec.taxConnect,url:resultUrl(true)}); // 설문 완료자 → 잠금해제 링크
   seggomMail("admin_lead",rec.email,{survey:rec});
   PAID=true;
   const id=payPendingScn||(A.S&&A.S[0]&&A.S[0].id);
