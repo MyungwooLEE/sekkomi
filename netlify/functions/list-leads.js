@@ -26,7 +26,7 @@ const dt = (ts) => { const d = new Date(Number(ts) || 0); const p = (x) => Strin
 
 const regionOf = (s) => s.region || (s.context && s.context.addr) || s.address || "";
 const taxNum = (s) => { const t = s.context && s.context.tax; if (isFinite(t)) return Number(t); if (typeof s.tax === "number") return s.tax; return null; };
-const taxDisp = (s) => { const t = taxNum(s); if (t != null) return (t ? won(t) : "0") + "만원"; return s.tax ? esc(s.tax) : "-"; };
+const taxDisp = (s) => { const t = taxNum(s); if (t != null) return (t ? won(Math.round(t)) : "0") + "만원"; return s.tax ? esc(s.tax) : "-"; };
 const scenNum = (s) => (s.scenarios != null ? s.scenarios : (s.context && s.context.scenarios));
 const scenDisp = (s) => { const v = scenNum(s); return v != null && v !== "" ? v + "개" : "-"; };
 

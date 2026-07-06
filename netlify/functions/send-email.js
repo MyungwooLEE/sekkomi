@@ -32,6 +32,8 @@ const ADMIN_EMAIL = process.env.ADMIN_EMAIL || "sekkomi.com@gmail.com";
 const SITE_URL = process.env.SITE_URL || "https://sekkomi.com";
 const API = "https://api.resend.com/emails";
 
+// 메일 링크는 반드시 우리 도메인만 (임의 url 주입 방지 — 오픈리다이렉트/피싱 차단)
+const safeUrl = (u) => (typeof u === "string" && u.indexOf(SITE_URL) === 0) ? u : SITE_URL;
 // 이메일용 CTA 버튼 (라임 배경 + 딥그린 글자)
 const ctaBtn = (url, label) =>
   `<a href="${url}" style="display:inline-block;width:100%;box-sizing:border-box;margin:18px 0 4px;padding:16px 0;background:#9FE870;color:#163300;font-weight:800;font-size:16px;text-align:center;text-decoration:none;border-radius:12px">${label}</a>`;
@@ -118,8 +120,8 @@ const tplResult = (d) => wrap(
    <p style="margin:0">줄일 수 있는 절세 시나리오 <b>${Number(d.scenarios) || 0}개</b>를 준비했어요.</p>
    <p style="margin:8px 0 0;padding:12px 14px;background:#E9F7EE;border-radius:10px;color:#0F7A3D;font-size:14px">
      베타 기간이라 <b>지금은 전부 무료</b>로 열려 있어요.</p>
-   ${ctaBtn(SITE_URL, "전체 절세 시나리오 열어보기 →")}
-   <p style="font-size:12.5px;color:#64748b;margin:8px 0 0;text-align:center">시나리오별 1:1 상담 · 언제·얼마에 팔지 시뮬레이션까지 지금 무료</p>
+   ${ctaBtn(safeUrl(d.url), "내 계산 결과 다시 보기 →")}
+   <p style="font-size:12.5px;color:#64748b;margin:8px 0 0;text-align:center">결과 화면에서 전체 절세 시나리오 · 시뮬레이션까지 지금 무료</p>
    <p style="font-size:12px;color:#94a3b8;margin:14px 0 0">※ 입력값 기반 예상치예요.<br>실제 신고 전 세무사 확인을 권해드려요.</p>`
 );
 
@@ -134,7 +136,7 @@ const tplSurveyThanks = (d) => {
      ${wantsTax
        ? `<p style="margin:10px 0 0">세무사 상담 연결을 원하셨죠?<br>준비되는 대로 회신으로 안내드릴게요.</p>`
        : ``}
-     ${ctaBtn(SITE_URL, "내 절세 시나리오 다시 보기 →")}
+     ${ctaBtn(safeUrl(d.url), "내 절세 시나리오 다시 보기 →")}
      <p style="margin:12px 0 0;color:#475569">오늘도 편안한 하루 보내세요.</p>`
   );
 };
