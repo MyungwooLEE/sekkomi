@@ -1867,12 +1867,12 @@ function renderS05(){
     html+='<div class="prem-sub">'+subTxt+'</div>';
     S.forEach((s,i)=>{
       html+='<div class="prem-card" onclick="openS06(\''+s.id+'\',\'s05\')">'
-        +'<div class="prem-top"><span class="prem-rank">PLAN '+String(i+1).padStart(2,'0')+'</span><span class="prem-lock">🔒</span></div>'
+        +'<div class="prem-top"><span class="prem-rank">PLAN '+String(i+1).padStart(2,'0')+'</span><span class="prem-lock">'+(PAID?'🔓':'🔒')+'</span></div>'
         +'<div class="prem-name">'+s.no+' '+s.name+'</div>'
         +'<div class="prem-loss">'+s.loss+'</div>'
         +(s.save?'<div class="prem-save"><span>'+(s.saveLabel||'지금 놓치고 있는 금액')+'</span><span class="blurnum">'+fmtMan(s.save)+'</span></div>':'')
         +(s.urgency?'<div class="prem-urg">📅 '+s.urgency+'</div>':'')
-        +'<div class="prem-give">포함: 맞춤 진단 ✓ 무료 공개 · 함정 '+s.traps.length+'가지 🔒 · 실행 체크리스트 🔒 · 내 케이스 시뮬레이터 🔒</div>'
+        +'<div class="prem-give">포함: 맞춤 진단'+(PAID?' ✓ · 함정 '+s.traps.length+'가지 ✓ · 실행 체크리스트 ✓ · 내 케이스 시뮬레이터 ✓':' ✓ 무료 공개 · 함정 '+s.traps.length+'가지 🔒 · 실행 체크리스트 🔒 · 내 케이스 시뮬레이터 🔒')+'</div>'
         +'<div class="prem-unlock">플랜 열어보기 →</div>'
         +'</div>';
     });
@@ -1995,9 +1995,9 @@ function openS07(){
   h+='</div>';
   /* ── 카드: 반복 설명(무료 결과) 대신 '열면 나오는 것' 궁금증 + 마감/블러 금액 ── */
   S.forEach((s,i)=>{
-    const teaser='🔓 열면: 정확한 절세액 · 함정 '+s.traps.length+'가지 · 실행 체크리스트 · 내 케이스 시뮬레이터';
+    const teaser=(PAID?'✓ 포함: ':'🔓 열면: ')+'정확한 절세액 · 함정 '+s.traps.length+'가지 · 실행 체크리스트 · 내 케이스 시뮬레이터';
     h+='<div class="prem-card" onclick="openS06(\''+s.id+'\',\'s07\')">'
-      +'<div class="prem-top"><span class="prem-rank">PLAN '+String(i+1).padStart(2,'0')+'</span><span class="prem-lock">🔒</span></div>'
+      +'<div class="prem-top"><span class="prem-rank">PLAN '+String(i+1).padStart(2,'0')+'</span><span class="prem-lock">'+(PAID?'🔓':'🔒')+'</span></div>'
       +'<div class="prem-name">'+s.no+' '+s.name+'</div>'
       +(s.urgency?'<div class="prem-urg">📅 '+s.urgency+'</div>':'')
       +'<div class="prem-teaser">'+teaser+'</div>'
@@ -2724,7 +2724,7 @@ function toggleAlarm(){
 }
 
 /* ================= boot / resume ================= */
-function resetAll(){if(confirm('처음부터 다시 시작할까요? 입력값이 모두 삭제돼요.')){localStorage.removeItem(SKEY);location.reload()}}
+function resetAll(){if(confirm('처음부터 다시 시작할까요? 입력값이 모두 삭제돼요.')){localStorage.removeItem(SKEY);PAID=false;location.href=location.origin+location.pathname;}}
 $('#startBtn').onclick=()=>{localStorage.removeItem(SKEY);answerLog=[];flow()};
 (function(){
   try{
