@@ -2051,12 +2051,15 @@ const STATE_KEYS=['address','ptype','offiUse','isResident','resRatio','method','
 function b64e(s){return btoa(unescape(encodeURIComponent(s)));}
 function b64d(s){return decodeURIComponent(escape(atob(s)));}
 function encodeState(){const o={};STATE_KEYS.forEach(k=>{if(A[k]!==undefined)o[k]=A[k];});return b64e(JSON.stringify(o));}
-function resultUrl(){try{return location.origin+'/#r='+encodeState();}catch(e){return location.origin;}}
+/* 메일 링크는 쿼리(?r=)로 — Gmail 등 리다이렉트가 #프래그먼트를 떨어뜨리는 문제 회피 */
+function resultUrl(){try{return location.origin+'/?r='+encodeURIComponent(encodeState());}catch(e){return location.origin;}}
 function restoreState(enc){try{const o=JSON.parse(b64d(enc));STATE_KEYS.forEach(k=>{if(o[k]!==undefined)A[k]=o[k];});return true;}catch(e){return false;}}
 function tryResumeFromUrl(){
-  const m=(location.hash||'').match(/[#&]r=([^&]+)/);
-  if(!m)return false;
-  if(!restoreState(m[1]))return false;
+  let enc=null;
+  try{ enc=new URLSearchParams(location.search).get('r'); }catch(e){}
+  if(!enc){ const m=(location.hash||'').match(/[#&]r=([^&]+)/); if(m){ try{enc=decodeURIComponent(m[1]);}catch(_){enc=m[1];} } } // 구버전(#r=) 호환
+  if(!enc)return false;
+  if(!restoreState(enc))return false;
   try{ A.R=calc(); A.S=buildScenarios(); renderS05(); show('s05'); return true; }catch(e){ console.warn('[세꼼] 결과 복원 실패:',e&&e.message); return false; }
 }
 window.addEventListener('load',tryResumeFromUrl);
