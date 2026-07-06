@@ -377,6 +377,18 @@ details.dis div{margin-top:8px;line-height:1.8}
 .slidecard .so .b{font-size:24px;font-weight:800;color:var(--accent);letter-spacing:-.5px;line-height:1.2}
 .slidecard .so .s{font-size:13px;color:rgba(255,255,255,.72);margin-top:3px;line-height:1.5;word-break:keep-all}
 .slidecard .so .r{display:flex;justify-content:space-between;gap:12px;font-size:14px;color:rgba(255,255,255,.92);margin-top:10px;padding-top:10px;border-top:1px solid rgba(255,255,255,.15);word-break:keep-all}
+.slidecard .so .rwhy{margin-top:10px;padding-top:10px;border-top:1px dashed rgba(255,255,255,.18);font-size:12.5px;color:rgba(255,255,255,.82);line-height:1.55;word-break:keep-all}
+.slidecard .so .rwhy b{color:var(--accent)}
+.s11-info{background:#fff;border-bottom:1px solid var(--line);flex:none}
+.s11-info .ci-line{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:9px 16px;cursor:pointer}
+.s11-info .ci-main{font-size:13px;font-weight:700;color:var(--brand);word-break:keep-all;line-height:1.4}
+.s11-info .ci-toggle{flex:none;font-size:12px;color:var(--sub)}
+.s11-info .ci-toggle .arr{display:inline-block;transition:transform .15s}
+.s11-info.open .ci-toggle .arr{transform:rotate(180deg)}
+.s11-info .ci-detail{display:none;grid-template-columns:1fr 1fr;gap:7px 14px;padding:2px 16px 13px}
+.s11-info.open .ci-detail{display:grid}
+.s11-info .ci-detail div{font-size:12.5px;color:var(--sub);word-break:keep-all;line-height:1.4}
+.s11-info .ci-detail b{color:var(--ink);font-weight:600;margin-right:5px}
 .slidecard .so .rc-verd{padding:10px 12px;border-radius:10px;font-size:14.5px;font-weight:700;line-height:1.5;word-break:keep-all}
 .trapbub{background:#FFF7E8;border:1px solid #FFE08A;border-radius:10px;padding:10px 12px;font-size:15px;line-height:1.6;color:#8A4B00;word-break:keep-all}
 .actbub{font-size:15px;line-height:1.5}
@@ -587,6 +599,7 @@ details.dis div{margin-top:8px;line-height:1.8}
 <div class="screen" id="s11">
   <div class="s11-top"><button class="backbtn" id="s11Back">←</button><span class="mid" id="s11Mid">절세 상담</span><button class="my" onclick="openMyPage()" title="마이페이지">☰</button></div>
   <div class="s11-tabs" id="s11Tabs"></div>
+  <div class="s11-info" id="s11Info"></div>
   <div class="scroll" id="s11Chat"></div>
   <div id="s11Dock">
     <div class="hint" id="s11DockHint"></div>
@@ -2208,7 +2221,7 @@ const CONTENT={
     how:'아래 시뮬레이터에 매도 시점을 옮기면, 그 시점의 세금과 그때까지의 보유 비용(이자+재산세)을 합쳐 순손익을 보여드려요.'},
   decide12:{title:'임대수익 vs 매도 — 어느 쪽이 이득일까?',
     expert:'‘팔지 말고 세 주면 어떨까’. 월세는 매력적이지만, 임대로 돌리는 순간 거주 요건이 멈춰 비과세를 놓칠 수 있고, 임대소득세·건보료도 따라와요. 계속 임대했을 때의 연 순수익과, 지금 팔아 그 돈을 굴렸을 때의 수익을 같은 잣대로 비교해야 해요.',
-    how:'아래에 보증금·월세를 넣으면, 계속 임대 시 연 순수익(월세−이자−보유세)과 지금 매도 시 세후 금액의 운용 수익을 비교해드려요.'},
+    how:'보유·임대 기간을 옮기면, 그 시점까지의 임대수입에서 대출이자·재산세를 빼고 매도세 변화까지 더해 「지금 매도 대비 순손익」을 시점별로 보여드려요.'},
   decide13:{title:'대출 이자 반영 실수령액 — 진짜 손에 쥐는 돈',
     expert:'매도가가 13억이어도 그게 다 내 돈은 아니에요. 세금, 대출 상환, 중개비를 빼면 실제 통장에 들어오는 금액은 꽤 달라집니다. 그리고 파는 걸 미룬다면, 그 사이 하루하루 나가는 이자가 ‘보유 비용’이에요.',
     how:'아래에 대출 잔액과 금리를 넣으면 상환 후 실수령액과, 한 달·하루 단위 보유 비용을 계산해드려요.'},
@@ -2245,12 +2258,36 @@ function openS11(id,from){
   s11Cur=Math.max(0,A.S.findIndex(s=>s.id===id));
   renderS11();show('s11');
 }
+/* 유료 상담 상단 고정: 기본 입력값(물건·보유·명의 등)을 계속 확인 — 탭하면 상세 펼침 */
+function caseInfoHtml(){
+  const R=A.R||{};
+  const ptypeL={apartment:'아파트',officetel:'오피스텔',mixed:'상가주택',house:'단독/다가구'}[A.ptype]||'주택';
+  const addr=(A.address&&(A.address.road||A.address.region))||'-';
+  const hy=R.holdYears||0, hm=(R.holdMonths||0)%12;
+  const ownL=A.own==='joint'?('공동('+(A.myShare||0)+'%)'):'단독';
+  const acq=A.acqDate?fmtYM(A.acqDate.y,A.acqDate.m):'-';
+  const sale=A.saleDate?fmtYM(A.saleDate.y,A.saleDate.m):'-';
+  const res=(A.resMonthsNow!=null)?A.resMonthsNow+'개월':'-';
+  const shortAddr=addr.replace(/^(서울|경기|인천|부산|대구|대전|광주|울산|세종|강원|충북|충남|전북|전남|경북|경남|제주)\S*\s*/,'').split(' ').slice(0,2).join(' ');
+  const main=(shortAddr||addr)+' '+ptypeL+' · 보유 '+hy+'년 '+hm+'개월 · '+ownL;
+  return '<div class="ci-line" onclick="document.getElementById(\'s11Info\').classList.toggle(\'open\')">'
+    +'<span class="ci-main">'+main+'</span><span class="ci-toggle">기본정보 <span class="arr">▾</span></span></div>'
+    +'<div class="ci-detail">'
+    +'<div><b>주소</b>'+addr+'</div><div><b>유형</b>'+ptypeL+'</div>'
+    +'<div><b>취득</b>'+acq+' · '+fmtMan(A.acqPrice||0)+'</div>'
+    +'<div><b>매도(예정)</b>'+sale+' · '+fmtMan(A.salePrice||0)+'</div>'
+    +'<div><b>보유</b>'+hy+'년 '+hm+'개월</div><div><b>명의</b>'+ownL+'</div>'
+    +'<div><b>거주</b>'+res+'</div><div><b>주택수</b>'+(R.totalHouses||1)+'주택</div>'
+    +'<div><b>예상 양도세</b>'+fmtMan(R.total||0)+'</div>'
+    +'</div>';
+}
 function renderS11(){
   const S=A.S, sc=S[s11Cur];
   S11GEN++; const g=S11GEN;
   const tabs=$('#s11Tabs');
   tabs.innerHTML=S.map((s,i)=>'<button class="tab'+(i===s11Cur?' cur':'')+'" onclick="s11Cur='+i+';renderS11()">'+s.no+' '+s.name.split(' (')[0].slice(0,8)+'</button>').join('');
   setTimeout(()=>{const cu=tabs.querySelector('.cur');if(cu)cu.scrollIntoView({inline:'center',block:'nearest'});},0);
+  const ib=$('#s11Info'); if(ib){const wasOpen=ib.classList.contains('open');ib.innerHTML=caseInfoHtml();if(wasOpen)ib.classList.add('open');}
   $('#s11Mid').textContent='세꼼이 상담';
   chat2().innerHTML=''; dock2().classList.remove('on'); curSimSnap=null;
   SIM_REPLAY=s11ReplayNext; s11ReplayNext=false; if(!SIM_REPLAY)SIM_ANS=[]; SIM_ACALL=0; // 답변 캐시: 리플레이면 유지, 새 상담이면 초기화
@@ -2463,8 +2500,14 @@ SCRIPT.decide11=async(sc,g)=>{
       const taxSave=A.R.total-alt.total, hold=holdingCostFor(v);
       const rise=Math.round((A.sim.expRiseAmt||0)*(v/12)); // 기대 시세 상승(1년 예상액 × 기간, 세전 간이)
       const net=taxSave+rise-hold;
+      let why;
+      if(taxSave<=0) why='이 시점엔 세금이 줄지 않아요. 미룬다고 세금이 낮아지진 않고, 오른 시세엔 오히려 세금이 더 붙을 수 있어요.';
+      else if(A.R.shortRate&&!alt.shortRate) why='<b>단기보유 중과 탈출</b> — 보유 2년을 넘겨 '+A.R.shortRate+'% 단기세율이 일반세율로 내려가서예요.';
+      else if(!A.R.exempt&&alt.exempt) why='<b>비과세 요건 충족</b> — 보유·거주 2년을 채워 1세대1주택 비과세가 열려서예요.';
+      else if(alt.holdYears>A.R.holdYears) why='<b>장기보유특별공제 ↑</b> — 보유가 '+A.R.holdYears+'년→'+alt.holdYears+'년으로 늘며 공제율이 올라 과세 대상이 줄어서예요.';
+      else why='보유가 길어지며 장기보유공제가 조금씩 늘어 세금이 줄어요.';
       return {big:(net>=0?'+':'−')+fmtMan(Math.abs(net)),sub:fmtYM(sd.y,sd.m)+' 매도 시 순손익 (세금절감 + 시세상승 − 보유비용)',
-        rows:'<span>세금 절감 '+fmtMan(taxSave)+'</span><span>시세 상승 +'+fmtMan(rise)+'</span></div><div class="r"><span>보유 비용 −'+fmtMan(hold)+'</span><span>기대 연 '+fmtMan(A.sim.expRiseAmt||0)+'</span>',
+        rows:'<span>세금 절감 '+fmtMan(taxSave)+'</span><span>시세 상승 +'+fmtMan(rise)+'</span></div><div class="r"><span>보유 비용 −'+fmtMan(hold)+'</span><span>기대 연 '+fmtMan(A.sim.expRiseAmt||0)+'</span></div><div class="rwhy">💡 세금 절감 이유: '+why,
         verd:net>0?{cls:'rc-good',txt:'✓ '+v+'개월 미루면('+fmtYM(sd.y,sd.m)+') 순이득 '+fmtMan(net)}:{cls:'rc-bad',txt:v+'개월 미루면('+fmtYM(sd.y,sd.m)+') 순손해 '+fmtMan(-net)},
         snap:{scnId:'decide11',scnName:'매도 연기 시뮬',headline:fmtYM(sd.y,sd.m)+' 매도(기대 연 '+fmtMan(A.sim.expRiseAmt||0)+') → 순'+(net>=0?'이득 ':'손해 ')+fmtMan(Math.abs(net)),param:v+'개월 연기 · 기대 연 '+fmtMan(A.sim.expRiseAmt||0)}};}}),g);
   await c2simGate(g);
@@ -2490,14 +2533,15 @@ SCRIPT.decide14=async(sc,g)=>{
   await intro(sc,g);
   const holdCost1y=holdingCostFor(12)||Math.round(A.salePrice*0.005);
   const beRate=Math.round((holdCost1y/A.salePrice*1000))/10;
-  await c2bot('이 집은 연 <b>'+beRate+'%</b> 이상 올라야 보유가 이득이에요. 이게 손익분기 상승률이에요.',g);
-  await c2bot('아래에서 기대 상승률을 움직여보세요. 보유와 매도 중 어느 쪽이 유리한지 바로 알려드려요.',g);
-  await c2card(sliderCard({label:'내 기대 연간 상승률',min:0,max:100,value:Math.round(beRate*10)+20,fmtVal:v=>(v/10)+'%',
+  await c2bot('이 집은 1년에 <b>'+beRate+'%(약 '+fmtMan(holdCost1y)+')</b> 이상 올라야 보유가 이득이에요. 이게 손익분기예요.',g);
+  await c2bot('아래에서 기대 상승률을 움직여보세요. %가 얼마인지 <b>금액으로도</b> 같이 보여드릴게요.',g);
+  await c2card(sliderCard({label:'내 기대 연간 상승률',min:0,max:100,value:Math.round(beRate*10)+20,
+    fmtVal:v=>{const e=v/10;return e+'% · 연 '+fmtMan(Math.round(A.salePrice*e/100));},
     compute:exp=>{const e=exp/10, gainKeep=Math.round(A.salePrice*e/100);
-      return {big:'연 '+beRate+'%',sub:'이 이상 올라야 보유가 이득 (손익분기)',
-        rows:'<span>기대 상승 가치: '+fmtMan(gainKeep)+'/년</span><span>연 보유비용: '+fmtMan(holdCost1y)+'</span>',
-        verd:e>=beRate?{cls:'rc-good',txt:'✓ 기대 '+e+'% ≥ 손익분기 → 보유가 유리'}:{cls:'rc-bad',txt:'기대 '+e+'% < 손익분기 → 매도가 유리'},
-        snap:{scnId:'decide14',scnName:'손익분기 시뮬',headline:'손익분기 '+beRate+'% vs 기대 '+e+'% → '+(e>=beRate?'보유':'매도'),param:'기대 '+e+'%'}};}}),g);
+      return {big:'손익분기 연 '+beRate+'% · '+fmtMan(holdCost1y),sub:'이 이상 올라야 보유가 이득',
+        rows:'<span>내 기대: '+e+'% = 연 '+fmtMan(gainKeep)+'</span><span>손익분기: 연 '+fmtMan(holdCost1y)+'</span>',
+        verd:e>=beRate?{cls:'rc-good',txt:'✓ 기대 연 '+fmtMan(gainKeep)+' ≥ 손익분기 '+fmtMan(holdCost1y)+' → 보유가 유리'}:{cls:'rc-bad',txt:'기대 연 '+fmtMan(gainKeep)+' < 손익분기 '+fmtMan(holdCost1y)+' → 매도가 유리'},
+        snap:{scnId:'decide14',scnName:'손익분기 시뮬',headline:'손익분기 '+beRate+'%('+fmtMan(holdCost1y)+') vs 기대 '+e+'%('+fmtMan(gainKeep)+') → '+(e>=beRate?'보유':'매도'),param:'기대 '+e+'% · 연 '+fmtMan(gainKeep)}};}}),g);
   await c2simGate(g);
   await c2bot('시세 전망은 본인 가정이에요. 투자 권유가 아니라, 결정 기준을 숫자로 잡아드리는 거예요.',g);
   await c2traps(sc,g); await c2actions(sc,g); await c2finish(sc,g);
@@ -2566,15 +2610,26 @@ SCRIPT.decide12=async(sc,g)=>{
   await c2bot('대출 이자도 반영할게요. 대출 잔액이 있으면 알려주세요. 없으면 0을 입력하세요.',g);
   A.sim.loanBal=await c2num({hint:'대출 잔액 (만원)',ph:'없으면 0',min:0},g);
   if(A.sim.loanBal>0){await c2bot('금리는 연 몇 %인가요?',g);A.sim.loanRate=await c2num({hint:'연 금리 (%)',ph:'예: 4.3',fmt:v=>v+'%',min:0,decimal:true},g);}else A.sim.loanRate=0;
-  const rent=A.sim.rentMonthly, loanInt=A.sim.loanBal*(A.sim.loanRate/100);
-  const yearRent=Math.round(rent*12-loanInt-A.salePrice*0.0008);
-  const sellNet=A.salePrice-A.R.total-A.saleExp, investYield=Math.round(sellNet*0.03);
-  await c2bot('비교해드릴게요. 1년 기준이에요.',g);
-  await c2card(resCard('계속 임대 시 연 순수익',fmtMan(yearRent)+' / 년',
-    [['월세 수입','+'+fmtMan(rent*12)+'/년'],['− 대출 이자','−'+fmtMan(Math.round(loanInt))+'/년'],['지금 매도 실수령',fmtMan(sellNet)],['그 돈 연 3% 운용','+'+fmtMan(investYield)+'/년']],
-    yearRent>=investYield?{cls:'rc-good',txt:'✓ 연 기준 임대 순수익이 더 커요'}:{cls:'rc-warn',txt:'연 기준 매도 후 운용이 더 나을 수 있어요'}),g);
-  curSimSnap={scnId:'decide12',scnName:'임대 vs 매도',headline:'임대 '+fmtMan(yearRent)+'/년 vs 매도운용 '+fmtMan(investYield)+'/년',param:'보증금 '+fmtMan(A.sim.deposit)+' 월세 '+fmtMan(rent)};
-  await c2bot('다만 임대로 돌리면 그동안 거주 요건이 멈춰요. 비과세를 노리신다면 이 점을 꼭 같이 보셔야 해요.',g);
+  await c2bot('이제 <b>보유·임대 기간</b>을 옮겨보며, 임대수익·대출이자·재산세·매도세 변화까지 전부 반영한 순손익을 시점별로 보여드릴게요. (기준: 지금 파는 것 대비)',g);
+  await c2card(sliderCard({label:'보유·임대 기간',min:1,max:60,value:12,
+    fmtVal:v=>{const sd=addMonths(A.saleDate.y,A.saleDate.m,v);return v+'개월 · '+fmtYM(sd.y,sd.m);},
+    compute:v=>{const sd=addMonths(A.saleDate.y,A.saleDate.m,v);
+      const rentInc=Math.round((A.sim.rentMonthly||0)*v);
+      const interest=Math.round((A.sim.loanBal||0)*((A.sim.loanRate||0)/100)*(v/12));
+      const propTax=Math.round(A.salePrice*0.0008*(v/12));
+      const taxAtT=calc({saleDate:sd,resOverride:A.resMonthsNow}).total; // 임대 중 거주 정지 반영
+      const taxSave=A.R.total-taxAtT;
+      const net=rentInc-interest-propTax+taxSave;
+      let why;
+      if(taxSave>1) why='이 시점엔 <b>매도세도 '+fmtMan(taxSave)+' 줄어</b>(보유 길어져 공제↑) 임대에 유리해요.';
+      else if(taxSave<-1) why='이 구간엔 매도세가 오히려 <b>'+fmtMan(-taxSave)+' 늘 수 있어요.</b>';
+      else why='매도세 변화는 거의 없어요. 임대수입에서 이자·재산세를 뺀 게 순손익이에요.';
+      return {big:(net>=0?'+':'−')+fmtMan(Math.abs(net)),sub:fmtYM(sd.y,sd.m)+'까지 임대 후 매도 시 순손익 (지금 매도 대비)',
+        rows:'<span>임대수입 +'+fmtMan(rentInc)+'</span><span>대출이자 −'+fmtMan(interest)+'</span></div><div class="r"><span>재산세 등 −'+fmtMan(propTax)+'</span><span>매도세 '+(taxSave>=0?'절감 +':'증가 −')+fmtMan(Math.abs(taxSave))+'</span></div><div class="rwhy">💡 '+why,
+        verd:net>0?{cls:'rc-good',txt:'✓ '+v+'개월('+fmtYM(sd.y,sd.m)+') 임대 후 매도가 지금보다 +'+fmtMan(net)}:{cls:'rc-bad',txt:v+'개월 임대해도 지금 매도가 '+fmtMan(-net)+' 더 나아요'},
+        snap:{scnId:'decide12',scnName:'임대 vs 매도',headline:fmtYM(sd.y,sd.m)+'까지 임대 → 순'+(net>=0?'이득 ':'손해 ')+fmtMan(Math.abs(net)),param:v+'개월 임대 · 월세 '+fmtMan(A.sim.rentMonthly||0)}};}}),g);
+  await c2simGate(g);
+  await c2bot('임대로 돌리면 그동안 <b>거주 요건이 멈춰요.</b> 위 계산은 그 정지를 반영했어요 — 비과세를 노리신다면 꼭 같이 보셔야 해요. (보증금은 돌려줄 돈이라 순수익에서 뺐어요)',g);
   await c2traps(sc,g); await c2actions(sc,g); await c2finish(sc,g);
 };
 SCRIPT.expenses=async(sc,g)=>{
