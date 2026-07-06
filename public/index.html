@@ -2062,9 +2062,22 @@ async function seggomSave(kind,record){
     return {ok:!!(j&&j.ok)};
   }catch(e){ console.warn("[세꼼] 서버 저장 생략/실패:",e&&e.message); return {ok:false}; }
 }
+/* 저장 시뮬레이션 서버 동기화 (syncId 기준 — 다른 기기에서 링크로 복원) */
+async function seggomSyncSaveSim(snap){ if(!A.syncId)return; try{await fetch(SEGGOM_API+"/sims",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({syncId:A.syncId,snap})});}catch(e){} }
+async function seggomSyncDelSim(ts){ if(!A.syncId)return; try{await fetch(SEGGOM_API+"/sims",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({syncId:A.syncId,delTs:ts})});}catch(e){} }
+async function seggomSyncLoadSims(){ if(!A.syncId)return []; try{const r=await fetch(SEGGOM_API+"/sims?sid="+encodeURIComponent(A.syncId));const j=await r.json();return (j&&j.ok&&Array.isArray(j.sims))?j.sims:[];}catch(e){return [];} }
+async function mergeServerSims(){
+  const svr=await seggomSyncLoadSims(); if(!svr.length)return;
+  const seen=new Set(ARCH.map(a=>a.ts));
+  svr.forEach(s=>{ if(s&&!seen.has(s.ts)){ARCH.push(s);seen.add(s.ts);} });
+  ARCH.sort((a,b)=>(b.ts||0)-(a.ts||0));
+  try{localStorage.setItem(AKEY,JSON.stringify(ARCH.slice(0,50)));}catch(e){}
+  const s12=document.getElementById('s12'); if(s12&&s12.classList.contains('on'))openMyPage(); // 열려 있으면 갱신
+}
 
 /* ===== 결과 딥링크: 계산 입력값을 URL(#r=...)에 담아, 메일 CTA로 '그 물건의 결과 페이지'를 다시 열기 ===== */
-const STATE_KEYS=['address','ptype','offiUse','isResident','resRatio','method','converted','expMode','acqDate','saleDate','acqAdj','acqPrice','acqExp','saleExp','salePrice','own','myShare','members','otherCount','otherAcq','memberOtherHouse','giftDate','inhDate','landlord','landlordDate','isRented','resType','currentlyLiving','resMonthsNow','resMonthsAtSale','resStart','email'];
+const STATE_KEYS=['address','ptype','offiUse','isResident','resRatio','method','converted','expMode','acqDate','saleDate','acqAdj','acqPrice','acqExp','saleExp','salePrice','own','myShare','members','otherCount','otherAcq','memberOtherHouse','giftDate','inhDate','landlord','landlordDate','isRented','resType','currentlyLiving','resMonthsNow','resMonthsAtSale','resStart','email','syncId'];
+function genSync(){return (Date.now().toString(36)+Math.random().toString(36).slice(2,12)).slice(0,32);}
 function b64e(s){return btoa(unescape(encodeURIComponent(s)));}
 function b64d(s){return decodeURIComponent(escape(atob(s)));}
 function encodeState(){const o={};STATE_KEYS.forEach(k=>{if(A[k]!==undefined)o[k]=A[k];});return b64e(JSON.stringify(o));}
@@ -2078,6 +2091,7 @@ function tryResumeFromUrl(){
   if(!enc)return false;
   if(!restoreState(enc))return false;
   try{ if(new URLSearchParams(location.search).get('u')==='1')PAID=true; }catch(e){} // 설문 완료자 링크 → 잠금 해제 상태로 복원
+  if(A.syncId)try{mergeServerSims();}catch(e){} // 저장한 시뮬레이션 서버에서 복원(다른 기기)
   try{ A.R=calc(); A.S=buildScenarios(); renderS05(); show('s05'); return true; }catch(e){ console.warn('[세꼼] 결과 복원 실패:',e&&e.message); return false; }
 }
 window.addEventListener('load',tryResumeFromUrl);
@@ -2163,9 +2177,10 @@ function submitSurvey(){
     context:{addr:A.address&&A.address.road,tax:A.R&&A.R.total,scenarios:(A.S||[]).length}});
   try{const all=JSON.parse(localStorage.getItem(SVKEY)||'[]');all.push(rec);localStorage.setItem(SVKEY,JSON.stringify(all));}catch(e){}
   A.email=email.trim();
+  if(!A.syncId)A.syncId=genSync(); // 저장 시뮬 서버 복원용 개인키 — 감사 메일 링크에 담김
   /* 서버 저장(영속) + 메일(고객 감사 + 관리자 알림). 배포 시 실제 동작, 로컬은 패스 */
   seggomSave("survey",rec);
-  seggomMail("survey_thanks",rec.email,{taxConnect:rec.taxConnect,url:resultUrl(true)}); // 설문 완료자 → 잠금해제 링크
+  seggomMail("survey_thanks",rec.email,{taxConnect:rec.taxConnect,url:resultUrl(true)}); // 설문 완료자 → 잠금해제 + 저장기록 복원 링크
   seggomMail("admin_lead",rec.email,{survey:rec});
   PAID=true;
   const id=payPendingScn||(A.S&&A.S[0]&&A.S[0].id);
@@ -2674,11 +2689,14 @@ let ARCH=[];
 try{ARCH=JSON.parse(localStorage.getItem(AKEY)||'[]');}catch(e){ARCH=[];}
 function saveCurrentSim(){
   if(!curSimSnap){alert('저장할 시뮬레이션이 없어요');return;}
-  ARCH.unshift(Object.assign({ts:Date.now()},curSimSnap));
+  if(!A.syncId)A.syncId=genSync();
+  const rec=Object.assign({ts:Date.now()},curSimSnap);
+  ARCH.unshift(rec);
   try{localStorage.setItem(AKEY,JSON.stringify(ARCH.slice(0,50)));}catch(e){}
+  seggomSyncSaveSim(rec); // 서버에도 보관 → 다른 기기에서 링크로 복원
   alert('저장됐어요. 마이페이지(☰)에서 다시 볼 수 있어요.');
 }
-function delArch(i){ARCH.splice(i,1);try{localStorage.setItem(AKEY,JSON.stringify(ARCH));}catch(e){}openMyPage();}
+function delArch(i){const rec=ARCH[i];ARCH.splice(i,1);try{localStorage.setItem(AKEY,JSON.stringify(ARCH));}catch(e){}if(rec)seggomSyncDelSim(rec.ts);openMyPage();}
 function whenStr(ts){const d=new Date(ts);return (d.getMonth()+1)+'월 '+d.getDate()+'일 '+String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0');}
 function openMyPage(){
   const b=$('#s12Body');
