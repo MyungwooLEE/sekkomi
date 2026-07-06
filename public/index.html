@@ -2223,27 +2223,6 @@ function openS11(id,from){
   s11Cur=Math.max(0,A.S.findIndex(s=>s.id===id));
   renderS11();show('s11');
 }
-/* ── 테스트 진입점: 무료 구간을 건너뛰고 유료 채팅 상담으로 바로 진입 (주소창에 #test 붙이거나 콘솔에서 testPaid()) ── */
-function testPaid(){
-  A={
-    address:{road:'서울 강남구 테헤란로 152',region:'서울 강남구'},
-    ptype:'apartment', offiUse:null, isResident:true, resRatio:100,
-    method:'purchase', converted:false, expMode:'combined',
-    acqDate:{y:2018,m:6}, saleDate:{y:NOWY,m:NOWM}, acqAdj:true,
-    acqPrice:90000, acqExp:3000, saleExp:2000, salePrice:180000,
-    own:'single', myShare:100, members:[],
-    otherCount:0, otherAcq:null, memberOtherHouse:false,
-    giftDate:null, inhDate:null, landlord:'none', landlordDate:null, isRented:false,
-    resType:'continuous', currentlyLiving:true, resMonthsNow:18, resMonthsAtSale:18,
-    sim:{}
-  };
-  A.R=calc(); A.S=buildScenarios(); PAID=true;
-  renderS05(); // 뒤로가기 시 무료 결과·전체 시나리오도 볼 수 있게 채워둠
-  const pref=(A.S.find(s=>s.id==='decide11')||A.S[0]);
-  if(pref)openS11(pref.id,'s05'); else openS07();
-}
-window.testPaid=testPaid;
-window.addEventListener('load',()=>{ const h=(location.hash||'').replace('#','').toLowerCase(); if(h==='test'||h==='paid')setTimeout(testPaid,80); });
 function renderS11(){
   const S=A.S, sc=S[s11Cur];
   S11GEN++; const g=S11GEN;
