@@ -1444,12 +1444,16 @@ async function runLoading(){
     await sleep(REPLAY?40:d);
   }
   renderS05();show('s05');
+  /* 익명 계산 완료 로깅 1회 — 이메일 없이도 전체 참여(퍼널) 집계. 개인정보 최소화: 상세주소 없이 지역만 */
+  if(!A._calcLogged){A._calcLogged=true;
+    seggomSave("calc",{region:(A.address&&A.address.region)||'',ptype:A.ptype||'',tax:A.R.total,
+      scenarios:(A.S||[]).length,caseId:A.R.caseId,holdYears:A.R.holdYears,own:A.own,totalHouses:A.R.totalHouses});}
   /* 무료 이메일 남긴 경우: 서버 저장(리드) + 결과 메일 1회 (배포 시 실제, 로컬은 패스) */
   if(A.email&&!A._resultMailed){A._resultMailed=true;
     const lead={email:A.email,address:A.address&&A.address.road,tax:fmtMan(A.R.total),scenarios:(A.S||[]).length,
       context:{addr:A.address&&A.address.road,tax:A.R.total,scenarios:(A.S||[]).length}};
     seggomSave("free_email",lead);
-    seggomMail("result",A.email,{address:lead.address,tax:lead.tax,scenarios:lead.scenarios});}
+    seggomMail("result",A.email,{address:lead.address,tax:lead.tax,scenarios:lead.scenarios,url:resultUrl()});}
 }
 
 /* ================= tax engine (근사) ================= */
@@ -2042,6 +2046,21 @@ async function seggomSave(kind,record){
   }catch(e){ console.warn("[세꼼] 서버 저장 생략/실패:",e&&e.message); return {ok:false}; }
 }
 
+/* ===== 결과 딥링크: 계산 입력값을 URL(#r=...)에 담아, 메일 CTA로 '그 물건의 결과 페이지'를 다시 열기 ===== */
+const STATE_KEYS=['address','ptype','offiUse','isResident','resRatio','method','converted','expMode','acqDate','saleDate','acqAdj','acqPrice','acqExp','saleExp','salePrice','own','myShare','members','otherCount','otherAcq','memberOtherHouse','giftDate','inhDate','landlord','landlordDate','isRented','resType','currentlyLiving','resMonthsNow','resMonthsAtSale','resStart','email'];
+function b64e(s){return btoa(unescape(encodeURIComponent(s)));}
+function b64d(s){return decodeURIComponent(escape(atob(s)));}
+function encodeState(){const o={};STATE_KEYS.forEach(k=>{if(A[k]!==undefined)o[k]=A[k];});return b64e(JSON.stringify(o));}
+function resultUrl(){try{return location.origin+'/#r='+encodeState();}catch(e){return location.origin;}}
+function restoreState(enc){try{const o=JSON.parse(b64d(enc));STATE_KEYS.forEach(k=>{if(o[k]!==undefined)A[k]=o[k];});return true;}catch(e){return false;}}
+function tryResumeFromUrl(){
+  const m=(location.hash||'').match(/[#&]r=([^&]+)/);
+  if(!m)return false;
+  if(!restoreState(m[1]))return false;
+  try{ A.R=calc(); A.S=buildScenarios(); renderS05(); show('s05'); return true; }catch(e){ console.warn('[세꼼] 결과 복원 실패:',e&&e.message); return false; }
+}
+window.addEventListener('load',tryResumeFromUrl);
+
 /* ================= 베타 설문 게이트 ================= */
 const SV={ liked:[] };
 function svToggle(el,key,val,multi){
@@ -2125,7 +2144,7 @@ function submitSurvey(){
   A.email=email.trim();
   /* 서버 저장(영속) + 메일(고객 감사 + 관리자 알림). 배포 시 실제 동작, 로컬은 패스 */
   seggomSave("survey",rec);
-  seggomMail("survey_thanks",rec.email,{taxConnect:rec.taxConnect});
+  seggomMail("survey_thanks",rec.email,{taxConnect:rec.taxConnect,url:resultUrl()});
   seggomMail("admin_lead",rec.email,{survey:rec});
   PAID=true;
   const id=payPendingScn||(A.S&&A.S[0]&&A.S[0].id);
