@@ -6,6 +6,12 @@
 <title>세꼼 | 집 팔 때 양도세, 꼼꼼하게</title>
 <meta name="description" content="부동산 매도 전, 채팅으로 3분이면 내 양도소득세와 절세 방법을 확인하세요. 꼼꼼한 질문으로 정확하게.">
 <meta name="theme-color" content="#163300">
+<!-- ===== Google Tag Manager (GTM 허브) — 'GTM-XXXXXXX'를 실제 컨테이너 ID로 교체하면 활성화 ===== -->
+<script>window.GTM_ID='GTM-5JTC8935';window.dataLayer=window.dataLayer||[];
+(function(w,d,s,l,i){if(!i||i==='GTM-XXXXXXX'||i.indexOf('GTM-')!==0)return;w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer',window.GTM_ID);</script>
+<!-- Search Console 인증: GTM/GA 연결로 하거나, 아래 메타의 content에 인증코드를 넣고 주석 해제 -->
+<!-- <meta name="google-site-verification" content="여기에_인증코드"> -->
+<!-- ===== /Google Tag Manager ===== -->
 <meta property="og:title" content="세꼼 | 집 팔 때 양도세, 꼼꼼하게">
 <meta property="og:description" content="채팅으로 3분, 내 양도세와 절세 방법을 확인하세요.">
 <meta property="og:type" content="website">
@@ -520,6 +526,8 @@ details.dis div{margin-top:8px;line-height:1.8}
 </style>
 </head>
 <body>
+<!-- Google Tag Manager (noscript) — 'GTM-XXXXXXX'를 실제 ID로 교체 -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5JTC8935" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <div id="frame">
 
 <!-- ===== S01 ===== -->
@@ -683,6 +691,8 @@ function logAns(v){answerLog.push(v);saveState()}
 function show(id){document.querySelectorAll('.screen').forEach(e=>e.classList.remove('on'));$('#'+id).classList.add('on');updateGateBtns();}
 /* 잠금 상태(PAID)에 따라 고정 게이트 버튼 문구 갱신 — 설문 완료자에겐 '설문' 문구 제거 */
 function updateGateBtns(){try{document.querySelectorAll('.gate-cta').forEach(b=>{b.textContent=(typeof PAID!=='undefined'&&PAID)?'시나리오 상담 열기 →':'설문 답하고 전체 시나리오 열기 (베타 무료)';});}catch(e){}}
+/* GTM/GA4 이벤트 전송 — dataLayer에 push (GTM 미연동 시 조용히 누적만) */
+function track(ev,params){try{window.dataLayer=window.dataLayer||[];window.dataLayer.push(Object.assign({event:ev},params||{}));}catch(e){}}
 
 /* ====== chat primitives ====== */
 const chat=$('#chatScroll');
@@ -927,10 +937,10 @@ const LEGAL={
     +'<p>원칙적으로 개인정보를 외부에 제공하지 않습니다. 다만 이용자가 “세무사 연결”에 <b>별도로 동의</b>한 경우에 한하여, 연결 목적 범위 내에서 제휴 세무 전문가에게 필요한 정보(이메일·상담에 필요한 부동산 정보)를 제공합니다. 동의하지 않아도 서비스 이용에는 제한이 없습니다.</p>'
     +'<h4>5. 처리 위탁</h4>'
     +'<p>서비스 운영을 위해 아래 업무를 외부 사업자에게 위탁합니다. 위탁 계약 시 개인정보가 안전하게 관리되도록 합니다.</p>'
-    +'<ul><li>이메일 발송: Resend</li><li>호스팅·데이터 저장: Netlify</li></ul>'
+    +'<ul><li>이메일 발송: Resend</li><li>호스팅·데이터 저장: Netlify</li><li>이용 통계 분석: Google(Google Analytics·Tag Manager)</li></ul>'
     +'<h4>6. 개인정보의 국외 이전</h4>'
     +'<p>위 위탁에 따라 개인정보가 국외에서 처리·보관됩니다. 이는 서비스 제공(계약 이행)에 필요한 범위에 한합니다.</p>'
-    +'<ul><li>이전받는 자: Resend(이메일 발송), Netlify(호스팅·저장)</li>'
+    +'<ul><li>이전받는 자: Resend(이메일 발송), Netlify(호스팅·저장), Google(이용 통계 분석)</li>'
     +'<li>이전 국가: 미국</li>'
     +'<li>이전 항목: 상기 1항의 수집 항목 중 해당 업무에 필요한 정보</li>'
     +'<li>이전 일시·방법: 서비스 이용(제출) 시점에 정보통신망을 통해 전송</li>'
@@ -939,7 +949,8 @@ const LEGAL={
     +'<h4>7. 개인정보의 안전성 확보조치</h4>'
     +'<ul><li>전송 구간 암호화(HTTPS) 적용</li><li>개인정보 처리·접근 권한의 최소화 및 접근 통제</li><li>처리 위탁 사업자에 대한 보안 관리</li></ul>'
     +'<h4>8. 쿠키 등 자동수집 장치</h4>'
-    +'<p>서비스는 광고·추적 목적의 쿠키를 사용하지 않습니다. 다만 계산 진행·화면 유지를 위해 이용자 기기 내 저장소(로컬 스토리지)를 사용할 수 있으며, 이는 이용자 브라우저 설정에서 삭제·차단할 수 있습니다.</p>'
+    +'<p>서비스 개선을 위해 Google Analytics(Google Tag Manager 경유)를 사용하며, 이 과정에서 방문·이용 통계 목적의 쿠키가 설치될 수 있어요. 광고 목적의 추적은 하지 않습니다. 또한 계산 진행·화면 유지를 위해 기기 내 저장소(로컬 스토리지)를 사용할 수 있어요.</p>'
+    +'<p>쿠키·통계 수집은 브라우저 설정에서 차단하거나, Google Analytics 차단 브라우저 부가기능(tools.google.com/dlpage/gaoptout)으로 거부할 수 있습니다.</p>'
     +'<h4>9. 만 14세 미만 아동</h4>'
     +'<p>서비스는 만 14세 미만 아동의 개인정보를 수집하지 않습니다.</p>'
     +'<h4>10. 정보주체의 권리 및 행사 방법</h4>'
@@ -1462,12 +1473,14 @@ async function runLoading(){
   /* 익명 계산 완료 로깅 1회 — 이메일 없이도 전체 참여(퍼널) 집계. 개인정보 최소화: 상세주소 없이 지역만 */
   if(!A._calcLogged){A._calcLogged=true;
     seggomSave("calc",{region:(A.address&&A.address.region)||'',ptype:A.ptype||'',tax:A.R.total,
-      scenarios:(A.S||[]).length,caseId:A.R.caseId,holdYears:A.R.holdYears,own:A.own,totalHouses:A.R.totalHouses});}
+      scenarios:(A.S||[]).length,caseId:A.R.caseId,holdYears:A.R.holdYears,own:A.own,totalHouses:A.R.totalHouses});
+    track('calc_complete',{tax_total:A.R.total,scenarios:(A.S||[]).length,case_id:A.R.caseId,region:(A.address&&A.address.region)||''});}
   /* 무료 이메일 남긴 경우: 서버 저장(리드) + 결과 메일 1회 (배포 시 실제, 로컬은 패스) */
   if(A.email&&!A._resultMailed){A._resultMailed=true;
     const lead={email:A.email,address:A.address&&A.address.road,tax:fmtMan(A.R.total),scenarios:(A.S||[]).length,
       context:{addr:A.address&&A.address.road,tax:A.R.total,scenarios:(A.S||[]).length}};
     seggomSave("free_email",lead);
+    track('email_lead',{source:'result'});
     seggomMail("result",A.email,{address:lead.address,tax:lead.tax,scenarios:lead.scenarios,url:resultUrl()});}
 }
 
@@ -2180,6 +2193,7 @@ function submitSurvey(){
   if(!A.syncId)A.syncId=genSync(); // 저장 시뮬 서버 복원용 개인키 — 감사 메일 링크에 담김
   /* 서버 저장(영속) + 메일(고객 감사 + 관리자 알림). 배포 시 실제 동작, 로컬은 패스 */
   seggomSave("survey",rec);
+  track('survey_submit',{buy_intent:SV.buyIntent,fair_price:SV.fairPrice||0,tax_connect:SV.taxConnect,age_band:SV.ageBand||''});
   seggomMail("survey_thanks",rec.email,{taxConnect:rec.taxConnect,url:resultUrl(true)}); // 설문 완료자 → 잠금해제 + 저장기록 복원 링크
   seggomMail("admin_lead",rec.email,{survey:rec});
   PAID=true;
@@ -2276,6 +2290,7 @@ const chat2=()=>$('#s11Chat'), dock2=()=>$('#s11Dock');
 function openS11(id,from){
   s11From=from||'s05';
   s11Cur=Math.max(0,A.S.findIndex(s=>s.id===id));
+  track('scenario_open',{scenario:(A.S[s11Cur]&&A.S[s11Cur].id)||id||''});
   renderS11();show('s11');
 }
 /* 유료 상담 상단 고정: 기본 입력값(물건·보유·명의 등)을 계속 확인 — 탭하면 상세 펼침 */
@@ -2694,6 +2709,7 @@ function saveCurrentSim(){
   ARCH.unshift(rec);
   try{localStorage.setItem(AKEY,JSON.stringify(ARCH.slice(0,50)));}catch(e){}
   seggomSyncSaveSim(rec); // 서버에도 보관 → 다른 기기에서 링크로 복원
+  track('sim_save',{scenario:(curSimSnap&&curSimSnap.scnId)||''});
   alert('저장됐어요. 마이페이지(☰)에서 다시 볼 수 있어요.');
 }
 function delArch(i){const rec=ARCH[i];ARCH.splice(i,1);try{localStorage.setItem(AKEY,JSON.stringify(ARCH));}catch(e){}if(rec)seggomSyncDelSim(rec.ts);openMyPage();}
@@ -2745,7 +2761,7 @@ function toggleAlarm(){
 
 /* ================= boot / resume ================= */
 function resetAll(){if(confirm('처음부터 다시 시작할까요? 입력값이 모두 삭제돼요.')){localStorage.removeItem(SKEY);PAID=false;location.href=location.origin+location.pathname;}}
-$('#startBtn').onclick=()=>{localStorage.removeItem(SKEY);answerLog=[];flow()};
+$('#startBtn').onclick=()=>{track('start_calc');localStorage.removeItem(SKEY);answerLog=[];flow()};
 (function(){
   try{
     const s=JSON.parse(localStorage.getItem(SKEY)||'null');
