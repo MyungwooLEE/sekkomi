@@ -15,7 +15,11 @@
 <meta property="og:title" content="세꼼 | 집 팔 때 양도세, 꼼꼼하게">
 <meta property="og:description" content="채팅으로 3분, 내 양도세와 절세 방법을 확인하세요.">
 <meta property="og:type" content="website">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23163300'/%3E%3Ctext x='16' y='22' font-size='18' font-weight='800' fill='white' text-anchor='middle' font-family='sans-serif'%3E세%3C/text%3E%3C/svg%3E">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
 <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
 <!-- 카카오(다음) 우편번호 서비스 — 무료·키 불필요·클라이언트 사이드 -->
 <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
@@ -50,6 +54,7 @@ small.note{color:var(--sub)}
 .lp-top{position:relative;z-index:1;display:flex;align-items:center;justify-content:space-between}
 .lp-brand{font-size:21px;font-weight:800;letter-spacing:-.5px}
 .lp-brand b{color:var(--accent)}
+.lp-brand img{display:block;height:26px}
 .lp-live{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:rgba(255,255,255,.85);background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.15);padding:5px 10px;border-radius:999px}
 .lp-live i{width:6px;height:6px;border-radius:50%;background:var(--accent);animation:lppulse 2s infinite}
 @keyframes lppulse{0%{box-shadow:0 0 0 0 rgba(159,232,112,.5)}70%{box-shadow:0 0 0 7px rgba(159,232,112,0)}100%{box-shadow:0 0 0 0 rgba(159,232,112,0)}}
@@ -113,7 +118,7 @@ small.note{color:var(--sub)}
 .pbar i{display:block;height:100%;width:0;background:var(--brand);transition:width .4s}
 #chatScroll{padding:16px 14px 130px}
 .row-bot{display:flex;gap:8px;margin-bottom:10px;align-items:flex-start}
-.avatar{width:26px;height:26px;border-radius:50%;background:var(--brand);color:#fff;font-size:14px;font-weight:800;display:flex;align-items:center;justify-content:center;flex:none;margin-top:2px}
+.avatar{width:30px;height:30px;background:url('/logo_icon.png') center/contain no-repeat;color:transparent;font-size:0;flex:none;margin-top:2px}
 .avatar.hide{visibility:hidden}
 .bub{max-width:78%;background:var(--bot);padding:10px 13px;border-radius:4px 14px 14px 14px;font-size:16px;line-height:1.55;white-space:pre-wrap;word-break:keep-all}
 .bub .sub{display:block;margin-top:5px;font-size:14px;color:var(--sub)}
@@ -535,7 +540,7 @@ details.dis div{margin-top:8px;line-height:1.8}
   <div class="scroll">
    <div class="lp">
     <div class="lp-top">
-      <div class="lp-brand">세<b>꼼</b></div>
+      <div class="lp-brand"><img src="/logo_full_dark.png" alt="세꼼이"></div>
       <div class="lp-live"><i></i>세법 자동반영</div>
     </div>
     <div class="lp-hero">
@@ -1406,13 +1411,15 @@ async function emailCard(){
     <label><input type="checkbox" class="cp"> (필수) 개인정보 수집·이용에 동의합니다 <a href="#" class="toggleC" style="color:var(--brand)">[펼치기]</a></label>
     <div class="consent-detail">① 수집 항목 — 이메일, 입력하신 주택 정보<br>② 이용 목적 — 결과 발송 및 절세 알림<br>③ 보관 기간 — 동의 철회 시 또는 30일 후 자동 삭제</div>
     <label><input type="checkbox" class="cm"> (선택) 절세 팁·세법 변경 등 마케팅 정보 수신 동의</label>
+    <div class="em-err" style="display:none;color:var(--bad);font-size:13px;line-height:1.5;margin:2px 0 2px"></div>
     <button class="ok" style="width:100%;padding:12px;background:var(--brand);color:#fff;border-radius:10px;font-weight:700;font-size:15.5px;margin-top:4px">이메일로 받고 결과 보기</button>
     <button class="forget" style="width:100%;background:none;color:var(--sub);font-size:14px;text-decoration:underline;padding:8px 0 0">건너뛰고 결과 보기</button>`;
     w.querySelector('.toggleC').onclick=e=>{e.preventDefault();const d=w.querySelector('.consent-detail');d.style.display=d.style.display==='block'?'none':'block'};
     w.querySelector('.ok').onclick=()=>{
       const em=w.querySelector('input[type=email]').value.trim();
-      if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)){alert('이메일 형식을 확인해주세요');return}
-      if(!w.querySelector('.cp').checked){alert('개인정보 수집·이용 동의가 필요해요');return}
+      const errEl=w.querySelector('.em-err');const showErr=m=>{errEl.textContent=m;errEl.style.display='block';};
+      if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)){showErr('이메일 형식을 확인해주세요 (예: name@example.com)');return}
+      if(!w.querySelector('.cp').checked){showErr('개인정보 수집·이용 동의가 필요해요');return}
       A.email=em;w.remove();userSay('이메일로 받기 ('+em+')');logAns(em);res();
     };
     w.querySelector('.forget').onclick=()=>{A.email=null;w.remove();userSay('건너뛰고 결과 보기');logAns('skip');res()};
