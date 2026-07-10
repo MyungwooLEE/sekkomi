@@ -32,6 +32,9 @@
 <script type="application/ld+json">
 {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "양도세 예정신고 기한은 언제까지인가요?", "acceptedAnswer": {"@type": "Answer", "text": "양도일이 속한 달의 말일부터 2개월 이내입니다. 예를 들어 3월 15일 양도라면 3월 말일 기준 2개월 후인 5월 31일까지 신고·납부합니다."}}, {"@type": "Question", "name": "확정신고는 꼭 해야 하나요?", "acceptedAnswer": {"@type": "Answer", "text": "같은 해에 여러 건을 양도해 합산할 대상이 있으면 다음 해 5월에 확정신고로 정산합니다. 예정신고만으로 끝나는 경우도 많습니다."}}, {"@type": "Question", "name": "양도세는 어디서 신고하나요?", "acceptedAnswer": {"@type": "Answer", "text": "국세청 홈택스에서 온라인으로 하거나 세무서를 방문해 신고할 수 있습니다."}}, {"@type": "Question", "name": "신고 기한을 넘기면 어떻게 되나요?", "acceptedAnswer": {"@type": "Answer", "text": "무신고·과소신고·납부지연에 대한 가산세가 부과될 수 있습니다. 정확한 세율·감면은 국세청 확인을 권장합니다."}}]}
 </script>
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "블로그", "item": "https://sekkomi.com/blog/"}, {"@type": "ListItem", "position": 2, "name": "EP.05 신고", "item": "https://sekkomi.com/blog/yangdose-singo-bangbeop"}, {"@type": "ListItem", "position": 3, "name": "양도소득세 신고 방법·기한 총정리 (2026)", "item": "https://sekkomi.com/blog/yangdose-singo-bangbeop"}]}
+</script>
 
 <style>
   :root{--g:#163300;--g2:#0e2200;--lime:#9fe870;--cream:#fbfaf7;--ink:#1a2712;--accent:#ff6a3d;
@@ -327,6 +330,12 @@
       marks.forEach(function(m){ if(p>=m&&!hit[m]){hit[m]=1;track('blog_scroll_depth',{percent:m,article:'yangdose-singo-bangbeop'});} });
     },{passive:true});
   })();
+</script>
+<script type="module">
+  // 코어웹바이탈 실측(LCP·CLS·INP·FCP·TTFB) → GA4 web_vitals 이벤트
+  import {onLCP,onCLS,onINP,onFCP,onTTFB} from 'https://cdn.jsdelivr.net/npm/web-vitals@4/dist/web-vitals.js';
+  function v(m){window.dataLayer=window.dataLayer||[];window.dataLayer.push({event:'web_vitals',metric:m.name,value:Math.round(m.name==='CLS'?m.value*1000:m.value),rating:m.rating,article:'yangdose-singo-bangbeop'});}
+  onLCP(v);onCLS(v);onINP(v);onFCP(v);onTTFB(v);
 </script>
 </body>
 </html>

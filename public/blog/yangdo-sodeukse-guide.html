@@ -32,6 +32,9 @@
 <script type="application/ld+json">
 {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "양도소득세는 언제 내나요?", "acceptedAnswer": {"@type": "Answer", "text": "양도일(보통 잔금일)이 속한 달의 말일부터 2개월 이내에 예정신고·납부합니다. 미신고·과소신고 시 가산세가 부과됩니다."}}, {"@type": "Question", "name": "손해를 봤어도 양도세 신고를 해야 하나요?", "acceptedAnswer": {"@type": "Answer", "text": "낼 세금이 없어도 신고를 해두면 같은 해 다른 양도이익과 통산할 수 있어 유리한 경우가 있습니다. 상황별로 국세청·세무 전문가 확인을 권장합니다."}}, {"@type": "Question", "name": "양도세를 줄이는 가장 확실한 방법은 무엇인가요?", "acceptedAnswer": {"@type": "Answer", "text": "1세대 1주택 비과세 요건 충족, 장기보유로 공제 확대, 다주택이면 매도 순서 조정이 대표적입니다. 내 상황에 맞춰 계산해야 정확합니다."}}, {"@type": "Question", "name": "이 글 하나로 내 양도세 금액을 알 수 있나요?", "acceptedAnswer": {"@type": "Answer", "text": "큰 그림은 잡을 수 있지만 정확한 금액은 주소·금액·보유기간·주택 수에 따라 달라집니다. 세꼼 계산기로 확인하는 것이 정확합니다."}}]}
 </script>
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "블로그", "item": "https://sekkomi.com/blog/"}, {"@type": "ListItem", "position": 2, "name": "EP.00 완전정복", "item": "https://sekkomi.com/blog/yangdo-sodeukse-guide"}, {"@type": "ListItem", "position": 3, "name": "집 팔 때 양도소득세 완전정복 (2026 최신)", "item": "https://sekkomi.com/blog/yangdo-sodeukse-guide"}]}
+</script>
 
 <style>
   :root{--g:#163300;--g2:#0e2200;--lime:#9fe870;--cream:#fbfaf7;--ink:#1a2712;--accent:#ff6a3d;
@@ -368,6 +371,12 @@
       marks.forEach(function(m){ if(p>=m&&!hit[m]){hit[m]=1;track('blog_scroll_depth',{percent:m,article:'yangdo-sodeukse-guide'});} });
     },{passive:true});
   })();
+</script>
+<script type="module">
+  // 코어웹바이탈 실측(LCP·CLS·INP·FCP·TTFB) → GA4 web_vitals 이벤트
+  import {onLCP,onCLS,onINP,onFCP,onTTFB} from 'https://cdn.jsdelivr.net/npm/web-vitals@4/dist/web-vitals.js';
+  function v(m){window.dataLayer=window.dataLayer||[];window.dataLayer.push({event:'web_vitals',metric:m.name,value:Math.round(m.name==='CLS'?m.value*1000:m.value),rating:m.rating,article:'yangdo-sodeukse-guide'});}
+  onLCP(v);onCLS(v);onINP(v);onFCP(v);onTTFB(v);
 </script>
 </body>
 </html>

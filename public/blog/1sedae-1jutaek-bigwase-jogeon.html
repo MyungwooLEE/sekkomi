@@ -37,6 +37,10 @@
 {"@type":"Question","name":"보유·거주 2년은 언제부터 계산하나요?","acceptedAnswer":{"@type":"Answer","text":"보유는 취득일(보통 잔금일), 거주는 전입신고일 기준이며, 거주가 끊겼다면 실제 거주 기간만 합산합니다."}}]}
 </script>
 
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "블로그", "item": "https://sekkomi.com/blog/"}, {"@type": "ListItem", "position": 2, "name": "EP.01 비과세", "item": "https://sekkomi.com/blog/1sedae-1jutaek-bigwase-jogeon"}, {"@type": "ListItem", "position": 3, "name": "1세대 1주택 비과세 조건, 3가지만 알면 됩니다 (2026)", "item": "https://sekkomi.com/blog/1sedae-1jutaek-bigwase-jogeon"}]}
+</script>
+
 <style>
   :root{--g:#163300;--g2:#0e2200;--lime:#9fe870;--cream:#fbfaf7;--ink:#1a2712;--accent:#ff6a3d;
     --mute:#6e7d5c;--line:#e7e9e2;--box:#f2f4ec}
@@ -319,6 +323,12 @@
       marks.forEach(function(m){ if(p>=m&&!hit[m]){hit[m]=1;track('blog_scroll_depth',{percent:m,article:'1sedae-1jutaek-bigwase-jogeon'});} });
     },{passive:true});
   })();
+</script>
+<script type="module">
+  // 코어웹바이탈 실측(LCP·CLS·INP·FCP·TTFB) → GA4 web_vitals 이벤트
+  import {onLCP,onCLS,onINP,onFCP,onTTFB} from 'https://cdn.jsdelivr.net/npm/web-vitals@4/dist/web-vitals.js';
+  function v(m){window.dataLayer=window.dataLayer||[];window.dataLayer.push({event:'web_vitals',metric:m.name,value:Math.round(m.name==='CLS'?m.value*1000:m.value),rating:m.rating,article:'1sedae-1jutaek-bigwase-jogeon'});}
+  onLCP(v);onCLS(v);onINP(v);onFCP(v);onTTFB(v);
 </script>
 </body>
 </html>

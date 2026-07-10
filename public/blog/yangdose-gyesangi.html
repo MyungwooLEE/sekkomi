@@ -32,6 +32,9 @@
 <script type="application/ld+json">
 {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "양도소득세는 어떻게 계산하나요?", "acceptedAnswer": {"@type": "Answer", "text": "양도차익(양도가−취득가−필요경비) → 장기보유특별공제 → 과세표준(기본공제 250만 원 차감) → 세율(6~45%, 누진공제) → 지방소득세 10% 순서로 계산합니다."}}, {"@type": "Question", "name": "지방소득세는 따로 내나요?", "acceptedAnswer": {"@type": "Answer", "text": "네. 산출된 양도소득세액의 10%가 지방소득세로 별도 부과되며, 계산 시 함께 반영해야 실제 부담액을 알 수 있습니다."}}, {"@type": "Question", "name": "도배·장판 비용도 필요경비로 인정되나요?", "acceptedAnswer": {"@type": "Answer", "text": "아니요. 도배·장판 등 수익적 지출은 인정되지 않고, 새시 교체·발코니 확장 같은 자본적 지출만 필요경비로 인정됩니다."}}, {"@type": "Question", "name": "계산기가 손계산보다 정확한 이유는?", "acceptedAnswer": {"@type": "Answer", "text": "비과세·중과세율·거주요건·장기보유특별공제·최신 조정대상지역까지 자동 반영하기 때문입니다. 손계산은 이런 변수를 놓쳐 실제 세액과 크게 달라질 수 있습니다."}}]}
 </script>
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "블로그", "item": "https://sekkomi.com/blog/"}, {"@type": "ListItem", "position": 2, "name": "EP.09 계산기", "item": "https://sekkomi.com/blog/yangdose-gyesangi"}, {"@type": "ListItem", "position": 3, "name": "양도소득세 계산기 & 직접 계산 5단계", "item": "https://sekkomi.com/blog/yangdose-gyesangi"}]}
+</script>
 
 <style>
   :root{--g:#163300;--g2:#0e2200;--lime:#9fe870;--cream:#fbfaf7;--ink:#1a2712;--accent:#ff6a3d;
@@ -349,6 +352,12 @@
       marks.forEach(function(m){ if(p>=m&&!hit[m]){hit[m]=1;track('blog_scroll_depth',{percent:m,article:'yangdose-gyesangi'});} });
     },{passive:true});
   })();
+</script>
+<script type="module">
+  // 코어웹바이탈 실측(LCP·CLS·INP·FCP·TTFB) → GA4 web_vitals 이벤트
+  import {onLCP,onCLS,onINP,onFCP,onTTFB} from 'https://cdn.jsdelivr.net/npm/web-vitals@4/dist/web-vitals.js';
+  function v(m){window.dataLayer=window.dataLayer||[];window.dataLayer.push({event:'web_vitals',metric:m.name,value:Math.round(m.name==='CLS'?m.value*1000:m.value),rating:m.rating,article:'yangdose-gyesangi'});}
+  onLCP(v);onCLS(v);onINP(v);onFCP(v);onTTFB(v);
 </script>
 </body>
 </html>

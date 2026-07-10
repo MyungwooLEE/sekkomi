@@ -32,6 +32,9 @@
 <script type="application/ld+json">
 {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "양도세 세율은 판 가격에 곱하나요?", "acceptedAnswer": {"@type": "Answer", "text": "아니요. 세율은 판 가격이 아니라 과세표준(양도차익에서 필요경비·장기보유특별공제·기본공제를 뺀 금액)에 곱합니다."}}, {"@type": "Question", "name": "1년 안에 팔면 양도세 세율이 얼마인가요?", "acceptedAnswer": {"@type": "Answer", "text": "주택·조합원입주권은 1년 미만 보유 시 70%, 1~2년 미만은 60% 단일세율이 적용됩니다. 분양권은 1년 미만 70%, 1년 이상 60%입니다."}}, {"@type": "Question", "name": "다주택 중과세율은 얼마나 더 붙나요?", "acceptedAnswer": {"@type": "Answer", "text": "조정지역 주택 양도 시 2주택은 기본세율 +20%p, 3주택 이상은 +30%p이며, 중과 대상은 장기보유특별공제가 배제됩니다."}}, {"@type": "Question", "name": "지방소득세도 따로 내나요?", "acceptedAnswer": {"@type": "Answer", "text": "네. 양도소득세액의 10%가 지방소득세로 별도 부과됩니다."}}]}
 </script>
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "블로그", "item": "https://sekkomi.com/blog/"}, {"@type": "ListItem", "position": 2, "name": "EP.04 세율", "item": "https://sekkomi.com/blog/yangdose-serul"}, {"@type": "ListItem", "position": 3, "name": "양도소득세 세율 한눈에 (2026)", "item": "https://sekkomi.com/blog/yangdose-serul"}]}
+</script>
 
 <style>
   :root{--g:#163300;--g2:#0e2200;--lime:#9fe870;--cream:#fbfaf7;--ink:#1a2712;--accent:#ff6a3d;
@@ -337,6 +340,12 @@
       marks.forEach(function(m){ if(p>=m&&!hit[m]){hit[m]=1;track('blog_scroll_depth',{percent:m,article:'yangdose-serul'});} });
     },{passive:true});
   })();
+</script>
+<script type="module">
+  // 코어웹바이탈 실측(LCP·CLS·INP·FCP·TTFB) → GA4 web_vitals 이벤트
+  import {onLCP,onCLS,onINP,onFCP,onTTFB} from 'https://cdn.jsdelivr.net/npm/web-vitals@4/dist/web-vitals.js';
+  function v(m){window.dataLayer=window.dataLayer||[];window.dataLayer.push({event:'web_vitals',metric:m.name,value:Math.round(m.name==='CLS'?m.value*1000:m.value),rating:m.rating,article:'yangdose-serul'});}
+  onLCP(v);onCLS(v);onINP(v);onFCP(v);onTTFB(v);
 </script>
 </body>
 </html>

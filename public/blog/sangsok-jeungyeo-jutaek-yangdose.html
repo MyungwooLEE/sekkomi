@@ -32,6 +32,9 @@
 <script type="application/ld+json">
 {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "상속받은 집의 취득가액은 얼마로 보나요?", "acceptedAnswer": {"@type": "Answer", "text": "상속 당시 평가액(시가)이 취득가액입니다. 돌아가신 분이 옛날에 산 값이 아니라 상속 시점 평가액을 기준으로 양도차익을 계산합니다."}}, {"@type": "Question", "name": "증여받은 집을 언제 팔아야 이월과세를 피하나요?", "acceptedAnswer": {"@type": "Answer", "text": "2023년 1월 1일 이후 증여분은 증여일로부터 10년, 그 이전 증여분은 5년이 지난 뒤 양도하면 이월과세를 피할 수 있습니다."}}, {"@type": "Question", "name": "상속으로 2주택이 됐는데 언제까지 팔아야 하나요?", "acceptedAnswer": {"@type": "Answer", "text": "상속 2주택은 처분기한이 없습니다. 기존 보유 주택을 먼저 팔면 언제 팔아도 1주택으로 보아 비과세 판단을 받을 수 있습니다."}}, {"@type": "Question", "name": "이월과세가 적용되면 세금이 얼마나 늘어나나요?", "acceptedAnswer": {"@type": "Answer", "text": "증여자의 취득가액을 적용해 양도차익이 커지므로 세금이 크게 늘 수 있습니다. 정확한 금액은 취득가액과 양도가에 따라 달라집니다."}}]}
 </script>
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "블로그", "item": "https://sekkomi.com/blog/"}, {"@type": "ListItem", "position": 2, "name": "EP.08 상속·증여", "item": "https://sekkomi.com/blog/sangsok-jeungyeo-jutaek-yangdose"}, {"@type": "ListItem", "position": 3, "name": "상속·증여받은 집 팔 때 양도세 (이월과세 주의)", "item": "https://sekkomi.com/blog/sangsok-jeungyeo-jutaek-yangdose"}]}
+</script>
 
 <style>
   :root{--g:#163300;--g2:#0e2200;--lime:#9fe870;--cream:#fbfaf7;--ink:#1a2712;--accent:#ff6a3d;
@@ -322,6 +325,12 @@
       marks.forEach(function(m){ if(p>=m&&!hit[m]){hit[m]=1;track('blog_scroll_depth',{percent:m,article:'sangsok-jeungyeo-jutaek-yangdose'});} });
     },{passive:true});
   })();
+</script>
+<script type="module">
+  // 코어웹바이탈 실측(LCP·CLS·INP·FCP·TTFB) → GA4 web_vitals 이벤트
+  import {onLCP,onCLS,onINP,onFCP,onTTFB} from 'https://cdn.jsdelivr.net/npm/web-vitals@4/dist/web-vitals.js';
+  function v(m){window.dataLayer=window.dataLayer||[];window.dataLayer.push({event:'web_vitals',metric:m.name,value:Math.round(m.name==='CLS'?m.value*1000:m.value),rating:m.rating,article:'sangsok-jeungyeo-jutaek-yangdose'});}
+  onLCP(v);onCLS(v);onINP(v);onFCP(v);onTTFB(v);
 </script>
 </body>
 </html>

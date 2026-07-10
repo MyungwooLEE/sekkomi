@@ -32,6 +32,9 @@
 <script type="application/ld+json">
 {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "장기보유특별공제는 몇 년부터 받나요?", "acceptedAnswer": {"@type": "Answer", "text": "표1은 보유 3년째부터 연 2%씩 15년에 최대 30%, 표2(1세대 1주택+거주 2년)는 보유·거주 각각 연 4%씩 10년에 최대 80%까지 공제됩니다."}}, {"@type": "Question", "name": "2년만 보유하고 팔면 장특공제를 받나요?", "acceptedAnswer": {"@type": "Answer", "text": "아니요. 2년 미만 보유는 장기보유특별공제가 배제되며, 표1도 보유 3년째부터 적용됩니다."}}, {"@type": "Question", "name": "다주택자도 장기보유특별공제를 받나요?", "acceptedAnswer": {"@type": "Answer", "text": "표1(최대 30%)은 가능하나, 조정대상지역 주택을 중과세율로 양도하는 경우 장특공제가 배제됩니다."}}, {"@type": "Question", "name": "보유 10년, 거주 3년이면 표2 공제율은?", "acceptedAnswer": {"@type": "Answer", "text": "보유 40%(10년)에 거주 12%(3년)를 더해 52%입니다. 보유와 거주를 따로 계산해 합산합니다."}}]}
 </script>
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "블로그", "item": "https://sekkomi.com/blog/"}, {"@type": "ListItem", "position": 2, "name": "EP.07 장기보유공제", "item": "https://sekkomi.com/blog/janggiboyu-teukbyeol-gongje"}, {"@type": "ListItem", "position": 3, "name": "장기보유특별공제 표1·표2 차이 (최대 80%)", "item": "https://sekkomi.com/blog/janggiboyu-teukbyeol-gongje"}]}
+</script>
 
 <style>
   :root{--g:#163300;--g2:#0e2200;--lime:#9fe870;--cream:#fbfaf7;--ink:#1a2712;--accent:#ff6a3d;
@@ -321,6 +324,12 @@
       marks.forEach(function(m){ if(p>=m&&!hit[m]){hit[m]=1;track('blog_scroll_depth',{percent:m,article:'janggiboyu-teukbyeol-gongje'});} });
     },{passive:true});
   })();
+</script>
+<script type="module">
+  // 코어웹바이탈 실측(LCP·CLS·INP·FCP·TTFB) → GA4 web_vitals 이벤트
+  import {onLCP,onCLS,onINP,onFCP,onTTFB} from 'https://cdn.jsdelivr.net/npm/web-vitals@4/dist/web-vitals.js';
+  function v(m){window.dataLayer=window.dataLayer||[];window.dataLayer.push({event:'web_vitals',metric:m.name,value:Math.round(m.name==='CLS'?m.value*1000:m.value),rating:m.rating,article:'janggiboyu-teukbyeol-gongje'});}
+  onLCP(v);onCLS(v);onINP(v);onFCP(v);onTTFB(v);
 </script>
 </body>
 </html>
