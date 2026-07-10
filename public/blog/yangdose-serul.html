@@ -19,7 +19,7 @@
 <meta property="og:type" content="article">
 <meta property="og:title" content="양도소득세 세율 한눈에 (2026)">
 <meta property="og:description" content="양도세 기본세율 6~45% 8구간, 단기보유 70·60%, 다주택 중과 +20·30%p, 지방소득세 10%까지. 비전문가도 5분에 이해하는 세율표. 내 세액 3분 계산.">
-<meta property="og:image" content="https://sekkomi.com/blog/assets/hero_1sedae.png">
+<meta property="og:image" content="https://sekkomi.com/blog/assets/hero_yangdose-serul.png">
 <meta property="og:url" content="https://sekkomi.com/blog/yangdose-serul">
 <meta name="twitter:card" content="summary_large_image">
 
@@ -27,7 +27,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
 
 <script type="application/ld+json">
-{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "양도소득세 세율 한눈에 (2026)", "description": "양도세 기본세율 6~45% 8구간, 단기보유 70·60%, 다주택 중과 +20·30%p, 지방소득세 10%까지. 비전문가도 5분에 이해하는 세율표. 내 세액 3분 계산.", "author": {"@type": "Organization", "name": "세꼼이", "url": "https://sekkomi.com"}, "publisher": {"@type": "Organization", "name": "세꼼(Sekkomi)", "url": "https://sekkomi.com"}, "datePublished": "2026-07-06", "dateModified": "2026-07-06", "mainEntityOfPage": "https://sekkomi.com/blog/yangdose-serul", "inLanguage": "ko-KR", "image": "https://sekkomi.com/blog/assets/hero_1sedae.png"}
+{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "양도소득세 세율 한눈에 (2026)", "description": "양도세 기본세율 6~45% 8구간, 단기보유 70·60%, 다주택 중과 +20·30%p, 지방소득세 10%까지. 비전문가도 5분에 이해하는 세율표. 내 세액 3분 계산.", "author": {"@type": "Organization", "name": "세꼼이", "url": "https://sekkomi.com"}, "publisher": {"@type": "Organization", "name": "세꼼(Sekkomi)", "url": "https://sekkomi.com"}, "datePublished": "2026-07-06", "dateModified": "2026-07-06", "mainEntityOfPage": "https://sekkomi.com/blog/yangdose-serul", "inLanguage": "ko-KR", "image": "https://sekkomi.com/blog/assets/hero_yangdose-serul.png"}
 </script>
 <script type="application/ld+json">
 {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "양도세 세율은 판 가격에 곱하나요?", "acceptedAnswer": {"@type": "Answer", "text": "아니요. 세율은 판 가격이 아니라 과세표준(양도차익에서 필요경비·장기보유특별공제·기본공제를 뺀 금액)에 곱합니다."}}, {"@type": "Question", "name": "1년 안에 팔면 양도세 세율이 얼마인가요?", "acceptedAnswer": {"@type": "Answer", "text": "주택·조합원입주권은 1년 미만 보유 시 70%, 1~2년 미만은 60% 단일세율이 적용됩니다. 분양권은 1년 미만 70%, 1년 이상 60%입니다."}}, {"@type": "Question", "name": "다주택 중과세율은 얼마나 더 붙나요?", "acceptedAnswer": {"@type": "Answer", "text": "조정지역 주택 양도 시 2주택은 기본세율 +20%p, 3주택 이상은 +30%p이며, 중과 대상은 장기보유특별공제가 배제됩니다."}}, {"@type": "Question", "name": "지방소득세도 따로 내나요?", "acceptedAnswer": {"@type": "Answer", "text": "네. 양도소득세액의 10%가 지방소득세로 별도 부과됩니다."}}]}
@@ -47,16 +47,41 @@
   .logo-img{height:28px;display:block}
   .nav-cta{background:var(--lime);color:var(--g);font-weight:800;font-size:14px;
     padding:9px 16px;border-radius:10px;text-decoration:none}
-  /* hero band (image-less articles) */
-  .hero-band{background:linear-gradient(160deg,#1c4300,#0e2200);color:var(--cream)}
-  .hb-in{max-width:720px;margin:0 auto;padding:44px 20px 40px}
-  .hb-in .k{color:var(--lime);font-weight:800;font-size:13px;letter-spacing:1px;margin-bottom:12px}
-  .hb-in h1{font-size:clamp(26px,5vw,38px);line-height:1.25;font-weight:800;color:#fff;letter-spacing:-.5px;margin:0}
-  .hb-in .hb-sub{color:#dde7ce;font-size:16px;margin-top:14px}
+  /* hero image */
+  .hero-wrap{background:var(--g)}
+  .hero-img{width:100%;max-width:960px;margin:0 auto;display:block}
   /* article */
   article{max-width:720px;margin:0 auto;padding:0 20px 80px}
-  .crumb{font-size:13px;color:var(--mute);padding:22px 0 0}
+  .crumb{font-size:13px;color:var(--mute);padding:26px 0 0}
   .crumb a{text-decoration:none;color:var(--mute)}
+  .crumb-ep{color:#3a7d17;font-weight:800}
+  h1{font-size:clamp(28px,5.4vw,40px);line-height:1.25;font-weight:800;color:var(--g);letter-spacing:-.5px;margin:14px 0 16px}
+  /* table of contents */
+  .toc{background:var(--box);border-radius:12px;padding:16px 20px 16px;margin:0 0 28px}
+  .toc-t{font-size:13px;font-weight:800;color:var(--mute);letter-spacing:.4px;margin-bottom:8px}
+  .toc ol{margin:0;padding-left:20px}
+  .toc li{margin:5px 0;font-size:15px}
+  .toc a{color:#2f6b12;font-weight:600;text-decoration:none}
+  .toc a:hover{text-decoration:underline}
+  /* series nav */
+  .series-nav{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:44px 0 14px}
+  .sn{border:1px solid var(--line);border-radius:14px;padding:15px 17px;display:flex;flex-direction:column;gap:5px;transition:box-shadow .15s,transform .15s}
+  .sn:hover{box-shadow:0 6px 22px rgba(22,51,0,.1);transform:translateY(-2px)}
+  .sn span{font-size:12.5px;color:var(--mute);font-weight:700}
+  .sn b{font-size:15.5px;color:var(--g);font-weight:800;line-height:1.35}
+  .sn.next{text-align:right}
+  .series-all{border:1px solid var(--line);border-radius:12px;padding:0 18px;margin:0 0 6px}
+  .series-all summary{font-weight:800;font-size:15px;color:var(--g);padding:15px 0;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center}
+  .series-all summary::-webkit-details-marker{display:none}
+  .series-all summary::after{content:'+';color:var(--accent);font-weight:800;font-size:20px}
+  .series-all[open] summary::after{content:'\2212'}
+  .series-all ol{margin:0 0 16px;padding-left:22px}
+  .series-all li{margin:7px 0;font-size:14.5px}
+  .series-all li.cur{color:var(--mute);font-weight:800}
+  .series-all li.cur span{font-weight:600}
+  .series-all a{color:#2f6b12;font-weight:600;text-decoration:none}
+  .series-all a:hover{text-decoration:underline}
+  @media(max-width:520px){.series-nav{grid-template-columns:1fr}.sn.next{text-align:left}}
   .byline{font-size:14px;color:var(--mute);border-bottom:1px solid var(--line);padding-bottom:20px;margin:14px 0 26px}
   .byline b{color:var(--ink);font-weight:700}
   article h2{font-size:clamp(21px,3.8vw,26px);font-weight:800;color:var(--g);margin:56px 0 18px;padding-top:44px;border-top:1px solid var(--line);letter-spacing:-.3px}
@@ -123,22 +148,29 @@
   </div>
 </header>
 
-<div class="hero-band">
-  <div class="hb-in">
-    <div class="k">양도세 완전정복 · EP.04</div>
-    <h1>양도소득세 세율 한눈에 (2026)</h1>
-    <div class="hb-sub">양도세 기본세율 6~45% 8구간, 단기보유 70·60%, 다주택 중과 +20·30%p, 지방소득세 10%까지.</div>
-  </div>
-</div>
+<div class="hero-wrap"><img class="hero-img" src="assets/hero_yangdose-serul.png" alt="양도소득세 세율 한눈에 (2026) — 세꼼 양도세 완전정복 EP.04"></div>
 
 <article>
-  <div class="crumb"><a href="/blog/">블로그</a> › 세율</div>
+  <div class="crumb"><a href="/blog/">블로그</a> › <span class="crumb-ep">EP.04</span> 세율</div>
+  <h1>양도소득세 세율 한눈에 (2026)</h1>
   <div class="byline"><b>세꼼이</b> · 2026년 7월 6일 · 읽는 시간 3분</div>
 
   <div class="tldr">
     <div class="k">한 줄 요약 · 2026년 7월 기준</div>
     <p>양도세 세율 = ① 기본 6~45% 8구간 ② 단기보유 70·60% ③ 다주택 중과 +20·30%p ④ 지방소득세 10% 별도. 하지만 세율은 <strong>과세표준에 곱하는 것</strong>이라, 공제를 먼저 반영해야 진짜 세금이 나와요.</p>
   </div>
+
+  <nav class="toc" aria-label="목차">
+    <div class="toc-t">이 글의 목차</div>
+    <ol>
+      <li><a href="#sec-1">기본세율 — 과세표준 6~45% 8구간</a></li>
+      <li><a href="#sec-2">단기보유 — 짧게 갖고 팔면 세율이 껑충</a></li>
+      <li><a href="#sec-3">다주택 중과 — 조정지역이면 +20·30%p</a></li>
+      <li><a href="#sec-4">놓치기 쉬운 함정 — &amp;quot;세율만 곱하면 된다&amp;quot;</a></li>
+      <li><a href="#sec-5">정리 — 세율은 &amp;#x27;시작점&amp;#x27;, 세액은 계산</a></li>
+      <li><a href="#faq">자주 묻는 질문</a></li>
+    </ol>
+  </nav>
 
   <p>&quot;집 팔면 세율 몇 %예요?&quot;라는 질문, 사실 답이 하나가 아니에요. <strong>얼마나 오래 가졌는지, 몇 채인지, 조정지역인지</strong>에 따라 6%부터 최대 75%까지 갈립니다.</p>
 
@@ -151,7 +183,7 @@
     <span class="b">내 양도세 3분 계산하기 →</span>
   </a>
 
-  <h2>기본세율 — 과세표준 6~45% 8구간</h2>
+  <h2 id="sec-1">기본세율 — 과세표준 6~45% 8구간</h2>
 
   <p>2년 이상 보유한 일반적인 부동산은 아래 <strong>누진세율</strong>을 적용해요. 과세표준이 커질수록 높은 구간이 적용되고, 계산은 &#x27;세율 곱한 뒤 누진공제 빼기&#x27;로 합니다.</p>
 
@@ -176,7 +208,7 @@
     <span class="b">내 과세표준·세율 확인하기 →</span>
   </a>
 
-  <h2>단기보유 — 짧게 갖고 팔면 세율이 껑충</h2>
+  <h2 id="sec-2">단기보유 — 짧게 갖고 팔면 세율이 껑충</h2>
 
   <p>집을 산 지 얼마 안 돼 팔면 기본세율 대신 <strong>높은 단일세율</strong>이 붙어요.</p>
 
@@ -189,7 +221,7 @@
     <span class="b">내 보유기간·세율 계산하기 →</span>
   </a>
 
-  <h2>다주택 중과 — 조정지역이면 +20·30%p</h2>
+  <h2 id="sec-3">다주택 중과 — 조정지역이면 +20·30%p</h2>
 
   <p>조정대상지역 주택을 파는 다주택자는 기본세율에 세율이 <strong>추가</strong>돼요.</p>
 
@@ -204,7 +236,7 @@
     <span class="b">중과 여부 확인하기 →</span>
   </a>
 
-  <h2>놓치기 쉬운 함정 — &quot;세율만 곱하면 된다&quot;</h2>
+  <h2 id="sec-4">놓치기 쉬운 함정 — &quot;세율만 곱하면 된다&quot;</h2>
 
   <p>가장 흔한 착각이 <strong>&quot;판 가격 × 세율 = 내 세금&quot;</strong>이에요. 실제는 전혀 달라요.</p>
 
@@ -212,7 +244,7 @@
 
   <p>이 네 단계를 손으로 하다 한 곳만 틀려도 세금이 수백만 원씩 어긋나요. 그래서 세율표는 &#x27;방향&#x27;만 알려줄 뿐, 실제 세액은 계산기로 확인하는 게 정답이에요.</p>
 
-  <h2>정리 — 세율은 &#x27;시작점&#x27;, 세액은 계산</h2>
+  <h2 id="sec-5">정리 — 세율은 &#x27;시작점&#x27;, 세액은 계산</h2>
 
   <p>양도세 세율 = ① 기본 6~45% 8구간 ② 단기보유 70·60% ③ 다주택 중과 +20·30%p ④ 지방소득세 10% 별도. 하지만 세율은 <strong>과세표준에 곱하는 것</strong>이라, 공제를 먼저 반영해야 진짜 세금이 나와요.</p>
 
@@ -228,13 +260,32 @@
 
   <p class="disc">본 글은 일반 정보 제공이며 세무 자문이 아닙니다. 실제 신고 전 세무 전문가 상담을 권장합니다. 근거: 소득세법 제104조·시행령 · 2026년 7월 기준.</p>
 
-  <h2>자주 묻는 질문</h2>
+  <h2 id="faq">자주 묻는 질문</h2>
   <div class="faq">
     <details><summary>양도세 세율은 판 가격에 곱하나요?</summary><p>아니요. 세율은 판 가격이 아니라 <strong>과세표준</strong>(양도차익에서 필요경비·장기보유특별공제·기본공제를 뺀 금액)에 곱합니다.</p></details>
     <details><summary>1년 안에 팔면 세율이 얼마인가요?</summary><p>주택·조합원입주권은 1년 미만 보유 시 <strong>70%</strong>, 1~2년 미만은 <strong>60%</strong> 단일세율이 적용됩니다. 분양권은 1년 미만 70%, 1년 이상 60%입니다.</p></details>
     <details><summary>다주택 중과세율은 얼마나 더 붙나요?</summary><p>조정지역 주택 양도 시 2주택은 기본세율 <strong>+20%p</strong>, 3주택 이상은 <strong>+30%p</strong>이며, 중과 대상은 장기보유특별공제가 배제됩니다. (2026.7 기준)</p></details>
     <details><summary>지방소득세도 따로 내나요?</summary><p>네. 양도소득세액의 <strong>10%</strong>가 지방소득세로 별도 부과됩니다.</p></details>
   </div>
+  <nav class="series-nav" aria-label="이전 다음 글">
+    <a class="sn prev" data-nav="prev" href="/blog/jojeong-daesang-jiyeok-choesin"><span>← 이전 글 · EP.03</span><b>조정대상지역 최신</b></a>
+    <a class="sn next" data-nav="next" href="/blog/yangdose-singo-bangbeop"><span>다음 글 · EP.05 →</span><b>양도세 신고 방법</b></a>
+  </nav>
+  <details class="series-all">
+    <summary>양도세 완전정복 시리즈 전체 · 10편</summary>
+    <ol>
+      <li>EP.00 · <a href="/blog/yangdo-sodeukse-guide">양도소득세 완전정복</a></li>
+      <li>EP.01 · <a href="/blog/1sedae-1jutaek-bigwase-jogeon">1세대 1주택 비과세</a></li>
+      <li>EP.02 · <a href="/blog/dajutaek-yangdose-junggwa-2026">다주택 양도세 중과</a></li>
+      <li>EP.03 · <a href="/blog/jojeong-daesang-jiyeok-choesin">조정대상지역 최신</a></li>
+      <li class="cur">EP.04 · 양도세 세율 <span>— 지금 보는 글</span></li>
+      <li>EP.05 · <a href="/blog/yangdose-singo-bangbeop">양도세 신고 방법</a></li>
+      <li>EP.06 · <a href="/blog/ilsijeok-2jutaek-cheobun">일시적 2주택</a></li>
+      <li>EP.07 · <a href="/blog/janggiboyu-teukbyeol-gongje">장기보유특별공제</a></li>
+      <li>EP.08 · <a href="/blog/sangsok-jeungyeo-jutaek-yangdose">상속·증여 양도세</a></li>
+      <li>EP.09 · <a href="/blog/yangdose-gyesangi">양도세 계산기</a></li>
+    </ol>
+  </details>
 
   <div class="author"><b>글쓴이 · 세꼼이</b> — 소득세법·국세청 자료를 근거로 글을 쓰고, 조정대상지역 지정 등 변동 사항을 <strong>매주 모니터링</strong>해 반영합니다. 최종 검토: 2026년 7월 6일.</div>
 
@@ -269,6 +320,13 @@
   // FAQ 열람 추적
   document.querySelectorAll('.faq details').forEach(function(d,i){
     d.addEventListener('toggle',function(){ if(d.open) track('faq_open',{q_index:i+1,article:'yangdose-serul'}); });
+  });
+  // 시리즈 내비/목차 클릭 추적
+  document.querySelectorAll('a[data-nav]').forEach(function(a){
+    a.addEventListener('click',function(){ track('blog_nav_click',{target:a.getAttribute('data-nav'),article:'yangdose-serul'}); });
+  });
+  document.querySelectorAll('.toc a').forEach(function(a){
+    a.addEventListener('click',function(){ track('blog_toc_click',{anchor:a.getAttribute('href'),article:'yangdose-serul'}); });
   });
   // 스크롤 깊이 추적 (25/50/75/100%)
   (function(){var hit={};var marks=[25,50,75,100];

@@ -118,6 +118,26 @@
   .logo{display:inline-flex;align-items:center;gap:8px}
   .logo-img{height:28px;display:block}
   .ft-logo{height:22px;margin-bottom:14px}
+
+  .crumb-ep{color:#3a7d17;font-weight:800}
+  .toc{background:var(--box);border-radius:12px;padding:16px 20px;margin:0 0 28px}
+  .toc-t{font-size:13px;font-weight:800;color:var(--mute);letter-spacing:.4px;margin-bottom:8px}
+  .toc ol{margin:0;padding-left:20px}.toc li{margin:5px 0;font-size:15px}
+  .toc a{color:#2f6b12;font-weight:600;text-decoration:none}.toc a:hover{text-decoration:underline}
+  .series-nav{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:44px 0 14px}
+  .sn{border:1px solid var(--line);border-radius:14px;padding:15px 17px;display:flex;flex-direction:column;gap:5px;transition:box-shadow .15s,transform .15s}
+  .sn:hover{box-shadow:0 6px 22px rgba(22,51,0,.1);transform:translateY(-2px)}
+  .sn span{font-size:12.5px;color:var(--mute);font-weight:700}
+  .sn b{font-size:15.5px;color:var(--g);font-weight:800;line-height:1.35}.sn.next{text-align:right}
+  .series-all{border:1px solid var(--line);border-radius:12px;padding:0 18px;margin:0 0 6px}
+  .series-all summary{font-weight:800;font-size:15px;color:var(--g);padding:15px 0;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center}
+  .series-all summary::-webkit-details-marker{display:none}
+  .series-all summary::after{content:'+';color:var(--accent);font-weight:800;font-size:20px}
+  .series-all[open] summary::after{content:'\2212'}
+  .series-all ol{margin:0 0 16px;padding-left:22px}.series-all li{margin:7px 0;font-size:14.5px}
+  .series-all li.cur{color:var(--mute);font-weight:800}.series-all li.cur span{font-weight:600}
+  .series-all a{color:#2f6b12;font-weight:600;text-decoration:none}.series-all a:hover{text-decoration:underline}
+  @media(max-width:520px){.series-nav{grid-template-columns:1fr}.sn.next{text-align:left}}
 </style>
 </head>
 <body>
@@ -133,9 +153,22 @@
 <div class="hero-wrap"><img class="hero-img" src="assets/hero_1sedae.png" alt="1세대 1주택 비과세 3가지 조건 — 세꼼 양도세 완전정복 EP.01"></div>
 
 <article>
-  <div class="crumb"><a href="/blog/">블로그</a> › 비과세</div>
+  <div class="crumb"><a href="/blog/">블로그</a> › <span class="crumb-ep">EP.01</span> 비과세</div>
   <h1>1세대 1주택 비과세 조건, 3가지만 알면 됩니다 (2026)</h1>
   <div class="byline"><b>세꼼이</b> · 2026년 7월 7일 · 읽는 시간 4분</div>
+
+  <nav class="toc" aria-label="목차">
+    <div class="toc-t">이 글의 목차</div>
+    <ol>
+      <li><a href="#sec-1">비과세 조건, 이 3가지가 전부입니다</a></li>
+      <li><a href="#sec-2">1. &#x27;1주택&#x27;은 나 혼자 기준이 아니에요</a></li>
+      <li><a href="#sec-3">2. 보유 2년, 그리고 &#x27;조정지역이면&#x27; 거주 2년</a></li>
+      <li><a href="#sec-4">3. 12억 넘으면? &#x27;넘는 부분&#x27;만 세금</a></li>
+      <li><a href="#sec-5">비과세를 날리는 5가지 실수</a></li>
+      <li><a href="#faq">자주 묻는 질문</a></li>
+      <li><a href="#sec-6">정리 — 조건은 &#x27;지키는&#x27; 것</a></li>
+    </ol>
+  </nav>
 
   <div class="tldr">
     <div class="k">한 줄 답 · 2026년 7월 기준</div>
@@ -150,7 +183,7 @@
     <span class="b">내 양도세 3분 계산하기 →</span>
   </a>
 
-  <h2>비과세 조건, 이 3가지가 전부입니다</h2>
+  <h2 id="sec-1">비과세 조건, 이 3가지가 전부입니다</h2>
   <table class="tbl">
     <thead><tr><th>#</th><th>조건</th><th>쉽게 말하면</th></tr></thead>
     <tbody>
@@ -161,7 +194,7 @@
   </table>
   <p>여기에 하나만 더. <strong>판 금액이 12억 원 이하</strong>면 세금이 전액 0원이에요. 12억을 넘으면 넘는 부분만 세금이 붙습니다. 세 가지를 <strong>전부</strong> 만족해야 비과세라는 점만 기억하세요.</p>
 
-  <h2>1. '1주택'은 나 혼자 기준이 아니에요</h2>
+  <h2 id="sec-2">1. '1주택'은 나 혼자 기준이 아니에요</h2>
   <p>가장 많이 실수하는 부분이에요. 세법에서 말하는 '1세대'는 <strong>나, 배우자, 그리고 같이 사는 가족(부모·자녀)까지 전부</strong>예요.</p>
   <p>내 명의로는 한 채여도, <strong>같이 사는 가족이 다른 집을 갖고 있으면 '1세대 2주택'</strong>이 되어 비과세가 안 될 수 있어요.</p>
   <a class="cta" href="https://sekkomi.com/?utm_source=blog&utm_medium=content&utm_campaign=yangdo_series&utm_content=1sedae-bigwase-mid1" data-cta="mid1" target="_blank" rel="noopener">
@@ -169,7 +202,7 @@
     <span class="b">내 세대·주택 수 확인하기 →</span>
   </a>
 
-  <h2>2. 보유 2년, 그리고 '조정지역이면' 거주 2년</h2>
+  <h2 id="sec-3">2. 보유 2년, 그리고 '조정지역이면' 거주 2년</h2>
   <ul>
     <li><strong>비조정지역</strong>에서 산 집 → <strong>2년 보유</strong>만 하면 끝 (거주 안 해도 됨)</li>
     <li><strong><a class="inl" href="/blog/jojeong-daesang-jiyeok-choesin">조정대상지역</a></strong>에서 산 집 → <strong>2년 보유 + 2년 거주</strong> 둘 다 필요</li>
@@ -181,7 +214,7 @@
     <span class="b">내 거주요건 확인하기 →</span>
   </a>
 
-  <h2>3. 12억 넘으면? '넘는 부분'만 세금</h2>
+  <h2 id="sec-4">3. 12억 넘으면? '넘는 부분'만 세금</h2>
   <p>판 금액이 <strong>12억 원을 넘어도</strong> 겁먹을 필요 없어요. 12억까지는 비과세, <strong>넘는 비율만큼만</strong> 세금이 붙습니다.</p>
   <p>예를 들어 18억에 팔았다면, 초과분 비율은 (18억−12억)÷18억 = <strong>약 3분의 1</strong>. 즉 이익의 1/3에만 세금이 붙고, 여기에 <strong><a class="inl" href="/blog/janggiboyu-teukbyeol-gongje">장기보유특별공제</a>(최대 80%)</strong>까지 빠져서 실제 세금은 생각보다 적어요.</p>
   <a class="cta" href="https://sekkomi.com/?utm_source=blog&utm_medium=content&utm_campaign=yangdo_series&utm_content=1sedae-bigwase-mid3" data-cta="mid3" target="_blank" rel="noopener">
@@ -189,7 +222,7 @@
     <span class="b">12억 초과 세금 계산하기 →</span>
   </a>
 
-  <h2>비과세를 날리는 5가지 실수</h2>
+  <h2 id="sec-5">비과세를 날리는 5가지 실수</h2>
   <ol>
     <li><strong>같이 사는 가족이 집·분양권을 취득</strong> → 1세대 1주택이 깨짐</li>
     <li><strong>팔기 전에 전출·임대 전환</strong> → 거주가 끊김</li>
@@ -199,7 +232,7 @@
   </ol>
   <p>비과세는 '받는 것'이 아니라 <strong>잔금 치르는 날까지 지키는 것</strong>이에요.</p>
 
-  <h2>자주 묻는 질문</h2>
+  <h2 id="faq">자주 묻는 질문</h2>
   <div class="faq">
     <details><summary>1가구 1주택이면 양도세가 무조건 면제되나요?</summary><p>아니요. 보유 2년(조정지역 취득 시 거주 2년), 12억 이하 등을 <strong>모두</strong> 충족해야 해요. 한 채여도 조건이 안 맞으면 세금이 나옵니다.</p></details>
     <details><summary>살 때는 조정지역이었는데 지금 해제됐어요. 거주 2년 필요한가요?</summary><p>네. 거주요건은 <strong>취득 당시</strong> 조정지역 여부로 판단해요. 지금 해제됐어도 살 때 조정지역이었다면 거주 2년이 필요합니다.</p></details>
@@ -207,7 +240,7 @@
     <details><summary>보유·거주 2년은 언제부터 세나요?</summary><p>보유는 취득일(보통 잔금일), 거주는 전입신고일 기준이에요. 거주가 끊겼다면 실제 산 기간만 합칩니다.</p></details>
   </div>
 
-  <h2>정리 — 조건은 '지키는' 것</h2>
+  <h2 id="sec-6">정리 — 조건은 '지키는' 것</h2>
   <p>1세대 1주택 비과세 = ①1세대 1주택 ②보유 2년 ③(조정지역이면) 거주 2년 ④12억 이하. 여기에 세대 판단, 일시적 2주택, 분양권 같은 변수가 얽혀서 <strong>내 상황에 넣어봐야 정확</strong>해요. 양도세 전체 그림은 <a class="inl" href="/blog/yangdo-sodeukse-guide">양도소득세 완전정복</a> 편에서 한 번에 볼 수 있어요.</p>
 
   <a class="cta final" href="https://sekkomi.com/?utm_source=blog&utm_medium=content&utm_campaign=yangdo_series&utm_content=1sedae-bigwase-bottom" data-cta="bottom" target="_blank" rel="noopener">
@@ -215,6 +248,26 @@
     <div class="s">주소·취득·매도 정보만 넣으면, 2026년 최신 세법 기준으로 3분 만에. 무료예요.</div>
     <span class="b">지금 3분 계산하기 →</span>
   </a>
+
+  <nav class="series-nav" aria-label="이전 다음 글">
+    <a class="sn prev" data-nav="prev" href="/blog/yangdo-sodeukse-guide"><span>← 이전 글 · EP.00</span><b>양도소득세 완전정복</b></a>
+    <a class="sn next" data-nav="next" href="/blog/dajutaek-yangdose-junggwa-2026"><span>다음 글 · EP.02 →</span><b>다주택 양도세 중과</b></a>
+  </nav>
+  <details class="series-all">
+    <summary>양도세 완전정복 시리즈 전체 · 10편</summary>
+    <ol>
+      <li>EP.00 · <a href="/blog/yangdo-sodeukse-guide">양도소득세 완전정복</a></li>
+      <li class="cur">EP.01 · 1세대 1주택 비과세 <span>— 지금 보는 글</span></li>
+      <li>EP.02 · <a href="/blog/dajutaek-yangdose-junggwa-2026">다주택 양도세 중과</a></li>
+      <li>EP.03 · <a href="/blog/jojeong-daesang-jiyeok-choesin">조정대상지역 최신</a></li>
+      <li>EP.04 · <a href="/blog/yangdose-serul">양도세 세율</a></li>
+      <li>EP.05 · <a href="/blog/yangdose-singo-bangbeop">양도세 신고 방법</a></li>
+      <li>EP.06 · <a href="/blog/ilsijeok-2jutaek-cheobun">일시적 2주택</a></li>
+      <li>EP.07 · <a href="/blog/janggiboyu-teukbyeol-gongje">장기보유특별공제</a></li>
+      <li>EP.08 · <a href="/blog/sangsok-jeungyeo-jutaek-yangdose">상속·증여 양도세</a></li>
+      <li>EP.09 · <a href="/blog/yangdose-gyesangi">양도세 계산기</a></li>
+    </ol>
+  </details>
 
   <div class="author"><b>글쓴이 · 세꼼이</b> — 소득세법·국세청 자료를 근거로 글을 쓰고, 조정대상지역 지정 등 변동 사항을 <strong>매주 모니터링</strong>해 반영합니다. 최종 검토: 2026년 7월 7일.</div>
 
@@ -249,6 +302,13 @@
   // FAQ 열람 추적
   document.querySelectorAll('.faq details').forEach(function(d,i){
     d.addEventListener('toggle',function(){ if(d.open) track('faq_open',{q_index:i+1,article:'1sedae-1jutaek-bigwase-jogeon'}); });
+  });
+  // 시리즈 내비/목차 클릭 추적
+  document.querySelectorAll('a[data-nav]').forEach(function(a){
+    a.addEventListener('click',function(){ track('blog_nav_click',{target:a.getAttribute('data-nav'),article:'1sedae-1jutaek-bigwase-jogeon'}); });
+  });
+  document.querySelectorAll('.toc a').forEach(function(a){
+    a.addEventListener('click',function(){ track('blog_toc_click',{anchor:a.getAttribute('href'),article:'1sedae-1jutaek-bigwase-jogeon'}); });
   });
   // 스크롤 깊이 추적 (25/50/75/100%)
   (function(){var hit={};var marks=[25,50,75,100];

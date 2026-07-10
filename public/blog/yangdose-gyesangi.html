@@ -19,7 +19,7 @@
 <meta property="og:type" content="article">
 <meta property="og:title" content="양도소득세 계산기 &amp; 직접 계산 5단계">
 <meta property="og:description" content="양도소득세 직접 계산 5단계(양도차익·장특공제·과세표준·세율·지방세)를 비전문가도 5분에 이해하게 정리. 손계산의 함정과 계산기 자동 반영까지. 내 양도세 3분 계산.">
-<meta property="og:image" content="https://sekkomi.com/blog/assets/hero_1sedae.png">
+<meta property="og:image" content="https://sekkomi.com/blog/assets/hero_yangdose-gyesangi.png">
 <meta property="og:url" content="https://sekkomi.com/blog/yangdose-gyesangi">
 <meta name="twitter:card" content="summary_large_image">
 
@@ -27,7 +27,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
 
 <script type="application/ld+json">
-{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "양도소득세 계산기 & 직접 계산 5단계", "description": "양도소득세 직접 계산 5단계(양도차익·장특공제·과세표준·세율·지방세)를 비전문가도 5분에 이해하게 정리. 손계산의 함정과 계산기 자동 반영까지. 내 양도세 3분 계산.", "author": {"@type": "Organization", "name": "세꼼이", "url": "https://sekkomi.com"}, "publisher": {"@type": "Organization", "name": "세꼼(Sekkomi)", "url": "https://sekkomi.com"}, "datePublished": "2026-07-07", "dateModified": "2026-07-07", "mainEntityOfPage": "https://sekkomi.com/blog/yangdose-gyesangi", "inLanguage": "ko-KR", "image": "https://sekkomi.com/blog/assets/hero_1sedae.png"}
+{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "양도소득세 계산기 & 직접 계산 5단계", "description": "양도소득세 직접 계산 5단계(양도차익·장특공제·과세표준·세율·지방세)를 비전문가도 5분에 이해하게 정리. 손계산의 함정과 계산기 자동 반영까지. 내 양도세 3분 계산.", "author": {"@type": "Organization", "name": "세꼼이", "url": "https://sekkomi.com"}, "publisher": {"@type": "Organization", "name": "세꼼(Sekkomi)", "url": "https://sekkomi.com"}, "datePublished": "2026-07-07", "dateModified": "2026-07-07", "mainEntityOfPage": "https://sekkomi.com/blog/yangdose-gyesangi", "inLanguage": "ko-KR", "image": "https://sekkomi.com/blog/assets/hero_yangdose-gyesangi.png"}
 </script>
 <script type="application/ld+json">
 {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "양도소득세는 어떻게 계산하나요?", "acceptedAnswer": {"@type": "Answer", "text": "양도차익(양도가−취득가−필요경비) → 장기보유특별공제 → 과세표준(기본공제 250만 원 차감) → 세율(6~45%, 누진공제) → 지방소득세 10% 순서로 계산합니다."}}, {"@type": "Question", "name": "지방소득세는 따로 내나요?", "acceptedAnswer": {"@type": "Answer", "text": "네. 산출된 양도소득세액의 10%가 지방소득세로 별도 부과되며, 계산 시 함께 반영해야 실제 부담액을 알 수 있습니다."}}, {"@type": "Question", "name": "도배·장판 비용도 필요경비로 인정되나요?", "acceptedAnswer": {"@type": "Answer", "text": "아니요. 도배·장판 등 수익적 지출은 인정되지 않고, 새시 교체·발코니 확장 같은 자본적 지출만 필요경비로 인정됩니다."}}, {"@type": "Question", "name": "계산기가 손계산보다 정확한 이유는?", "acceptedAnswer": {"@type": "Answer", "text": "비과세·중과세율·거주요건·장기보유특별공제·최신 조정대상지역까지 자동 반영하기 때문입니다. 손계산은 이런 변수를 놓쳐 실제 세액과 크게 달라질 수 있습니다."}}]}
@@ -47,16 +47,41 @@
   .logo-img{height:28px;display:block}
   .nav-cta{background:var(--lime);color:var(--g);font-weight:800;font-size:14px;
     padding:9px 16px;border-radius:10px;text-decoration:none}
-  /* hero band (image-less articles) */
-  .hero-band{background:linear-gradient(160deg,#1c4300,#0e2200);color:var(--cream)}
-  .hb-in{max-width:720px;margin:0 auto;padding:44px 20px 40px}
-  .hb-in .k{color:var(--lime);font-weight:800;font-size:13px;letter-spacing:1px;margin-bottom:12px}
-  .hb-in h1{font-size:clamp(26px,5vw,38px);line-height:1.25;font-weight:800;color:#fff;letter-spacing:-.5px;margin:0}
-  .hb-in .hb-sub{color:#dde7ce;font-size:16px;margin-top:14px}
+  /* hero image */
+  .hero-wrap{background:var(--g)}
+  .hero-img{width:100%;max-width:960px;margin:0 auto;display:block}
   /* article */
   article{max-width:720px;margin:0 auto;padding:0 20px 80px}
-  .crumb{font-size:13px;color:var(--mute);padding:22px 0 0}
+  .crumb{font-size:13px;color:var(--mute);padding:26px 0 0}
   .crumb a{text-decoration:none;color:var(--mute)}
+  .crumb-ep{color:#3a7d17;font-weight:800}
+  h1{font-size:clamp(28px,5.4vw,40px);line-height:1.25;font-weight:800;color:var(--g);letter-spacing:-.5px;margin:14px 0 16px}
+  /* table of contents */
+  .toc{background:var(--box);border-radius:12px;padding:16px 20px 16px;margin:0 0 28px}
+  .toc-t{font-size:13px;font-weight:800;color:var(--mute);letter-spacing:.4px;margin-bottom:8px}
+  .toc ol{margin:0;padding-left:20px}
+  .toc li{margin:5px 0;font-size:15px}
+  .toc a{color:#2f6b12;font-weight:600;text-decoration:none}
+  .toc a:hover{text-decoration:underline}
+  /* series nav */
+  .series-nav{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:44px 0 14px}
+  .sn{border:1px solid var(--line);border-radius:14px;padding:15px 17px;display:flex;flex-direction:column;gap:5px;transition:box-shadow .15s,transform .15s}
+  .sn:hover{box-shadow:0 6px 22px rgba(22,51,0,.1);transform:translateY(-2px)}
+  .sn span{font-size:12.5px;color:var(--mute);font-weight:700}
+  .sn b{font-size:15.5px;color:var(--g);font-weight:800;line-height:1.35}
+  .sn.next{text-align:right}
+  .series-all{border:1px solid var(--line);border-radius:12px;padding:0 18px;margin:0 0 6px}
+  .series-all summary{font-weight:800;font-size:15px;color:var(--g);padding:15px 0;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center}
+  .series-all summary::-webkit-details-marker{display:none}
+  .series-all summary::after{content:'+';color:var(--accent);font-weight:800;font-size:20px}
+  .series-all[open] summary::after{content:'\2212'}
+  .series-all ol{margin:0 0 16px;padding-left:22px}
+  .series-all li{margin:7px 0;font-size:14.5px}
+  .series-all li.cur{color:var(--mute);font-weight:800}
+  .series-all li.cur span{font-weight:600}
+  .series-all a{color:#2f6b12;font-weight:600;text-decoration:none}
+  .series-all a:hover{text-decoration:underline}
+  @media(max-width:520px){.series-nav{grid-template-columns:1fr}.sn.next{text-align:left}}
   .byline{font-size:14px;color:var(--mute);border-bottom:1px solid var(--line);padding-bottom:20px;margin:14px 0 26px}
   .byline b{color:var(--ink);font-weight:700}
   article h2{font-size:clamp(21px,3.8vw,26px);font-weight:800;color:var(--g);margin:56px 0 18px;padding-top:44px;border-top:1px solid var(--line);letter-spacing:-.3px}
@@ -123,22 +148,29 @@
   </div>
 </header>
 
-<div class="hero-band">
-  <div class="hb-in">
-    <div class="k">양도세 완전정복 · EP.09</div>
-    <h1>양도소득세 계산기 &amp; 직접 계산 5단계</h1>
-    <div class="hb-sub">양도소득세 직접 계산 5단계(양도차익·장특공제·과세표준·세율·지방세)를 비전문가도 5분에 이해하게 정리.</div>
-  </div>
-</div>
+<div class="hero-wrap"><img class="hero-img" src="assets/hero_yangdose-gyesangi.png" alt="양도소득세 계산기 &amp; 직접 계산 5단계 — 세꼼 양도세 완전정복 EP.09"></div>
 
 <article>
-  <div class="crumb"><a href="/blog/">블로그</a> › 계산기</div>
+  <div class="crumb"><a href="/blog/">블로그</a> › <span class="crumb-ep">EP.09</span> 계산기</div>
+  <h1>양도소득세 계산기 &amp; 직접 계산 5단계</h1>
   <div class="byline"><b>세꼼이</b> · 2026년 7월 7일 · 읽는 시간 3분</div>
 
   <div class="tldr">
     <div class="k">한 줄 요약 · 2026년 7월 기준</div>
     <p>양도세는 ①양도차익 ②장특공제 ③과세표준 ④세율(누진공제) ⑤지방세 10%의 5단계로 계산돼요. 구조는 단순해 보여도, <strong>비과세·중과·거주요건·최신 지역</strong>이 얽히면 손계산은 틀리기 쉬워요.</p>
   </div>
+
+  <nav class="toc" aria-label="목차">
+    <div class="toc-t">이 글의 목차</div>
+    <ol>
+      <li><a href="#sec-1">양도세 계산 5단계, 한눈에</a></li>
+      <li><a href="#sec-2">1단계·2단계 — 차익 구하고, 공제 빼기</a></li>
+      <li><a href="#sec-3">3단계·4단계·5단계 — 세율 적용하기</a></li>
+      <li><a href="#sec-4">손계산이 위험한 이유 (계산기가 답인 이유)</a></li>
+      <li><a href="#sec-5">정리 — 원리는 이해, 계산은 계산기</a></li>
+      <li><a href="#faq">자주 묻는 질문</a></li>
+    </ol>
+  </nav>
 
   <p>집을 팔면 양도세가 대체 얼마 나올까? 이 궁금증, <strong>직접 계산 5단계</strong>만 알면 흐름이 보여요.</p>
 
@@ -151,7 +183,7 @@
     <span class="b">내 양도세 3분 계산하기 →</span>
   </a>
 
-  <h2>양도세 계산 5단계, 한눈에</h2>
+  <h2 id="sec-1">양도세 계산 5단계, 한눈에</h2>
 
   <table class="tbl">
 <thead><tr><th>단계</th><th>계산</th><th>내용</th></tr></thead>
@@ -166,7 +198,7 @@
 
   <p>이 다섯 단계를 순서대로 밟으면 세금 구조가 보여요. 하나씩 볼게요.</p>
 
-  <h2>1단계·2단계 — 차익 구하고, 공제 빼기</h2>
+  <h2 id="sec-2">1단계·2단계 — 차익 구하고, 공제 빼기</h2>
 
   <p><strong>① 양도차익 = 양도가 − 취득가 − 필요경비</strong></p>
 
@@ -181,7 +213,7 @@
     <span class="b">필요경비 넣고 계산하기 →</span>
   </a>
 
-  <h2>3단계·4단계·5단계 — 세율 적용하기</h2>
+  <h2 id="sec-3">3단계·4단계·5단계 — 세율 적용하기</h2>
 
   <p><strong>③ 과세표준 = 양도차익 − 장특공제 − 기본공제(연 250만 원)</strong></p>
 
@@ -210,7 +242,7 @@
     <span class="b">세율 자동 적용 계산하기 →</span>
   </a>
 
-  <h2>손계산이 위험한 이유 (계산기가 답인 이유)</h2>
+  <h2 id="sec-4">손계산이 위험한 이유 (계산기가 답인 이유)</h2>
 
   <p>직접 계산은 흐름을 이해하는 데 좋지만, 실제 신고 금액과 어긋나기 쉬워요. 이유는요.</p>
 
@@ -224,7 +256,7 @@
     <span class="b">내 양도세 3분 계산하기 →</span>
   </a>
 
-  <h2>정리 — 원리는 이해, 계산은 계산기</h2>
+  <h2 id="sec-5">정리 — 원리는 이해, 계산은 계산기</h2>
 
   <p>양도세는 ①양도차익 ②장특공제 ③과세표준 ④세율(누진공제) ⑤지방세 10%의 5단계로 계산돼요. 구조는 단순해 보여도, <strong>비과세·중과·거주요건·최신 지역</strong>이 얽히면 손계산은 틀리기 쉬워요.</p>
 
@@ -240,13 +272,32 @@
 
   <p class="disc">본 글은 일반 정보 제공이며 세무 자문이 아닙니다. 실제 신고 전 세무 전문가 상담을 권장합니다. 근거: 소득세법 제95조·제104조 · 2026년 7월 기준.</p>
 
-  <h2>자주 묻는 질문</h2>
+  <h2 id="faq">자주 묻는 질문</h2>
   <div class="faq">
     <details><summary>양도소득세는 어떻게 계산하나요?</summary><p>①양도차익(양도가−취득가−필요경비) → ②장기보유특별공제 → ③과세표준(−기본공제 250만 원) → ④세율(6~45%, 누진공제) → ⑤지방소득세 10% 순서로 계산합니다.</p></details>
     <details><summary>지방소득세는 따로 내나요?</summary><p>네. 산출된 양도소득세액의 10%가 지방소득세로 별도 부과돼요. 계산할 때 함께 잡아야 실제 부담액을 알 수 있습니다.</p></details>
     <details><summary>도배·장판 비용도 필요경비로 빼주나요?</summary><p>아니요. 도배·장판·벽지 같은 수익적 지출은 인정되지 않아요. 새시 교체·발코니 확장 같은 자본적 지출만 필요경비로 인정됩니다.</p></details>
     <details><summary>계산기가 손계산보다 정확한 이유는?</summary><p>비과세·중과세율·거주요건·장특공제·최신 조정지역까지 자동 반영하기 때문이에요. 손계산은 이런 변수를 놓쳐 실제 세금과 크게 달라질 수 있습니다.</p></details>
   </div>
+  <nav class="series-nav" aria-label="이전 다음 글">
+    <a class="sn prev" data-nav="prev" href="/blog/sangsok-jeungyeo-jutaek-yangdose"><span>← 이전 글 · EP.08</span><b>상속·증여 양도세</b></a>
+    <a class="sn next" data-nav="calc" href="https://sekkomi.com/?utm_source=blog&utm_medium=content&utm_campaign=yangdo_series&utm_content=series-nav" target="_blank" rel="noopener"><span>마지막 편 · 이제 계산 →</span><b>내 양도세 3분 계산하기</b></a>
+  </nav>
+  <details class="series-all">
+    <summary>양도세 완전정복 시리즈 전체 · 10편</summary>
+    <ol>
+      <li>EP.00 · <a href="/blog/yangdo-sodeukse-guide">양도소득세 완전정복</a></li>
+      <li>EP.01 · <a href="/blog/1sedae-1jutaek-bigwase-jogeon">1세대 1주택 비과세</a></li>
+      <li>EP.02 · <a href="/blog/dajutaek-yangdose-junggwa-2026">다주택 양도세 중과</a></li>
+      <li>EP.03 · <a href="/blog/jojeong-daesang-jiyeok-choesin">조정대상지역 최신</a></li>
+      <li>EP.04 · <a href="/blog/yangdose-serul">양도세 세율</a></li>
+      <li>EP.05 · <a href="/blog/yangdose-singo-bangbeop">양도세 신고 방법</a></li>
+      <li>EP.06 · <a href="/blog/ilsijeok-2jutaek-cheobun">일시적 2주택</a></li>
+      <li>EP.07 · <a href="/blog/janggiboyu-teukbyeol-gongje">장기보유특별공제</a></li>
+      <li>EP.08 · <a href="/blog/sangsok-jeungyeo-jutaek-yangdose">상속·증여 양도세</a></li>
+      <li class="cur">EP.09 · 양도세 계산기 <span>— 지금 보는 글</span></li>
+    </ol>
+  </details>
 
   <div class="author"><b>글쓴이 · 세꼼이</b> — 소득세법·국세청 자료를 근거로 글을 쓰고, 조정대상지역 지정 등 변동 사항을 <strong>매주 모니터링</strong>해 반영합니다. 최종 검토: 2026년 7월 7일.</div>
 
@@ -281,6 +332,13 @@
   // FAQ 열람 추적
   document.querySelectorAll('.faq details').forEach(function(d,i){
     d.addEventListener('toggle',function(){ if(d.open) track('faq_open',{q_index:i+1,article:'yangdose-gyesangi'}); });
+  });
+  // 시리즈 내비/목차 클릭 추적
+  document.querySelectorAll('a[data-nav]').forEach(function(a){
+    a.addEventListener('click',function(){ track('blog_nav_click',{target:a.getAttribute('data-nav'),article:'yangdose-gyesangi'}); });
+  });
+  document.querySelectorAll('.toc a').forEach(function(a){
+    a.addEventListener('click',function(){ track('blog_toc_click',{anchor:a.getAttribute('href'),article:'yangdose-gyesangi'}); });
   });
   // 스크롤 깊이 추적 (25/50/75/100%)
   (function(){var hit={};var marks=[25,50,75,100];
