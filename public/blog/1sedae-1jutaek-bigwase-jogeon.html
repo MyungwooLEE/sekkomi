@@ -239,17 +239,26 @@
 </footer>
 
 <script>
-  // CTA 클릭 추적 (GA4로 blog_cta_click 전송)
   function track(ev,params){try{window.dataLayer=window.dataLayer||[];window.dataLayer.push(Object.assign({event:ev},params||{}));}catch(e){}}
+  // 글 조회 태그
+  track('blog_article_view',{article_id:'1sedae-1jutaek-bigwase-jogeon',episode:'EP.01',category:'비과세',series:'yangdo_series'});
+  // CTA 클릭 추적
   document.querySelectorAll('a[data-cta]').forEach(function(a){
-    a.addEventListener('click',function(){
-      track('blog_cta_click',{cta_position:a.getAttribute('data-cta'),article:'1sedae-1jutaek-bigwase-jogeon'});
-    });
+    a.addEventListener('click',function(){ track('blog_cta_click',{cta_position:a.getAttribute('data-cta'),article:'1sedae-1jutaek-bigwase-jogeon'}); });
   });
   // FAQ 열람 추적
   document.querySelectorAll('.faq details').forEach(function(d,i){
     d.addEventListener('toggle',function(){ if(d.open) track('faq_open',{q_index:i+1,article:'1sedae-1jutaek-bigwase-jogeon'}); });
   });
+  // 스크롤 깊이 추적 (25/50/75/100%)
+  (function(){var hit={};var marks=[25,50,75,100];
+    window.addEventListener('scroll',function(){
+      var h=document.documentElement,b=document.body;
+      var st=h.scrollTop||b.scrollTop, sh=(h.scrollHeight||b.scrollHeight)-h.clientHeight;
+      var p=sh>0?(st/sh)*100:0;
+      marks.forEach(function(m){ if(p>=m&&!hit[m]){hit[m]=1;track('blog_scroll_depth',{percent:m,article:'1sedae-1jutaek-bigwase-jogeon'});} });
+    },{passive:true});
+  })();
 </script>
 </body>
 </html>
