@@ -70,6 +70,7 @@ small.note{color:var(--sub)}
 .lp-cta{width:100%;padding:19px;background:var(--accent);color:var(--brand);font-size:18px;font-weight:800;border-radius:16px;letter-spacing:-.3px;box-shadow:0 12px 32px rgba(159,232,112,.30);animation:lpbob 2.6s ease-in-out infinite;transition:transform .08s}
 .lp-cta:active{transform:scale(.98)}
 .lp-cta::after{content:'  →'}
+.lp-blog{display:inline-block;margin-top:14px;color:var(--accent);font-weight:700;font-size:14.5px;text-decoration:underline;text-underline-offset:3px}
 @keyframes lpbob{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
 .lp-micro{text-align:center;font-size:13px;color:rgba(255,255,255,.72);margin-top:13px;line-height:1.6}
 .lp-resume{width:100%;margin-top:10px;padding:14px;background:transparent;border:1px solid rgba(255,255,255,.28);color:#fff;border-radius:13px;font-weight:700;font-size:15px}
@@ -557,9 +558,10 @@ details.dis div{margin-top:8px;line-height:1.8}
       <button class="lp-cta" id="startBtn">3분 만에 내 양도세 계산하기</button>
       <button class="lp-resume" id="resumeBtn" style="display:none">이어서 진행하기</button>
       <div class="lp-micro">무료 · 설치 없이 채팅으로 · 2026.7 최신 세법 반영</div>
+      <a class="lp-blog" href="/blog/">양도세가 궁금하다면? 세꼼 블로그 보기 →</a>
     </div>
     <div class="lp-foot">
-      <div class="fl"><a href="#" onclick="openLegal('privacy');return false">개인정보처리방침</a> · <a href="#" onclick="openLegal('terms');return false">이용약관</a></div>
+      <div class="fl"><a href="/blog/">블로그</a> · <a href="#" onclick="openLegal('privacy');return false">개인정보처리방침</a> · <a href="#" onclick="openLegal('terms');return false">이용약관</a></div>
       문의 <a href="mailto:sekkomi.com@gmail.com">sekkomi.com@gmail.com</a>
     </div>
    </div>
