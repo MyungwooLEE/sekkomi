@@ -250,7 +250,19 @@
 
   <h2 id="faq">자주 묻는 질문</h2>
   <div class="faq"><details><summary>40년 보유했는데 세금이 왜 이렇게 적나요?</summary><p>1세대 1주택 + 거주요건을 충족하면 12억까지 비과세이고, 장기보유특별공제가 최대 80%까지 적용돼요. 오래 보유하고 실제 거주하면 과세대상 차익이 크게 줄어듭니다.</p></details><details><summary>여의도는 조정지역인가요?</summary><p>현재 기준 여의도(영등포구)는 조정대상지역이 아니에요. 그래서 다주택이어도 중과(+20~30%p)는 없어요. 다만 규제지역 현황은 바뀔 수 있으니 매도 전 최신 확인이 필요합니다.</p></details><details><summary>비조정인데 다주택이면 세금이 왜 10억인가요?</summary><p>중과는 없지만 다주택이면 1세대 1주택 비과세가 안 되고 장기보유특별공제도 표1(최대 30%)로 작아져요. 그래서 차익 대부분이 기본세율로 과세돼 세금이 커집니다.</p></details><details><summary>이 금액이 내 경우에도 똑같이 적용되나요?</summary><p>아니요. 취득가는 가정치이고 실제 세금은 취득가·보유·거주·주택 수에 따라 달라져요. 세꼼 계산기로 본인 정보를 넣어 확인하세요.</p></details></div>
-  <nav class="series-nav" aria-label="관련 글"><a class="sn prev" data-cta="rel-guide" href="/blog/yangdo-sodeukse-guide"><span>← 관련 · 가이드</span><b>양도소득세 완전정복</b></a><a class="sn next" data-cta="rel-calc" href="https://sekkomi.com/?utm_source=blog&utm_medium=content&utm_campaign=case_series&utm_content=yeouido-sibeom-yangdose-case-2026-relnav" target="_blank" rel="noopener"><span>내 케이스 계산 →</span><b>내 양도세 3분 계산하기</b></a></nav>
+  <nav class="series-nav" aria-label="시리즈 내비">
+    <a class="sn prev" data-nav="prev" href="/blog/yeouido-yangdose-hub"><span>← 이전 · 여의도 시범</span><b>총정리편</b></a>
+    <a class="sn next" data-nav="next" href="/blog/yeouido-jeungyeo-yangdose"><span>다음 · 여의도 시범 →</span><b>증여편</b></a>
+  </nav>
+  <details class="series-all" open>
+    <summary>여의도 시범 시리즈 · 4편</summary>
+    <ol>
+      <li><a href="/blog/yeouido-yangdose-hub">여의도 시범 · 총정리편</a></li>
+      <li class="cur">여의도 시범 · 매매·40년편 <span>— 지금 보는 글</span></li>
+      <li><a href="/blog/yeouido-jeungyeo-yangdose">여의도 시범 · 증여편</a></li>
+      <li><a href="/blog/yeouido-sangsok-yangdose">여의도 시범 · 상속편</a></li>
+    </ol>
+  </details>
 
   <div class="author"><b>글쓴이 · 세꼼이</b> — 공개 실거래·보도 자료를 근거로 계산 예시를 만들고, 세액은 세꼼 계산 로직으로 교차검증합니다. 최종 검토: 2026년 7월 10일.</div>
 
@@ -278,6 +290,7 @@
   document.querySelectorAll('a[data-cta]').forEach(function(a){a.addEventListener('click',function(){track('blog_cta_click',{cta_position:a.getAttribute('data-cta'),article:'yeouido-sibeom-yangdose-case-2026'});});});
   document.querySelectorAll('.faq details').forEach(function(d,i){d.addEventListener('toggle',function(){if(d.open)track('faq_open',{q_index:i+1,article:'yeouido-sibeom-yangdose-case-2026'});});});
   document.querySelectorAll('.toc a').forEach(function(a){a.addEventListener('click',function(){track('blog_toc_click',{anchor:a.getAttribute('href'),article:'yeouido-sibeom-yangdose-case-2026'});});});
+  document.querySelectorAll('a[data-nav]').forEach(function(a){a.addEventListener('click',function(){track('blog_nav_click',{target:a.getAttribute('data-nav'),article:'yeouido-sibeom-yangdose-case-2026'});});});
 </script>
 <script type="module">
   import {onLCP,onCLS,onINP,onFCP,onTTFB} from 'https://cdn.jsdelivr.net/npm/web-vitals@4/dist/web-vitals.js';

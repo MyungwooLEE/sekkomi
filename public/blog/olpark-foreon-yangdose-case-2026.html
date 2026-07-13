@@ -169,7 +169,7 @@
       <li><a href="#sec-2">케이스 1 — 지금(보유 2년 미만) 팔면? 단기보유 세율</a></li>
       <li><a href="#sec-3">케이스 2 — 2년 채우고 1주택 비과세면?</a></li>
       <li><a href="#sec-4">신축·분양이라 주의할 점</a></li>
-      <li><a href="#sec-5">정리 — 신축은 &amp;#x27;보유 2년&amp;#x27;이 분기점</a></li>
+      <li><a href="#sec-5">정리 — 신축은 &#x27;보유 2년&#x27;이 분기점</a></li>
       <li><a href="#faq">자주 묻는 질문</a></li>
     </ol>
   </nav>
@@ -251,7 +251,16 @@
 
   <h2 id="faq">자주 묻는 질문</h2>
   <div class="faq"><details><summary>분양받아 지금 팔면 왜 세금이 9.9억인가요?</summary><p>보유 2년 미만이면 단기보유 단일세율(1~2년 미만 60%, 1년 미만 70%)이 적용되고, 장기보유특별공제와 비과세가 모두 안 돼요. 그래서 차익 대부분이 높은 세율로 과세됩니다.</p></details><details><summary>2년만 넘기면 세금이 정말 3배 줄어드나요?</summary><p>2년 이상 보유하면 단기 세율에서 벗어나 기본세율이 적용되고, 1세대 1주택 비과세(12억까지)도 받을 수 있어요. 그래서 세금이 크게 줄어듭니다. 단 12억 초과분은 여전히 과세돼요.</p></details><details><summary>올팍은 비조정지역이라 다주택도 괜찮나요?</summary><p>강동구는 현재 비조정지역이라 다주택 중과(+20~30%p)는 없어요. 하지만 2년 미만 단기보유 세율은 주택 수와 무관하게 적용됩니다. 규제 현황은 바뀔 수 있어요.</p></details><details><summary>이 금액이 내 경우에도 똑같이 적용되나요?</summary><p>아니요. 취득가(분양가)는 가정치이고 실제 세금은 취득·매도 시점, 주택 수에 따라 달라져요. 세꼼 계산기로 본인 정보를 넣어 확인하세요.</p></details></div>
-  <nav class="series-nav" aria-label="관련 글"><a class="sn prev" data-cta="rel-guide" href="/blog/yangdo-sodeukse-guide"><span>← 관련 · 가이드</span><b>양도소득세 완전정복</b></a><a class="sn next" data-cta="rel-calc" href="https://sekkomi.com/?utm_source=blog&utm_medium=content&utm_campaign=case_series&utm_content=olpark-foreon-yangdose-case-2026-relnav" target="_blank" rel="noopener"><span>내 케이스 계산 →</span><b>내 양도세 3분 계산하기</b></a></nav>
+  <nav class="series-nav" aria-label="시리즈 내비">
+    <a class="sn prev" data-nav="list" href="/blog/#cases"><span>← 화제의 단지 케이스</span><b>목록으로</b></a>
+    <a class="sn next" data-nav="calc" href="https://sekkomi.com/?utm_source=blog&utm_medium=content&utm_campaign=case_series&utm_content=series-nav" target="_blank" rel="noopener"><span>마지막 편 · 이제 계산 →</span><b>내 양도세 3분 계산하기</b></a>
+  </nav>
+  <details class="series-all" open>
+    <summary>올림픽파크포레온 시리즈 · 1편</summary>
+    <ol>
+      <li class="cur">올림픽파크포레온 · 신축·단기편 <span>— 지금 보는 글</span></li>
+    </ol>
+  </details>
 
   <div class="author"><b>글쓴이 · 세꼼이</b> — 공개 실거래·보도 자료를 근거로 계산 예시를 만들고, 세액은 세꼼 계산 로직으로 교차검증합니다. 최종 검토: 2026년 7월 10일.</div>
 
@@ -279,6 +288,7 @@
   document.querySelectorAll('a[data-cta]').forEach(function(a){a.addEventListener('click',function(){track('blog_cta_click',{cta_position:a.getAttribute('data-cta'),article:'olpark-foreon-yangdose-case-2026'});});});
   document.querySelectorAll('.faq details').forEach(function(d,i){d.addEventListener('toggle',function(){if(d.open)track('faq_open',{q_index:i+1,article:'olpark-foreon-yangdose-case-2026'});});});
   document.querySelectorAll('.toc a').forEach(function(a){a.addEventListener('click',function(){track('blog_toc_click',{anchor:a.getAttribute('href'),article:'olpark-foreon-yangdose-case-2026'});});});
+  document.querySelectorAll('a[data-nav]').forEach(function(a){a.addEventListener('click',function(){track('blog_nav_click',{target:a.getAttribute('data-nav'),article:'olpark-foreon-yangdose-case-2026'});});});
 </script>
 <script type="module">
   import {onLCP,onCLS,onINP,onFCP,onTTFB} from 'https://cdn.jsdelivr.net/npm/web-vitals@4/dist/web-vitals.js';

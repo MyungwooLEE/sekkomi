@@ -168,9 +168,9 @@
       <li><a href="#sec-1">계산 전제 (꼭 확인하세요)</a></li>
       <li><a href="#sec-2">케이스 1 — 1세대 1주택, 20년 실거주</a></li>
       <li><a href="#sec-3">케이스 2 — 1세대 1주택, 10년 보유</a></li>
-      <li><a href="#sec-4">케이스 3 — 다주택자라면? &amp;#x27;세금 폭탄&amp;#x27;의 실제</a></li>
+      <li><a href="#sec-4">케이스 3 — 다주택자라면? &#x27;세금 폭탄&#x27;의 실제</a></li>
       <li><a href="#sec-5">재건축이라 더 주의할 점</a></li>
-      <li><a href="#sec-6">정리 — 같은 집도 &amp;#x27;누가·어떻게&amp;#x27;가 세금을 가른다</a></li>
+      <li><a href="#sec-6">정리 — 같은 집도 &#x27;누가·어떻게&#x27;가 세금을 가른다</a></li>
       <li><a href="#faq">자주 묻는 질문</a></li>
     </ol>
   </nav>
@@ -264,7 +264,19 @@
 
   <h2 id="faq">자주 묻는 질문</h2>
   <div class="faq"><details><summary>은마 지금 팔면 양도세가 정말 1억대인가요?</summary><p>1세대 1주택 + 거주요건을 충족하고 관리처분 전 주택 상태라면, 12억 비과세와 장기보유특별공제(최대 80%) 덕에 억 단위 초반으로 관리될 수 있어요. 단 취득가·거주기간·주택 수에 따라 달라지니 본인 케이스로 계산해야 정확합니다.</p></details><details><summary>다주택이면 왜 이렇게 세금이 커지나요?</summary><p>조정대상지역(강남구) 주택을 다주택 상태로 팔면 비과세가 없고, 장기보유특별공제가 배제되며, 기본세율에 20~30%p가 가산돼요. 그래서 차익 대부분이 높은 세율로 과세됩니다.</p></details><details><summary>재건축 입주권으로 바뀌면 어떻게 되나요?</summary><p>관리처분계획 인가 후엔 주택이 아니라 조합원입주권으로 봐서 비과세·장특 요건이 별도로 적용돼요. 전환 시점 전후로 세금이 달라질 수 있어 매도 시점 설계가 중요합니다.</p></details><details><summary>이 금액이 내 경우에도 똑같이 적용되나요?</summary><p>아니요. 위 숫자는 공개 시세를 바탕으로 한 예시(취득가는 가정)예요. 실제 세금은 취득가·필요경비·보유·거주·주택 수·조정지역 여부에 따라 달라지니, 세꼼 계산기로 본인 정보를 넣어 확인하세요.</p></details></div>
-  <nav class="series-nav" aria-label="관련 글"><a class="sn prev" data-cta="rel-guide" href="/blog/yangdo-sodeukse-guide"><span>← 관련 · 가이드</span><b>양도소득세 완전정복</b></a><a class="sn next" data-cta="rel-calc" href="https://sekkomi.com/?utm_source=blog&utm_medium=content&utm_campaign=case_series&utm_content=eunma-yangdose-case-2026-relnav" target="_blank" rel="noopener"><span>내 케이스 계산 →</span><b>내 양도세 3분 계산하기</b></a></nav>
+  <nav class="series-nav" aria-label="시리즈 내비">
+    <a class="sn prev" data-nav="prev" href="/blog/eunma-yangdose-hub"><span>← 이전 · 은마아파트</span><b>총정리편</b></a>
+    <a class="sn next" data-nav="next" href="/blog/eunma-jeungyeo-yangdose"><span>다음 · 은마아파트 →</span><b>증여편</b></a>
+  </nav>
+  <details class="series-all" open>
+    <summary>은마아파트 시리즈 · 4편</summary>
+    <ol>
+      <li><a href="/blog/eunma-yangdose-hub">은마아파트 · 총정리편</a></li>
+      <li class="cur">은마아파트 · 매매편 <span>— 지금 보는 글</span></li>
+      <li><a href="/blog/eunma-jeungyeo-yangdose">은마아파트 · 증여편</a></li>
+      <li><a href="/blog/eunma-sangsok-yangdose">은마아파트 · 상속편</a></li>
+    </ol>
+  </details>
 
   <div class="author"><b>글쓴이 · 세꼼이</b> — 공개 실거래·보도 자료를 근거로 계산 예시를 만들고, 세액은 세꼼 계산 로직으로 교차검증합니다. 최종 검토: 2026년 7월 10일.</div>
 
@@ -293,6 +305,7 @@
   document.querySelectorAll('a[data-cta]').forEach(function(a){a.addEventListener('click',function(){track('blog_cta_click',{cta_position:a.getAttribute('data-cta'),article:'eunma-yangdose-case-2026'});});});
   document.querySelectorAll('.faq details').forEach(function(d,i){d.addEventListener('toggle',function(){if(d.open)track('faq_open',{q_index:i+1,article:'eunma-yangdose-case-2026'});});});
   document.querySelectorAll('.toc a').forEach(function(a){a.addEventListener('click',function(){track('blog_toc_click',{anchor:a.getAttribute('href'),article:'eunma-yangdose-case-2026'});});});
+  document.querySelectorAll('a[data-nav]').forEach(function(a){a.addEventListener('click',function(){track('blog_nav_click',{target:a.getAttribute('data-nav'),article:'eunma-yangdose-case-2026'});});});
 </script>
 <script type="module">
   import {onLCP,onCLS,onINP,onFCP,onTTFB} from 'https://cdn.jsdelivr.net/npm/web-vitals@4/dist/web-vitals.js';

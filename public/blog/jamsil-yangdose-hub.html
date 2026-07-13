@@ -167,9 +167,9 @@
     <ol>
       <li><a href="#sec-1">한눈에 — 잠실주공5 43억 매도, 상황별 세금</a></li>
       <li><a href="#sec-2">1. 매매로 산 잠실주공5</a></li>
-      <li><a href="#sec-3">2. 증여받은 잠실주공5 — &amp;#x27;이월과세&amp;#x27;가 핵심</a></li>
+      <li><a href="#sec-3">2. 증여받은 잠실주공5 — &#x27;이월과세&#x27;가 핵심</a></li>
       <li><a href="#sec-4">3. 상속받은 잠실주공5 — 평가액이 좌우</a></li>
-      <li><a href="#sec-5">정리 — &amp;#x27;어떻게 가졌나 + 몇 채인가&amp;#x27;</a></li>
+      <li><a href="#sec-5">정리 — &#x27;어떻게 가졌나 + 몇 채인가&#x27;</a></li>
       <li><a href="#faq">자주 묻는 질문</a></li>
     </ol>
   </nav>
@@ -228,7 +228,19 @@
 
   <h2 id="faq">자주 묻는 질문</h2>
   <div class="faq"><details><summary>잠실주공5, 어떻게 가졌는지가 왜 중요한가요?</summary><p>양도세는 &#x27;판 값 − 취득가액&#x27;인데, 취득가액 기준이 취득 방식마다 달라요. 매매는 산 값, 증여는 증여가액(이월과세 시 증여자 취득가), 상속은 상속 평가액이에요.</p></details><details><summary>어떤 경우가 세금이 가장 큰가요?</summary><p>일반적으로 다주택 조정지역 중과가 가장 큽니다. 증여 10년 내 매도(이월과세)도 세금이 늘 수 있어요.</p></details><details><summary>재건축이라 달라지는 점은요?</summary><p>잠실주공5은(는) 재건축 사업시행인가 단지이라, 관리처분 이후엔 조합원입주권으로 바뀌어 계산이 또 달라져요. 매도 시점 설계가 중요합니다.</p></details><details><summary>이 금액이 내 경우에도 똑같나요?</summary><p>아니요. 취득가·평가액·주택 수 가정에 따른 예시예요. 세꼼 계산기로 본인 정보를 넣어 확인하세요.</p></details></div>
-  <nav class="series-nav" aria-label="관련 글"><a class="sn prev" data-cta="rel-guide" href="/blog/yangdo-sodeukse-guide"><span>← 관련 · 가이드</span><b>양도소득세 완전정복</b></a><a class="sn next" data-cta="rel-calc" href="https://sekkomi.com/?utm_source=blog&utm_medium=content&utm_campaign=case_series&utm_content=jamsil-yangdose-hub-relnav" target="_blank" rel="noopener"><span>내 케이스 계산 →</span><b>내 양도세 3분 계산하기</b></a></nav>
+  <nav class="series-nav" aria-label="시리즈 내비">
+    <a class="sn prev" data-nav="list" href="/blog/#cases"><span>← 화제의 단지 케이스</span><b>목록으로</b></a>
+    <a class="sn next" data-nav="next" href="/blog/jamsil-jugong5-yangdose-case-2026"><span>다음 · 잠실주공5 →</span><b>매매편</b></a>
+  </nav>
+  <details class="series-all" open>
+    <summary>잠실주공5 시리즈 · 4편</summary>
+    <ol>
+      <li class="cur">잠실주공5 · 총정리편 <span>— 지금 보는 글</span></li>
+      <li><a href="/blog/jamsil-jugong5-yangdose-case-2026">잠실주공5 · 매매편</a></li>
+      <li><a href="/blog/jamsil-jeungyeo-yangdose">잠실주공5 · 증여편</a></li>
+      <li><a href="/blog/jamsil-sangsok-yangdose">잠실주공5 · 상속편</a></li>
+    </ol>
+  </details>
 
   <div class="author"><b>글쓴이 · 세꼼이</b> — 공개 실거래·보도 자료를 근거로 계산 예시를 만들고, 세액은 세꼼 계산 로직으로 교차검증합니다. 최종 검토: 2026년 7월 10일.</div>
 
@@ -256,6 +268,7 @@
   document.querySelectorAll('a[data-cta]').forEach(function(a){a.addEventListener('click',function(){track('blog_cta_click',{cta_position:a.getAttribute('data-cta'),article:'jamsil-yangdose-hub'});});});
   document.querySelectorAll('.faq details').forEach(function(d,i){d.addEventListener('toggle',function(){if(d.open)track('faq_open',{q_index:i+1,article:'jamsil-yangdose-hub'});});});
   document.querySelectorAll('.toc a').forEach(function(a){a.addEventListener('click',function(){track('blog_toc_click',{anchor:a.getAttribute('href'),article:'jamsil-yangdose-hub'});});});
+  document.querySelectorAll('a[data-nav]').forEach(function(a){a.addEventListener('click',function(){track('blog_nav_click',{target:a.getAttribute('data-nav'),article:'jamsil-yangdose-hub'});});});
 </script>
 <script type="module">
   import {onLCP,onCLS,onINP,onFCP,onTTFB} from 'https://cdn.jsdelivr.net/npm/web-vitals@4/dist/web-vitals.js';
