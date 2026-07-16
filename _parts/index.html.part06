@@ -1,0 +1,434 @@
+/* 상담 호흡: 글자 수에 비례한 타이핑 시간 (상담사가 생각하며 말하는 속도) */
+function thinkMs(html,g){ const len=String(html).replace(/<[^>]+>/g,'').length; return Math.min(2200,700+len*28); }
+async function c2bot(html,g,opt){
+  opt=opt||{};
+  const t=document.createElement('div');t.className='row-bot';
+  t.innerHTML='<div class="avatar">세</div><div class="typing"><s></s><s></s><s></s></div>';
+  chat2().appendChild(t);c2scroll();
+  await sleep(SIM_REPLAY?60:(opt.slow?1800:thinkMs(html,g)));
+  chkGen(g); t.remove();
+  const r=document.createElement('div');r.className='row-bot';
+  r.innerHTML='<div class="avatar">세</div><div class="bub" style="max-width:88%">'+html+'</div>';
+  chat2().appendChild(r);c2scroll();
+  await sleep(SIM_REPLAY?15:420); chkGen(g); // 다음 말풍선까지 한 박자 쉼
+}
+async function c2card(html,g){
+  const t=document.createElement('div');t.className='row-bot';
+  t.innerHTML='<div class="avatar">세</div><div class="typing"><s></s><s></s><s></s></div>';
+  chat2().appendChild(t);c2scroll();
+  await sleep(SIM_REPLAY?60:1000);chkGen(g);t.remove();
+  const r=document.createElement('div');r.className='row-bot';
+  r.innerHTML='<div class="avatar">세</div><div class="bub" style="max-width:92%;background:transparent;padding:0">'+html+'</div>';
+  chat2().appendChild(r);c2scroll();
+  await sleep(SIM_REPLAY?15:450); chkGen(g);
+}
+function c2user(text){
+  const r=document.createElement('div');r.className='row-user';
+  r.innerHTML='<div class="bub-user noedit">'+text+'</div>';
+  chat2().appendChild(r);c2scroll();
+}
+function c2chips(list,g){
+  const idx=SIM_ACALL++;
+  if(SIM_REPLAY&&SIM_ANS[idx]!==undefined){ const val=SIM_ANS[idx]; const it=list.find(x=>x.value===val); if(it&&!it.silent)c2user(it.label); return Promise.resolve(val); }
+  SIM_REPLAY=false; // 캐시 소진 → 이후는 실제 입력
+  return new Promise(res=>{
+    const w=document.createElement('div');w.className='chips';w.style.marginLeft='34px';
+    list.forEach(it=>{
+      const b=document.createElement('button');b.className='chip'+(it.small?' sm':'');b.textContent=it.label;
+      b.onclick=()=>{ if(g!==S11GEN)return; w.remove(); SIM_ANS[idx]=it.value; if(!it.silent)c2user(it.label); res(it.value); };
+      w.appendChild(b);
+    });
+    chat2().appendChild(w);c2scroll();
+  });
+}
+/* 숫자 답변 말풍선 — 탭하면 그 값만 고쳐서 시나리오를 다시 계산 */
+function numBubble(v,opt,idx){
+  const fmt=opt.fmt||fmtMan;
+  const r=document.createElement('div');r.className='row-user';
+  r.innerHTML='<div class="bub-user" title="탭하면 이 값을 고칠 수 있어요">'+fmt(v)+'</div>';
+  const bub=r.firstChild; bub.dataset.val=v;
+  bub.onclick=()=>editNum(idx,opt,bub);
+  chat2().appendChild(r);c2scroll();
+  return bub;
+}
+/* 숫자 파싱 — decimal이면 소수점 허용(금리 등), 아니면 정수(금액) */
+function pnum(s,dec){ s=String(s==null?'':s).replace(dec?/[^0-9.]/g:/[^0-9]/g,''); if(dec){const p=s.split('.'); s=p[0]+(p.length>1?'.'+p.slice(1).join(''):'');} return (dec?parseFloat(s):parseInt(s))||0; }
+function editNum(idx,opt,bub){
+  const d=dock2();d.classList.add('on');
+  const fmt=opt.fmt||fmtMan, dec=!!opt.decimal;
+  $('#s11DockHint').textContent=(opt.hint||'값 수정')+' — 고쳐서 확인';
+  const inp=$('#s11DockIn');inp.value=String(bub.dataset.val||'');inp.placeholder=opt.ph||'';inp.inputMode=dec?'decimal':'numeric';
+  $('#s11DockKor').textContent=bub.dataset.val?fmt(+bub.dataset.val):'';
+  inp.oninput=()=>{const val=pnum(inp.value,dec);$('#s11DockKor').textContent=val?fmt(val):'';};
+  $('#s11DockOk').onclick=()=>{ const val=pnum(inp.value,dec);
+    if(opt.min!=null&&val<opt.min){$('#s11DockHint').textContent='다시 입력해주세요';return;}
+    d.classList.remove('on');inp.oninput=null;$('#s11DockOk').onclick=null;
+    SIM_ANS[idx]=val; s11ReplayNext=true; renderS11(); };
+  setTimeout(()=>{inp.focus&&inp.focus();inp.select&&inp.select();},0);
+}
+function c2num(opt,g){
+  const idx=SIM_ACALL++;
+  if(SIM_REPLAY&&SIM_ANS[idx]!==undefined){ const v=SIM_ANS[idx]; numBubble(v,opt,idx); return Promise.resolve(v); }
+  SIM_REPLAY=false; // 캐시 소진 → 이후는 실제 입력
+  return new Promise(res=>{
+    const d=dock2();d.classList.add('on');
+    $('#s11DockHint').textContent=opt.hint||'';
+    const inp=$('#s11DockIn');inp.value='';inp.placeholder=opt.ph||'';
+    $('#s11DockKor').textContent='';
+    const fmt=opt.fmt||fmtMan, dec=!!opt.decimal; inp.inputMode=dec?'decimal':'numeric';
+    inp.oninput=()=>{const v=pnum(inp.value,dec);$('#s11DockKor').textContent=v?fmt(v):'';};
+    function done(){ const v=pnum(inp.value,dec);
+      if(opt.min!=null&&v<opt.min){$('#s11DockHint').textContent='다시 입력해주세요';return;}
+      d.classList.remove('on');inp.oninput=null;$('#s11DockOk').onclick=null;
+      SIM_ANS[idx]=v; numBubble(v,opt,idx); res(v); }
+    $('#s11DockOk').onclick=()=>{ if(g!==S11GEN)return; done(); };
+    setTimeout(()=>inp.focus&&inp.focus(),0);
+  });
+}
+let SLW={}, slwSeq=0;
+function sliderCard(o){
+  const id='slw'+(++slwSeq);
+  SLW[id]=v=>{
+    const r=o.compute(v);
+    const lab=document.getElementById(id+'v'); if(lab)lab.textContent=o.fmtVal(v);
+    const out=document.getElementById(id+'o');
+    if(out)out.innerHTML='<div class="b">'+r.big+'</div><div class="s">'+r.sub+'</div>'+(r.rows?'<div class="r">'+r.rows+'</div>':'')
+      +(r.verd?'<div class="rc-verd '+r.verd.cls+'" style="margin-top:9px">'+r.verd.txt+'</div>':'');
+    if(r.snap)curSimSnap=r.snap;
+  };
+  setTimeout(()=>SLW[id](o.value),0);
+  return '<div class="slidecard"><label>'+o.label+' <span class="v" id="'+id+'v"></span></label>'
+    +'<div class="slw-hint">↔ '+(o.hint||'손잡이를 좌우로 움직여보세요')+'</div>'
+    +'<input type="range" min="'+o.min+'" max="'+o.max+'" step="'+(o.step||1)+'" value="'+o.value+'" oninput="SLW[\''+id+'\'](+this.value)">'
+    +'<div class="so" id="'+id+'o"></div></div>';
+}
+function resCard(title,big,rows,verd){
+  return '<div class="rescard"><div class="rc-t">'+title+'</div><div class="rc-big">'+big+'</div>'
+    +(rows?rows.map(r=>'<div class="rc-row"><span>'+r[0]+'</span><b>'+r[1]+'</b></div>').join(''):'')
+    +(verd?'<div class="rc-verd '+verd.cls+'">'+verd.txt+'</div>':'')+'</div>';
+}
+async function c2traps(sc,g){
+  await c2bot('이 시나리오에서 <b>놓치기 쉬운 함정</b> '+sc.traps.length+'가지를 짚어드릴게요.',g);
+  for(const t of sc.traps){ await c2card('<div class="trapbub">⚠️ '+t+'</div>',g); }
+}
+async function c2actions(sc,g){
+  await c2bot('그럼 <b>지금 할 일</b>을 정리해드릴게요. 하신 건 눌러서 체크하세요.',g);
+  const html='<div class="rescard"><div class="rc-t">📋 실행 체크리스트</div><div class="actbub">'
+    +sc.actions.map(a=>'<div class="ai"><span class="bx" onclick="this.classList.toggle(\'on\');this.textContent=this.classList.contains(\'on\')?\'✓\':\'\'"></span><span>'+a+'</span></div>').join('')
+    +'</div></div>';
+  await c2card(html,g);
+}
+async function c2finish(sc,g){
+  await c2bot('여기까지가 <b>'+(CONTENT[sc.id]&&CONTENT[sc.id].title||sc.name)+'</b> 상담이에요. 이 결과를 저장해두면 마이페이지에서 언제든 다시 볼 수 있어요.',g);
+  await c2card('<span class="savechip" onclick="saveCurrentSim()">＋ 이 결과 저장</span><span class="restartchip" onclick="renderS11()">처음부터 다시</span>',g);
+  await c2bot('다른 시나리오가 궁금하시면 위 탭에서 골라보세요. 팔까 말까, 끝까지 같이 따져드릴게요.',g);
+}
+
+/* ===== 시나리오별 상담 스크립트 ===== */
+const SCRIPT={};
+async function intro(sc,g){
+  const c=CONTENT[sc.id]||{};
+  await c2bot('안녕하세요. <b>'+(c.title||sc.name)+'</b> 상담을 시작할게요.',g);
+  // 핵심 요약 카드 먼저 (한 줄 결론 + 핵심 3가지)
+  if(c.sum||c.keys){
+    let card='<div class="rescard"><div class="rc-t">한눈에 핵심</div>'
+      +(c.sum?'<div style="font-size:16px;font-weight:800;line-height:1.45;word-break:keep-all;margin-bottom:'+(c.keys?'10px':'0')+'">“'+c.sum+'”</div>':'')
+      +(c.keys?'<div class="actbub">'+c.keys.map((k,i)=>'<div class="ai"><span style="color:var(--brand);font-weight:800;flex:none">'+(i+1)+'</span><span>'+k+'</span></div>').join('')+'</div>':'')
+      +'</div>';
+    await c2card(card,g);
+  }
+  await c2bot(sc.diag,g);
+  if(c.expert)await c2bot(c.expert,g);
+}
+SCRIPT.dday=async(sc,g)=>{
+  await intro(sc,g);
+  await c2bot('지금 거주하신 기간을 다시 확인할게요. 주민등록 초본 기준으로 실제 거주한 개월 수를 알려주세요.',g);
+  const m=await c2num({hint:'실제 거주한 총 개월 수',ph:'예: 23',fmt:v=>v+'개월',min:0},g);
+  A.resMonthsNow=m; if(A.currentlyLiving)A.resMonthsAtSale=m+Math.max(0,monthsBetween({y:NOWY,m:NOWM},A.saleDate));
+  const lack=Math.max(0,24-m);
+  if(m>=24)await c2bot('거주 2년을 이미 채우셨네요! 비과세 요건이 열려 있어요.',g);
+  else await c2bot('2년까지 <b>'+lack+'개월</b> 남으셨어요. 이 시점을 직접 움직여 볼게요.',g);
+  await c2bot('아래 슬라이더로 거주 기간을 바꿔보세요. 비과세가 열리는 순간 세금이 어떻게 변하는지 바로 보여드려요.',g);
+  await c2card(sliderCard({label:'거주 기간',min:0,max:36,value:Math.max(m,24),fmtVal:v=>v+'개월 ('+Math.floor(v/12)+'년 '+v%12+'개월)',
+    compute:v=>{const alt=calc({resOverride:v});const ok=v>=24;
+      return {big:fmtMan(alt.total),sub:'이 거주 기간일 때 예상 세금',
+        rows:'<span>지금 '+m+'개월: '+fmtMan(A.R.total)+'</span><span>차이: '+fmtMan(A.R.total-alt.total)+'</span>',
+        verd:ok?{cls:'rc-good',txt:'✓ 2년 충족 — 비과세 요건이 열려요'}:{cls:'rc-warn',txt:(24-v)+'개월 더 채우면 열려요'},
+        snap:{scnId:'dday',scnName:'D-Day 거주 시뮬',headline:'거주 '+v+'개월 → '+fmtMan(alt.total),param:'거주 '+v+'개월 가정'}};}}),g);
+  await c2simGate(g);
+  await c2traps(sc,g); await c2actions(sc,g); await c2finish(sc,g);
+};
+SCRIPT.short=async(sc,g)=>{
+  await intro(sc,g);
+  const base=A.R.holdMonths;
+  await c2bot('현재 보유 '+base+'개월이세요. 매도를 미뤄 보유를 늘리면 세율이 언제 떨어지는지 같이 볼게요.',g);
+  await c2card(sliderCard({label:'보유 기간',min:base,max:base+30,value:Math.max(base,24),fmtVal:v=>v+'개월',
+    compute:v=>{const alt=calc({saleDate:addMonths(A.saleDate.y,A.saleDate.m,v-base)});const rate=v<12?'70%':v<24?'60%':'일반세율(6~45%)';
+      return {big:fmtMan(alt.total),sub:'적용 세율: '+rate,
+        rows:'<span>지금: '+fmtMan(A.R.total)+'</span><span>차이: '+fmtMan(A.R.total-alt.total)+'</span>',
+        verd:v>=24?{cls:'rc-good',txt:'✓ 2년 이상 — 단기 중과를 벗어났어요'}:{cls:'rc-bad',txt:'단기보유 '+rate+' 구간'},
+        snap:{scnId:'short',scnName:'단기보유 시뮬',headline:'보유 '+v+'개월 → '+fmtMan(alt.total),param:'보유 '+v+'개월'}};}}),g);
+  await c2simGate(g);
+  await c2traps(sc,g); await c2actions(sc,g); await c2finish(sc,g);
+};
+SCRIPT.decide11=async(sc,g)=>{
+  await intro(sc,g);
+  await c2bot('미루는 게 정말 이득인지 보려면 <b>보유 비용</b>을 알아야 해요. 대출이 있으세요?',g);
+  const has=await c2chips([{label:'대출 있어요',value:1},{label:'없어요',value:0}],g);
+  A.sim=A.sim||{};
+  if(has){
+    await c2bot('대출 잔액을 알려주세요.',g);
+    A.sim.loanBal=await c2num({hint:'대출 잔액 (만원)',ph:'예: 30000',min:0},g);
+    await c2bot('금리는 연 몇 %인가요?',g);
+    A.sim.loanRate=await c2num({hint:'연 금리 (%)',ph:'예: 4.3',fmt:v=>v+'%',min:0,decimal:true},g);
+  }else{A.sim.loanBal=0;A.sim.loanRate=0;}
+  await c2bot('미루는 동안 집값도 오르거나 내릴 수 있죠. 이 집, <b>1년에 얼마쯤</b> 오를 것 같으세요? (모르겠으면 0을 넣으세요)',g);
+  A.sim.expRiseAmt=await c2num({hint:'1년 예상 상승액 (만원)',ph:'예: 3000',fmt:fmtMan,min:0},g);
+  await c2bot('좋아요. 이제 매도 시점을 미뤄보면서 <b>세금 절감 + 시세 상승 − 보유비용</b>의 진짜 순손익을 보여드릴게요.',g);
+  await c2card(sliderCard({label:'매도 시점',min:0,max:36,value:12,
+    fmtVal:v=>{const sd=addMonths(A.saleDate.y,A.saleDate.m,v);return (v===0?'지금':v+'개월 뒤')+' · '+fmtYM(sd.y,sd.m);},
+    compute:v=>{const sd=addMonths(A.saleDate.y,A.saleDate.m,v);
+      const alt=calc({saleDate:sd,resOverride:A.currentlyLiving?A.resMonthsAtSale+v:A.resMonthsNow});
+      const taxSave=A.R.total-alt.total, hold=holdingCostFor(v);
+      const rise=Math.round((A.sim.expRiseAmt||0)*(v/12)); // 기대 시세 상승(1년 예상액 × 기간, 세전 간이)
+      const net=taxSave+rise-hold;
+      let why;
+      if(taxSave<=0) why='이 시점엔 세금이 줄지 않아요. 미룬다고 세금이 낮아지진 않고, 오른 시세엔 오히려 세금이 더 붙을 수 있어요.';
+      else if(A.R.shortRate&&!alt.shortRate) why='<b>단기보유 중과 탈출</b> — 보유 2년을 넘겨 '+A.R.shortRate+'% 단기세율이 일반세율로 내려가서예요.';
+      else if(!A.R.exempt&&alt.exempt) why='<b>비과세 요건 충족</b> — 보유·거주 2년을 채워 1세대1주택 비과세가 열려서예요.';
+      else if(alt.holdYears>A.R.holdYears) why='<b>장기보유특별공제 ↑</b> — 보유가 '+A.R.holdYears+'년→'+alt.holdYears+'년으로 늘며 공제율이 올라 과세 대상이 줄어서예요.';
+      else why='보유가 길어지며 장기보유공제가 조금씩 늘어 세금이 줄어요.';
+      return {big:(net>=0?'+':'−')+fmtMan(Math.abs(net)),sub:fmtYM(sd.y,sd.m)+' 매도 시 순손익 (세금절감 + 시세상승 − 보유비용)',
+        rows:'<span>세금 절감 '+fmtMan(taxSave)+'</span><span>시세 상승 +'+fmtMan(rise)+'</span></div><div class="r"><span>보유 비용 −'+fmtMan(hold)+'</span><span>기대 연 '+fmtMan(A.sim.expRiseAmt||0)+'</span></div><div class="rwhy">💡 세금 절감 이유: '+why,
+        verd:net>0?{cls:'rc-good',txt:'✓ '+v+'개월 미루면('+fmtYM(sd.y,sd.m)+') 순이득 '+fmtMan(net)}:{cls:'rc-bad',txt:v+'개월 미루면('+fmtYM(sd.y,sd.m)+') 순손해 '+fmtMan(-net)},
+        snap:{scnId:'decide11',scnName:'매도 연기 시뮬',headline:fmtYM(sd.y,sd.m)+' 매도(기대 연 '+fmtMan(A.sim.expRiseAmt||0)+') → 순'+(net>=0?'이득 ':'손해 ')+fmtMan(Math.abs(net)),param:v+'개월 연기 · 기대 연 '+fmtMan(A.sim.expRiseAmt||0)}};}}),g);
+  await c2simGate(g);
+  await c2bot('시세 상승은 본인 예상이에요. 다만 집값이 올라도 그만큼 세금도 늘 수 있다는 점은 같이 보셔야 해요.',g);
+  await c2traps(sc,g); await c2actions(sc,g); await c2finish(sc,g);
+};
+SCRIPT.decide13=async(sc,g)=>{
+  await intro(sc,g);
+  await c2bot('실제 손에 쥐는 금액을 계산하려면 대출 정보가 필요해요. 대출 잔액을 알려주세요.',g);
+  A.sim=A.sim||{}; A.sim.loanBal=await c2num({hint:'대출 잔액 (만원)',ph:'예: 30000',min:0},g);
+  await c2bot('금리는 연 몇 %인가요?',g);
+  A.sim.loanRate=await c2num({hint:'연 금리 (%)',ph:'예: 4.3',fmt:v=>v+'%',min:0,decimal:true},g);
+  const bal=A.sim.loanBal,rate=A.sim.loanRate;
+  const net=A.salePrice-A.R.total-bal-A.saleExp, daily=Math.round(bal*(rate/100)/365);
+  await c2bot('계산했어요. 매도가에서 세금·대출상환·중개비를 빼면 이렇게 돼요.',g);
+  await c2card(resCard('매도 후 실수령 예상액',fmtMan(net),
+    [['매도가',fmtMan(A.salePrice)],['− 세금',fmtMan(A.R.total)],['− 대출 상환',fmtMan(bal)],['− 중개비',fmtMan(A.saleExp)]],
+    {cls:'rc-warn',txt:'이 집을 더 들고 있는 비용 — 하루 약 '+fmtMan(daily)+' (이자만)'}),g);
+  curSimSnap={scnId:'decide13',scnName:'실수령액 계산',headline:'실수령 '+fmtMan(net)+' · 하루 '+fmtMan(daily),param:'대출 '+fmtMan(bal)+' @'+rate+'%'};
+  await c2traps(sc,g); await c2actions(sc,g); await c2finish(sc,g);
+};
+SCRIPT.decide14=async(sc,g)=>{
+  await intro(sc,g);
+  const holdCost1y=holdingCostFor(12)||Math.round(A.salePrice*0.005);
+  const beRate=Math.round((holdCost1y/A.salePrice*1000))/10;
+  await c2bot('이 집은 1년에 <b>'+beRate+'%(약 '+fmtMan(holdCost1y)+')</b> 이상 올라야 보유가 이득이에요. 이게 손익분기예요.',g);
+  await c2bot('아래에서 기대 상승률을 움직여보세요. %가 얼마인지 <b>금액으로도</b> 같이 보여드릴게요.',g);
+  await c2card(sliderCard({label:'내 기대 연간 상승률',min:0,max:100,value:Math.round(beRate*10)+20,
+    fmtVal:v=>{const e=v/10;return e+'% · 연 '+fmtMan(Math.round(A.salePrice*e/100));},
+    compute:exp=>{const e=exp/10, gainKeep=Math.round(A.salePrice*e/100);
+      return {big:'손익분기 연 '+beRate+'% · '+fmtMan(holdCost1y),sub:'이 이상 올라야 보유가 이득',
+        rows:'<span>내 기대: '+e+'% = 연 '+fmtMan(gainKeep)+'</span><span>손익분기: 연 '+fmtMan(holdCost1y)+'</span>',
+        verd:e>=beRate?{cls:'rc-good',txt:'✓ 기대 연 '+fmtMan(gainKeep)+' ≥ 손익분기 '+fmtMan(holdCost1y)+' → 보유가 유리'}:{cls:'rc-bad',txt:'기대 연 '+fmtMan(gainKeep)+' < 손익분기 '+fmtMan(holdCost1y)+' → 매도가 유리'},
+        snap:{scnId:'decide14',scnName:'손익분기 시뮬',headline:'손익분기 '+beRate+'%('+fmtMan(holdCost1y)+') vs 기대 '+e+'%('+fmtMan(gainKeep)+') → '+(e>=beRate?'보유':'매도'),param:'기대 '+e+'% · 연 '+fmtMan(gainKeep)}};}}),g);
+  await c2simGate(g);
+  await c2bot('시세 전망은 본인 가정이에요. 투자 권유가 아니라, 결정 기준을 숫자로 잡아드리는 거예요.',g);
+  await c2traps(sc,g); await c2actions(sc,g); await c2finish(sc,g);
+};
+SCRIPT.temp2=async(sc,g)=>{
+  await intro(sc,g);
+  const dl=addMonths(A.otherAcq.y,A.otherAcq.m,36);
+  await c2bot('신규 주택을 <b>'+fmtYM(A.otherAcq.y,A.otherAcq.m)+'</b>에 취득하셨으니, 종전 주택은 <b>'+fmtYM(dl.y,dl.m)+'</b>까지 파셔야 비과세예요.',g);
+  await c2bot('매도 시점을 옮겨보며 기한 안에 드는지 확인해보세요.',g);
+  await c2card(sliderCard({label:'매도 시점',min:0,max:48,value:0,fmtVal:v=>{const sd=addMonths(NOWY,NOWM,v);return fmtYM(sd.y,sd.m);},
+    compute:v=>{const sd=addMonths(NOWY,NOWM,v);const within=ymNum(sd.y,sd.m)<=ymNum(dl.y,dl.m);
+      return {big:fmtYM(dl.y,dl.m)+'까지',sub:'일시적 2주택 처분 기한',
+        rows:'<span>신규 취득 '+fmtYM(A.otherAcq.y,A.otherAcq.m)+'</span><span>+3년</span>',
+        verd:within?{cls:'rc-good',txt:'✓ '+fmtYM(sd.y,sd.m)+' 매도 — 기한 내, 비과세 가능'}:{cls:'rc-bad',txt:fmtYM(sd.y,sd.m)+' 매도 — 기한 초과, 일반 과세'},
+        snap:{scnId:'temp2',scnName:'일시적2주택 시뮬',headline:fmtYM(sd.y,sd.m)+' 매도 → '+(within?'비과세':'과세'),param:'매도 '+fmtYM(sd.y,sd.m)}};}}),g);
+  await c2simGate(g);
+  await c2traps(sc,g); await c2actions(sc,g); await c2finish(sc,g);
+};
+SCRIPT.gift=async(sc,g)=>{
+  await intro(sc,g);
+  const cy=(A.giftDate&&A.giftDate.y>=2023)?10:5;
+  const dl=addMonths(A.giftDate.y,A.giftDate.m,cy*12);
+  await c2bot('증여받으신 게 <b>'+fmtYM(A.giftDate.y,A.giftDate.m)+'</b>이라 기준 기간은 <b>'+cy+'년</b>이에요. <b>'+fmtYM(dl.y,dl.m)+'</b> 이후에 파시면 안전해요.',g);
+  await c2card(sliderCard({label:'매도 시점',min:0,max:120,value:Math.max(0,monthsBetween({y:NOWY,m:NOWM},dl)+1),fmtVal:v=>{const sd=addMonths(NOWY,NOWM,v);return fmtYM(sd.y,sd.m);},
+    compute:v=>{const sd=addMonths(NOWY,NOWM,v);const past=ymNum(sd.y,sd.m)>ymNum(dl.y,dl.m);
+      return {big:fmtYM(dl.y,dl.m)+' 이후 안전',sub:'이월과세 기준일',
+        rows:'<span>증여일 '+fmtYM(A.giftDate.y,A.giftDate.m)+'</span><span>+'+cy+'년</span>',
+        verd:past?{cls:'rc-good',txt:'✓ 기준 '+cy+'년 경과 — 받은 가격 기준으로 계산'}:{cls:'rc-bad',txt:'아직 '+cy+'년 안 — 증여자 취득가로 계산돼 세금↑'},
+        snap:{scnId:'gift',scnName:'이월과세 시뮬',headline:fmtYM(sd.y,sd.m)+' 매도 → '+(past?'안전':'주의'),param:'매도 '+fmtYM(sd.y,sd.m)}};}}),g);
+  await c2simGate(g);
+  await c2traps(sc,g); await c2actions(sc,g); await c2finish(sc,g);
+};
+SCRIPT.price12=async(sc,g)=>{
+  await intro(sc,g);
+  const base=A.salePrice;
+  await c2bot('매도 희망가를 움직여보면 12억을 넘는 순간부터 세금이 어떻게 시작되는지 보여드려요.',g);
+  await c2card(sliderCard({label:'매도 희망가',min:Math.round(base*0.7),max:Math.round(base*1.5),step:1000,value:base,fmtVal:v=>fmtMan(v),
+    compute:p=>{const sv=A.salePrice;A.salePrice=p;const alt=calc();A.salePrice=sv;const net=p-alt.total-A.saleExp;
+      return {big:fmtMan(net),sub:'세후 실수령 예상액',
+        rows:'<span>세금: '+fmtMan(alt.total)+'</span><span>세후 비율: '+Math.round(net/p*100)+'%</span>',
+        verd:p<=120000?{cls:'rc-good',txt:'✓ 12억 이하 — 세금 0원'}:{cls:'rc-warn',txt:'12억 초과분 과세 — 세금 '+fmtMan(alt.total)},
+        snap:{scnId:'price12',scnName:'매도가 시뮬',headline:fmtMan(p)+' 매도 → 실수령 '+fmtMan(net),param:'매도가 '+fmtMan(p)}};}}),g);
+  await c2simGate(g);
+  await c2traps(sc,g); await c2actions(sc,g); await c2finish(sc,g);
+};
+SCRIPT.guard=async(sc,g)=>{
+  await intro(sc,g);
+  const broken=calc({forceTaxable:true});
+  await c2bot('지금은 0원이지만, 매도 완료 전에 조건이 하나라도 깨지면 <b>'+fmtMan(broken.total)+'</b>이 그대로 살아나요.',g);
+  await c2bot('어떤 조건이 가장 걱정되세요?',g);
+  const pick=await c2chips([{label:'거주 유지 자신 없음',value:'live'},{label:'세대원이 집 살 수도',value:'house'},{label:'호가 12억 넘길 수도',value:'price'},{label:'그냥 전체 보기',value:'all'}],g);
+  const msg={live:'양도일까지 전입을 유지하셔야 해요. 잠깐의 전출도 거주를 끊어요.',house:'같이 사는 가족이 집·분양권을 취득하면 1세대 1주택이 깨져요.',price:'매도가가 12억을 넘으면 초과분부터 과세가 시작돼요.',all:'아래 세 가지를 모두 지키셔야 0원이 유지돼요.'}[pick];
+  await c2bot(msg,g);
+  await c2card(resCard('조건이 깨지면',fmtMan(broken.total),
+    [['지금 (조건 유지)','0원'],['조건 깨질 경우',fmtMan(broken.total)]],
+    {cls:'rc-bad',txt:'0원은 받는 게 아니라 양도일까지 지키는 거예요'}),g);
+  curSimSnap={scnId:'guard',scnName:'비과세 지키기',headline:'조건 깨지면 '+fmtMan(broken.total),param:pick};
+  await c2traps(sc,g); await c2actions(sc,g); await c2finish(sc,g);
+};
+SCRIPT.decide12=async(sc,g)=>{
+  await intro(sc,g);
+  await c2bot('계속 세를 줄 경우와 지금 팔 경우를 비교하려면 임대 조건이 필요해요. 받으실 보증금을 알려주세요.',g);
+  A.sim=A.sim||{}; A.sim.deposit=await c2num({hint:'보증금 (만원)',ph:'예: 50000',min:0},g);
+  await c2bot('월세는 얼마인가요?',g);
+  A.sim.rentMonthly=await c2num({hint:'월세 (만원)',ph:'예: 150',min:0},g);
+  await c2bot('대출 이자도 반영할게요. 대출 잔액이 있으면 알려주세요. 없으면 0을 입력하세요.',g);
+  A.sim.loanBal=await c2num({hint:'대출 잔액 (만원)',ph:'없으면 0',min:0},g);
+  if(A.sim.loanBal>0){await c2bot('금리는 연 몇 %인가요?',g);A.sim.loanRate=await c2num({hint:'연 금리 (%)',ph:'예: 4.3',fmt:v=>v+'%',min:0,decimal:true},g);}else A.sim.loanRate=0;
+  await c2bot('이제 <b>보유·임대 기간</b>을 옮겨보며, 임대수익·대출이자·재산세·매도세 변화까지 전부 반영한 순손익을 시점별로 보여드릴게요. (기준: 지금 파는 것 대비)',g);
+  await c2card(sliderCard({label:'보유·임대 기간',min:1,max:60,value:12,
+    fmtVal:v=>{const sd=addMonths(A.saleDate.y,A.saleDate.m,v);return v+'개월 · '+fmtYM(sd.y,sd.m);},
+    compute:v=>{const sd=addMonths(A.saleDate.y,A.saleDate.m,v);
+      const rentInc=Math.round((A.sim.rentMonthly||0)*v);
+      const interest=Math.round((A.sim.loanBal||0)*((A.sim.loanRate||0)/100)*(v/12));
+      const propTax=Math.round(A.salePrice*0.0008*(v/12));
+      const taxAtT=calc({saleDate:sd,resOverride:A.resMonthsNow}).total; // 임대 중 거주 정지 반영
+      const taxSave=A.R.total-taxAtT;
+      const net=rentInc-interest-propTax+taxSave;
+      let why;
+      if(taxSave>1) why='이 시점엔 <b>매도세도 '+fmtMan(taxSave)+' 줄어</b>(보유 길어져 공제↑) 임대에 유리해요.';
+      else if(taxSave<-1) why='이 구간엔 매도세가 오히려 <b>'+fmtMan(-taxSave)+' 늘 수 있어요.</b>';
+      else why='매도세 변화는 거의 없어요. 임대수입에서 이자·재산세를 뺀 게 순손익이에요.';
+      return {big:(net>=0?'+':'−')+fmtMan(Math.abs(net)),sub:fmtYM(sd.y,sd.m)+'까지 임대 후 매도 시 순손익 (지금 매도 대비)',
+        rows:'<span>임대수입 +'+fmtMan(rentInc)+'</span><span>대출이자 −'+fmtMan(interest)+'</span></div><div class="r"><span>재산세 등 −'+fmtMan(propTax)+'</span><span>매도세 '+(taxSave>=0?'절감 +':'증가 −')+fmtMan(Math.abs(taxSave))+'</span></div><div class="rwhy">💡 '+why,
+        verd:net>0?{cls:'rc-good',txt:'✓ '+v+'개월('+fmtYM(sd.y,sd.m)+') 임대 후 매도가 지금보다 +'+fmtMan(net)}:{cls:'rc-bad',txt:v+'개월 임대해도 지금 매도가 '+fmtMan(-net)+' 더 나아요'},
+        snap:{scnId:'decide12',scnName:'임대 vs 매도',headline:fmtYM(sd.y,sd.m)+'까지 임대 → 순'+(net>=0?'이득 ':'손해 ')+fmtMan(Math.abs(net)),param:v+'개월 임대 · 월세 '+fmtMan(A.sim.rentMonthly||0)}};}}),g);
+  await c2simGate(g);
+  await c2bot('임대로 돌리면 그동안 <b>거주 요건이 멈춰요.</b> 위 계산은 그 정지를 반영했어요 — 비과세를 노리신다면 꼭 같이 보셔야 해요. (보증금은 돌려줄 돈이라 순수익에서 뺐어요)',g);
+  await c2traps(sc,g); await c2actions(sc,g); await c2finish(sc,g);
+};
+SCRIPT.expenses=async(sc,g)=>{
+  await intro(sc,g);
+  await c2bot('필요경비는 영수증이 있는 만큼 인정돼요. 인테리어로 <b>가치를 높인 공사</b>(새시 교체·발코니 확장 등)를 하신 적 있어요?',g);
+  const cap=await c2chips([{label:'있어요',value:1},{label:'없어요',value:0},{label:'잘 모르겠어요',value:2}],g);
+  if(cap===1){await c2bot('대략 얼마 정도 쓰셨어요? 증빙이 있는 금액만요.',g);
+    const amt=await c2num({hint:'자본적 지출 (만원)',ph:'예: 1000',min:0},g);
+    const sv=A.acqExp;A.acqExp=sv+amt;const alt=calc();A.acqExp=sv;
+    await c2bot('영수증을 챙기시면 그만큼 세금이 줄어요.',g);
+    await c2card(resCard('영수증 챙겼을 때 효과',fmtMan(Math.max(0,A.R.total-alt.total))+' 절감',
+      [['지금 세금',fmtMan(A.R.total)],['경비 +'+fmtMan(amt)+' 인정 시',fmtMan(alt.total)]],
+      {cls:'rc-good',txt:'✓ 세금계산서·카드 명세를 모아두세요'}),g);
+    curSimSnap={scnId:'expenses',scnName:'필요경비 점검',headline:'경비 +'+fmtMan(amt)+' → '+fmtMan(Math.max(0,A.R.total-alt.total))+' 절감',param:'자본적 지출 '+fmtMan(amt)};
+  }else{await c2bot('도배·장판 같은 단순 수리는 인정되지 않지만, 새시·확장·보일러 교체 등은 인정돼요. 과거 공사 기록을 한 번 찾아보시는 걸 권해요.',g);
+    curSimSnap={scnId:'expenses',scnName:'필요경비 점검',headline:'추가 경비 확인 권장',param:cap===2?'확인 필요':'자본적 지출 없음'};}
+  await c2traps(sc,g); await c2actions(sc,g); await c2finish(sc,g);
+};
+SCRIPT._generic=async(sc,g)=>{
+  await intro(sc,g);
+  const c=CONTENT[sc.id]||{};
+  if(c.how)await c2bot(c.how,g);
+  await c2bot('핵심 비교부터 보여드릴게요.',g);
+  await c2card(resCard('이 시나리오의 효과',sc.save?fmtMan(sc.save)+' 차이':'결정 기준 정리',
+    sc.cmp.map(r=>[r[0],r[1]]),sc.save?{cls:'rc-warn',txt:sc.loss}:null),g);
+  curSimSnap={scnId:sc.id,scnName:sc.name,headline:sc.loss.slice(0,40),param:sc.urgency||'-'};
+  await c2traps(sc,g); await c2actions(sc,g); await c2finish(sc,g);
+};
+SCRIPT.order=SCRIPT._generic;
+SCRIPT.household=SCRIPT._generic;
+SCRIPT.landlord=SCRIPT._generic;
+SCRIPT.lossuse=SCRIPT._generic;
+
+/* ================= 아카이브 ================= */
+const AKEY='seggom_arch_v1';
+let ARCH=[];
+try{ARCH=JSON.parse(localStorage.getItem(AKEY)||'[]');}catch(e){ARCH=[];}
+function saveCurrentSim(){
+  if(!curSimSnap){alert('저장할 시뮬레이션이 없어요');return;}
+  if(!A.syncId)A.syncId=genSync();
+  const rec=Object.assign({ts:Date.now()},curSimSnap);
+  ARCH.unshift(rec);
+  try{localStorage.setItem(AKEY,JSON.stringify(ARCH.slice(0,50)));}catch(e){}
+  seggomSyncSaveSim(rec); // 서버에도 보관 → 다른 기기에서 링크로 복원
+  track('sim_save',{scenario:(curSimSnap&&curSimSnap.scnId)||''});
+  alert('저장됐어요. 마이페이지(☰)에서 다시 볼 수 있어요.');
+}
+function delArch(i){const rec=ARCH[i];ARCH.splice(i,1);try{localStorage.setItem(AKEY,JSON.stringify(ARCH));}catch(e){}if(rec)seggomSyncDelSim(rec.ts);openMyPage();}
+function whenStr(ts){const d=new Date(ts);return (d.getMonth()+1)+'월 '+d.getDate()+'일 '+String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0');}
+function openMyPage(){
+  const b=$('#s12Body');
+  let h='<div class="mp-hd"><h2>마이페이지</h2></div>'
+    +'<div class="paid-banner">✓ 전체 절세 시나리오 이용 중</div>';
+  /* ── 리텐션: D-Day 카운트다운 + 세법 변동 알림 훅 ── */
+  const ddayS=A.S.find(s=>s.id==='dday');
+  if(A.currentlyLiving&&ddayS){
+    const lack=Math.max(0,24-A.resMonthsNow);
+    if(lack>0){const dd=addMonths(NOWY,NOWM,lack);
+      h+='<div class="dday-card"><div class="dd-l">거주 2년까지</div>'
+        +'<div class="dd-n">D-'+lack+'<span>개월</span></div>'
+        +'<div class="dd-s">'+fmtYM(dd.y,dd.m)+' 충족 예상 · 채우면 최대 '+fmtMan(ddayS.save||0)+' 절세</div>'
+        +'<button class="dd-alarm'+(A._alarm?' on':'')+'" onclick="toggleAlarm()">'+(A._alarm?'✓ 알림 신청됨 · 준비되면 안내드려요':'🔔 거주 2년 임박 알림 신청하기')+'</button></div>';
+    }
+  }
+  h+='<div class="mp-prop"><div class="addr">'+A.address.road+'</div>'
+    +'<div style="margin-top:4px">예상 양도세 <span class="tax">'+fmtMan(A.R.total)+'</span> · 매도 희망가 '+fmtMan(A.salePrice)+'</div>'
+    +'<div style="color:var(--sub);font-size:14px;margin-top:4px">절세 플랜 '+A.S.length+'개 이용 가능</div></div>';
+  h+='<div class="mp-alert"><div><b>세법 변동을 계속 지켜보고 있어요</b><br><span>최근에도 규제지역·다주택 중과 기준이 자주 바뀌었어요. 변동 시 이 물건 기준으로 다시 확인해드리는 알림을 준비 중이에요.</span></div></div>';
+  h+='<div class="mp-sec-t">내 시뮬레이션 ('+ARCH.length+')</div>';
+  if(!ARCH.length){
+    h+='<div class="mp-empty">아직 저장한 시뮬레이션이 없어요.<br>시나리오에서 조건을 바꿔본 뒤 <b>＋ 이 결과 저장</b>을 누르면<br>이곳에 모여요. 팔까 말까 고민을 한곳에 쌓아보세요.</div>';
+  }else{
+    ARCH.forEach((a,i)=>{
+      h+='<div class="arch-card"><div class="ac-top"><span class="ac-scn">'+a.scnName+'</span><span class="ac-when">'+whenStr(a.ts)+'</span></div>'
+        +'<div class="ac-head">'+a.headline+'</div>'
+        +'<div class="ac-param">조건: '+a.param+'</div>'
+        +'<div class="ac-act"><button onclick="reopenArch(\''+a.scnId+'\')">시나리오 열기</button><button class="del" onclick="delArch('+i+')">삭제</button></div></div>';
+    });
+  }
+  h+='<div style="margin-top:18px"><button class="btn-ghost" onclick="show(\'s11\')">← 시나리오로 돌아가기</button></div>';
+  h+='<div class="mp-foot-note">※ 저장한 시뮬레이션 기록은 이 기기에 보관돼요. 브라우저 데이터를 지우면 함께 삭제됩니다.</div>';
+  b.innerHTML=h;show('s12');
+}
+function reopenArch(id){const i=A.S.findIndex(s=>s.id===id);if(i<0){alert('이 시나리오는 현재 조건에 해당하지 않아요');return;}s11Cur=i;s11From='s12';renderS11();show('s11');}
+function toggleAlarm(){
+  if(!A._alarm&&!A.email){ alert('알림 신청은 결과 이메일을 남기신 뒤에 가능해요.'); return; }
+  A._alarm=!A._alarm;
+  if(A._alarm){
+    seggomSave('free_email',{email:A.email,alarm:'dday',address:A.address&&A.address.road,tax:fmtMan(A.R.total),
+      context:{addr:A.address&&A.address.road,tax:A.R.total,scenarios:(A.S||[]).length}});
+  }
+  openMyPage();
+}
+
+/* ================= boot / resume ================= */
+function resetAll(){if(confirm('처음부터 다시 시작할까요? 입력값이 모두 삭제돼요.')){localStorage.removeItem(SKEY);PAID=false;location.href=location.origin+location.pathname;}}
+$('#startBtn').onclick=()=>{track('start_calc');localStorage.removeItem(SKEY);answerLog=[];flow()};
+(function(){
+  try{
+    const s=JSON.parse(localStorage.getItem(SKEY)||'null');
+    if(s&&s.log&&s.log.length>1&&Date.now()-s.at<30*864e5){
+      const rb=$('#resumeBtn');rb.style.display='block';
+      rb.onclick=()=>{replayQueue=s.log.slice();answerLog=s.log.slice();REPLAY=true;flow()};
+    }
+  }catch(e){}
+})();
+document.querySelectorAll('.modal').forEach(m=>m.addEventListener('click',e=>{if(e.target===m&&m.id!=='addrModal')m.classList.remove('on')}));
+</script>
+</body>
+</html>
