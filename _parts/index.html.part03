@@ -1,0 +1,491 @@
+    +'<p>서비스는 계산 결과의 정확성·완전성을 보증하지 않으며, 이용자가 결과를 신뢰하여 내린 판단·행위의 결과에 대해서는 책임을 지지 않습니다. 다만 서비스 운영자의 <b>고의 또는 중대한 과실</b>로 이용자에게 손해가 발생한 경우에는 관계 법령에 따라 책임을 부담합니다.</p>'
+    +'<h4>제4조 (베타 운영 및 이용료)</h4>'
+    +'<p>현재 서비스는 베타 단계로 무료 제공되며, 기능·구성은 사전 고지 없이 변경되거나 중단될 수 있습니다. 향후 유료 기능이 도입되는 경우, 결제·환불 및 청약철회에 관한 사항은 관련 법령(전자상거래법 등)에 따라 별도로 고지합니다.</p>'
+    +'<h4>제5조 (이용자의 의무)</h4>'
+    +'<p>이용자는 정확한 정보를 입력해야 하며, 부정확한 입력으로 인한 계산 오차의 책임은 이용자에게 있습니다.</p>'
+    +'<h4>제6조 (지식재산권)</h4>'
+    +'<p>서비스의 화면·콘텐츠·계산 로직에 대한 권리는 서비스 운영자에게 있으며, 무단 복제·배포를 금합니다.</p>'
+    +'<h4>제7조 (문의)</h4>'
+    +'<p>이메일: sekkomi.com@gmail.com</p>'
+    +'<div class="asof">시행일: {ASOF}</div>']
+};
+function openLegal(k){const d=LEGAL[k];if(!d)return;$('#legalTitle').textContent=d[0];$('#legalBody').innerHTML=d[1].replace(/\{ASOF\}/g,LAW_ASOF);$('#legalModal').classList.add('on');const s=document.querySelector('#legalModal .sheet');if(s)s.scrollTop=0;}
+
+/* progress */
+let pCount=0;
+function prog(){pCount++;$('#pfill').style.width=Math.min(95,Math.round(pCount/15*100))+'%'}
+
+/* 주택 매매 중개보수 — 법정 상한요율 (만원 입력→만원 반환) */
+function brokerFee(priceMan){
+  const p=priceMan*10000; // 원
+  let rate,cap=Infinity;
+  if(p<5000*10000){rate=0.006;cap=25*10000;}
+  else if(p<20000*10000){rate=0.005;cap=80*10000;}
+  else if(p<90000*10000){rate=0.004;}
+  else if(p<120000*10000){rate=0.005;}
+  else if(p<150000*10000){rate=0.006;}
+  else {rate=0.007;}
+  return Math.round(Math.min(p*rate,cap)/10000); // 만원
+}
+
+/* 조정대상지역 간이 판정 (매트릭스 v0 근사) */
+function isAdj(region,y,m){
+  const t=ymNum(y,m);
+  const gangnam=/강남|서초|송파|용산/.test(region);
+  const seoul=/서울/.test(region);
+  const gyeonggiCore=/과천|분당|하남|광명/.test(region);
+  const newJul26=/동탄|기흥|구리/.test(region); // 2026.06.30 지정, 효력 2026.07.01
+  if(gangnam)return t>=ymNum(2017,9);
+  if(seoul)return (t>=ymNum(2017,9)&&t<ymNum(2023,1))||t>=ymNum(2025,10);
+  if(gyeonggiCore)return (t>=ymNum(2017,9)&&t<ymNum(2023,1))||t>=ymNum(2025,10);
+  if(newJul26)return t>=ymNum(2026,7); // 효력 2026.07.01부터 (월 단위 근사)
+  return false;
+}
+
+/* ================= flow ================= */
+async function flow(){
+  show('s03');
+  /* S02 인사 */
+  await bot('안녕하세요. 세꼼이에요.');
+  await bot('집 파실 때 세금, 생각보다 줄일 수 있어요.');
+  await bot('3분만 시간 주시면 같이 봐드릴게요.');
+  await chips([{label:'시작하기',value:'start'}]);
+
+  /* Q1 주소 */
+  await bot('좋아요. 시작해볼게요.');
+  await bot('먼저 매도하실 주택 주소부터 알려주세요.');
+  const adr=await(async()=>{
+    const v=await chips([{label:'주소 검색하기',value:'search'}]).then(async()=>await address());
+    return v;
+  })();
+  A.address=adr;prog();
+
+  /* Q1.1 거주자 */
+  const regShort=adr.region.replace('서울 ','').replace('경기 ','');
+  await bot(/강남|서초|송파/.test(adr.region)?regShort+' '+adr.tag+'이시군요.':regShort+' 지역이시군요.');
+  await bot('한 가지 미리 확인할게요. 어디에 살고 계신지에 따라 세금 혜택이 달라져서요.');
+  await bot('지금 한국에 살고 계세요? ?icon:nonres');
+  A.isResident=await chips([{label:'네, 한국에 살아요',value:true},{label:'아니요, 외국에 살아요 ?icon:nonres',value:false}]);prog();
+  await bot(A.isResident?'좋아요. 다음 질문으로 갈게요.':'외국에 계시는군요. 비과세 적용이 제한될 수 있는데, 결과에서 자세히 봐드릴게요.');
+
+  /* Q1a 유형 */
+  await bot('한 가지만 확인할게요. 주택 종류에 따라 세금이 달라져서요.');
+  await bot('어떤 종류의 주택이에요?');
+  A.ptype=await chips([
+    {label:'아파트',value:'apartment'},{label:'오피스텔 ?icon:offi',value:'officetel'},
+    {label:'다세대·연립',value:'multi'},{label:'단독주택',value:'detached'},{label:'상가주택 ?icon:mixed',value:'mixed'}
+  ]);prog();
+  if(A.ptype==='officetel'){
+    await bot('오피스텔이시군요.');
+    await bot('주거용으로 쓰셨는지 확인할게요. 양도세 계산이 달라져요.');
+    await bot('어떻게 사용 중이셨나요?');
+    A.offiUse=await chips([{label:'주거용 ?icon:offi_r',value:'res'},{label:'업무용 ?icon:offi_b',value:'biz'}]);
+    await bot(A.offiUse==='res'?'주거용으로 사용하셨군요. 주택으로 보고 계산할게요.':'업무용이셨군요. 주택이 아닌 일반 부동산으로 계산해요.');
+  }else if(A.ptype==='mixed'){
+    await bot('상가주택이시군요.');
+    await bot('주택 부분과 상가 부분 비율에 따라 세금이 달라져요.');
+    await bot('전체 면적 중 주거 부분 비율이 어떻게 되나요?');
+    const r=await money({hint:'주거 비율을 %로 입력 (1~99)',placeholder:'예: 60',min:1,max:99,fmt:v=>v+'%',rangeMsg:'1~99 사이 숫자로 입력해주세요'});
+    A.resRatio=typeof r==='number'?r:60;
+    await bot('주거 부분이 '+A.resRatio+'%이시군요. '+(A.resRatio>=50?'그 부분에 1세대 1주택 비과세 혜택을 적용해드릴게요.':'상가가 더 큰 구조네요. 그 비율만큼만 주택 혜택이 적용돼요.'));
+  }else{
+    await bot({apartment:'아파트시군요.',multi:'다세대·연립이시군요.',detached:'단독주택이시군요.'}[A.ptype]);
+  }
+
+  /* Q2 취득일 */
+  await bot('이 집은 언제 사셨나요? 보유 기간이 세금에 큰 영향을 줘요.');
+  A.acqDate=await dateYM({minY:1990,maxY:NOWY,defY:2018,defM:3,forget:true,onForget:async()=>{
+    await bot('괜찮아요. 오래된 집은 정확히 기억하기 어렵죠.');
+    await bot('대략적인 시기만 알려주셔도 결과 보여드릴게요.');
+    await bot('더 정확히 보고 싶으시면 등기부등본을 확인해보세요.');
+  }});prog();
+  const holdM=monthsBetween(A.acqDate,{y:NOWY,m:NOWM});
+  const holdY=Math.floor(holdM/12);
+  let r2;
+  if(holdY>=15)r2='와, 15년 넘게 보유하셨네요. 장기보유공제가 최대치로 적용될 수 있어요.';
+  else if(holdY>=10)r2='10년 넘게 보유하셨네요. 장기보유공제 구간에 깊이 들어가셨어요.';
+  else if(holdY>=5)r2='오, '+holdY+'년 가까이 보유하셨네요. 장기보유 구간에 들어가셨어요.';
+  else if(holdY>=3)r2=holdY+'년 보유하셨군요. 장기보유공제 적용 시작 구간이에요.';
+  else if(holdY>=2)r2='보유 '+holdY+'년차네요. 1세대 1주택 비과세 보유 요건은 채우셨어요.';
+  else if(holdY>=1)r2='보유 기간이 비교적 짧으시네요. 매도 시점 신중히 보셔야 해요.';
+  else r2='취득한 지 얼마 안 되셨네요. 단기보유 중과를 확인해봐야겠어요.';
+  await bot(r2);
+  A.acqAdj=isAdj(adr.region,A.acqDate.y,A.acqDate.m);
+  if(A.acqAdj)await bot('참고로 '+fmtYM(A.acqDate.y,A.acqDate.m)+'에 '+regShort+'는 조정대상지역이라 거주 요건도 같이 보셔야 해요. 거주 부분도 곧 여쭤볼게요.');
+
+  /* Q3 취득방법 */
+  await bot('이제 이 집을 어떻게 갖게 되셨는지 알려주세요. 증여나 상속이면 추가로 확인할 게 있어요.');
+  await bot('이 집은 어떻게 보유하게 되셨나요?');
+  A.method=await chips([{label:'직접 매수',value:'purchase'},{label:'증여 ?icon:gift',value:'gift'},{label:'상속',value:'inheritance'}]);prog();
+
+  if(A.method==='gift'){
+    await bot('증여로 받으셨군요. 이월과세라는 게 있어서 몇 가지 더 여쭤볼게요.');
+    await bot('언제 증여받으셨는지 알려주세요. 이월과세 기준 기간을 확인하려고요.');
+    A.giftDate=await dateYM({minY:1990,maxY:NOWY,defY:A.acqDate.y,defM:A.acqDate.m,forget:true,onForget:async()=>{
+      await bot('괜찮아요. 대략적인 시기만 알려주셔도 결과 보여드릴게요.');
+    }});
+    const ge=monthsBetween(A.giftDate,{y:NOWY,m:NOWM});
+    const carryY=A.giftDate.y>=2023?10:5; // 이월과세: 2023.1.1 이후 증여분 10년, 이전 5년
+    await bot(ge<carryY*12?'증여받은 지 '+carryY+'년이 안 되셨네요. 이월과세 회피 시나리오가 있을 수 있어요.':'증여받은 지 '+carryY+'년이 지나셨네요. 이월과세 부담은 비교적 가벼우실 거예요.');
+    await bot('증여받으셨을 때 평가액을 알려주세요. 양도세 계산에서 취득가로 써요.');
+    const gv=await money({hint:'증여 평가액 (만원)',placeholder:'예: 60000'});
+    A.acqPrice=typeof gv==='number'?gv:60000;
+  }else if(A.method==='inheritance'){
+    await bot('상속으로 받으셨군요. 상속개시일과 그때 평가액에 따라 계산이 달라져요.');
+    await bot('먼저 상속개시일을 알려주세요. 돌아가신 분의 사망일이에요. 보유기간은 이 날짜부터 계산해요.');
+    A.inhDate=await dateYM({minY:1990,maxY:NOWY,defY:A.acqDate.y,defM:A.acqDate.m,forget:true,onForget:async()=>{
+      await bot('괜찮아요. 사망신고 기록이나 상속 관련 서류를 보시면 확인하실 수 있어요.');
+    }});
+    A.acqDate=A.inhDate; // 보유기간 기준
+    await bot('이제 상속받으셨을 때 평가액을 알려주세요. 양도세 계산에서 취득가로 써요.');
+    const iv=await money({hint:'상속 평가액 (만원)',placeholder:'예: 70000',chips:[{label:'정확히 모르겠어요',value:'unknown'}]});
+    if(typeof iv==='number')A.acqPrice=iv;
+    else{await bot('괜찮아요. 상속세 신고하셨다면 그때 평가액을 보시면 돼요. 일단 대략적인 시세로 알려주세요.');const iv2=await money({hint:'대략적인 당시 시세 (만원)',placeholder:'예: 70000'});A.acqPrice=typeof iv2==='number'?iv2:70000}
+  }else{
+    await bot('직접 매수셨군요. 그때 부담하신 취득세·중개수수료·인테리어 영수증을 잘 챙기시면 나중에 경비로 빠질 수 있어요.');
+    await bot('그때 얼마에 사셨는지 알려주세요.');
+    const pv=await money({hint:'취득가 (만원)',placeholder:'예: 78000',chips:[{label:'잘 모르겠어요 (환산취득가) ?icon:conv',value:'converted'}]});
+    if(typeof pv==='number')A.acqPrice=pv;
+    else{
+      A.converted=true;
+      await bot('괜찮아요. 양도가와 기준시가로 추정해서 환산취득가액으로 계산해드릴게요.');
+      await bot('실제 신고 때는 매매계약서나 등기부 같은 정확한 자료가 필요할 수 있어요.');
+      A.acqPrice=null; // 매도가의 60%로 추후 추정
+    }
+  }
+  prog();
+
+  /* Q4a 부대비용 — 취득방법별 분기 (v1.6: 증여·상속은 취득세율·항목이 다름) */
+  if(A.acqPrice)await bot(fmtMan(A.acqPrice)+'에 '+(A.method==='purchase'?'매수하셨네요.':'평가되셨네요.'));
+  const isPur=A.method==='purchase';
+  const taxRate=A.method==='gift'?0.035:A.method==='inheritance'?0.03:0.02; // 증여 ~3.5% / 상속 ~3% / 매수 ~2%
+  if(isPur){
+    await bot('잠깐, 그때 같이 들어간 부대비용도 챙겨드릴게요. 세금을 줄일 수 있어요.\nℹ️ 영수증·세금계산서가 있는 비용만 인정돼요.');
+  }else{
+    await bot((A.method==='gift'?'증여':'상속')+'받을 때도 취득세와 등기 비용이 들었을 거예요. 그것도 경비로 빠져요.\nℹ️ 영수증·세금계산서가 있는 비용만 인정돼요.');
+    await bot('참고로 '+(A.method==='gift'?'증여세':'상속세')+' 자체는 경비로 인정되지 않아요. 취득세·등기 비용·가치 높인 인테리어가 인정 대상이에요.');
+  }
+  await bot('어떻게 입력하실래요?');
+  const mode=await chips([{label:'한 번에 합쳐서',value:'combined'},{label:'항목별로 정확하게',value:'items'},{label:'잘 모르겠어요',value:'auto'}]);prog();
+  A.expMode=mode;
+  const baseP=A.acqPrice||50000;
+  if(mode==='combined'){
+    await bot('좋아요. 합쳐서 입력해주세요.');
+    await bot(isPur?'취득세·중개수수료·법무비·인테리어 합쳐서 얼마 정도였어요? ?icon:expsum':'취득세·등기비·인테리어 합쳐서 얼마 정도였어요? ?icon:expsum');
+    const cv=await money({hint:'부대비용 합계 (만원)',placeholder:'예: 3000',min:0});
+    A.acqExp=typeof cv==='number'?cv:Math.round(baseP*(taxRate+0.005));
+  }else if(mode==='auto'){
+    await bot('괜찮아요. 자동으로 추정해드릴게요. 추정 정확도를 높이려면 한 가지만 더 알려주세요.');
+    await bot('그때 영수증 가지고 계세요?');
+    const rec=await chips([{label:'다 있어요',value:'all'},{label:'일부만 있어요',value:'partial'},{label:'없거나 모르겠어요',value:'none'}]);
+    A.receipt=rec;
+    const pct=isPur?{all:0.025,partial:0.015,none:0.02}[rec]:{all:taxRate+0.006,partial:taxRate+0.003,none:taxRate}[rec];
+    A.acqExp=Math.round(baseP*pct);
+    const m={all:'좋아요. 일반적인 비율로 약 '+fmtMan(A.acqExp)+' 정도로 잡아드릴게요.',
+             partial:'취득세는 정부 기록으로 추적 가능하니까 포함하고, 나머지는 보수적으로 잡아 약 '+fmtMan(A.acqExp)+'으로 추정할게요.',
+             none:'괜찮아요. 취득세만 정부 기록으로 약 '+fmtMan(A.acqExp)+' 잡아드릴게요. 다른 비용은 신고 때 영수증 있으면 더 절세 가능해요.'}[rec];
+    await bot(m);
+  }else{
+    await bot('좋아요. 하나씩 여쭤볼게요. 정확하게 챙겨드릴게요.');
+    const estTax=Math.round(baseP*taxRate), estBro=brokerFee(baseP), estLegal=70;
+    await bot('먼저 취득세요. '+(isPur?fmtMan(baseP)+' 매수면 보통 약 '+fmtMan(estTax)+'이에요.':(A.method==='gift'?'증여':'상속')+' 취득은 평가액 기준 보통 약 '+fmtMan(estTax)+'이에요.')+' 정확한 금액 아시면 알려주시고, 아니면 추정값 그대로 가셔도 돼요.');
+    let v=await money({hint:'취득세 (만원)',placeholder:String(estTax),min:0,chips:[{label:'잘 모르겠어요 (추정값 사용)',value:'est'}]});
+    A.e1=typeof v==='number'?v:estTax;
+    if(isPur){
+      await bot('중개수수료는 법정 요율 기준 약 '+fmtMan(estBro)+' 정도예요. (구간별 상한요율 적용)');
+      v=await money({hint:'중개수수료 (만원)',placeholder:String(estBro),min:0,chips:[{label:'잘 모르겠어요',value:'est'},{label:'없어요 (직거래)',value:0}]});
+      A.e2=typeof v==='number'?v:(v.chip===0?0:estBro);
+    }else{A.e2=0} // 증여·상속은 중개수수료 없음
+    await bot('법무사·등기 비용은 보통 50~80만원이에요.');
+    v=await money({hint:'법무사·등기 비용 (만원)',placeholder:'70',min:0,chips:[{label:'잘 모르겠어요',value:'est'},{label:'직접 등기했어요',value:0}]});
+    A.e3=typeof v==='number'?v:(v.chip===0?0:estLegal);
+    await bot('마지막으로 하나만요.');
+    await bot('이 집 가지고 계시는 동안 가치 높이는 인테리어 하신 거 있어요? 새시 교체나 발코니 확장 같은 거요. ?icon:capex');
+    v=await money({hint:'자본적 지출 (만원)',placeholder:'예: 900',min:0,chips:[{label:'없어요',value:0}]});
+    A.e4=typeof v==='number'?v:0;
+    A.acqExp=A.e1+A.e2+A.e3+A.e4;
+    await bot('정리해드리면 부대비용 총 '+fmtMan(A.acqExp)+'이에요.',{sub:'취득세 '+A.e1.toLocaleString()+(isPur?' + 중개 '+A.e2.toLocaleString():'')+' + 법무 '+A.e3.toLocaleString()+' + 자본적 지출 '+A.e4.toLocaleString()+' (만원)'});
+    await bot('이게 다 양도차익에서 빠져서 세금이 줄어들어요.');
+  }
+  prog();
+
+  /* Q5 매도가 */
+  if(A.acqPrice)await bot('부대비용까지 합쳐서 약 '+fmtMan(A.acqPrice+A.acqExp)+'이 취득 원가네요.');
+  await bot('자, 이제 매도 희망가요. 이 차이가 양도소득세의 출발점이에요.');
+  await bot('얼마에 파실 생각이신가요?');
+  const sp=await money({hint:'매도 희망가 (만원)',placeholder:'예: 130000'});
+  A.salePrice=typeof sp==='number'?sp:130000;prog();
+  if(A.converted)A.acqPrice=Math.round(A.salePrice*0.6); // 환산취득가 간이 추정
+
+  const gain0=A.salePrice-(A.acqPrice+A.acqExp);
+  let r5;
+  if(gain0<=0)r5='손실 보고 매도하시는 상황이군요. 양도세는 발생하지 않을 가능성이 커요.';
+  else if(gain0>=50000)r5=Math.floor(gain0/10000)+'억 이상 차익이시네요. 이제부터가 진짜예요. 절세 전략에 따라 결과가 크게 달라져요.';
+  else if(gain0>=20000)r5='차익이 '+Math.floor(gain0/10000)+'억 정도네요. 절세 시나리오가 효과를 볼 수 있는 구간이에요.';
+  else r5='차익이 '+fmtMan(gain0)+' 정도네요. 비과세 요건만 챙기시면 부담이 크지 않을 수 있어요.';
+  await bot(r5);
+
+  /* Q5a 매도 부대비용 — 법정 중개보수 상한요율 */
+  const estSell=brokerFee(A.salePrice);
+  await bot('매도 때 중개수수료가 발생해요. 아직 안 쓰셨으니 법정 요율로 추정해드릴게요.');
+  await bot(fmtMan(A.salePrice)+' 매도면 중개보수 상한이 약 '+fmtMan(estSell)+'이에요. 이대로 가도 될까요?');
+  const sa=await chips([{label:'추정값 그대로',value:'auto'},{label:'직접 입력할게요',value:'manual'}]);
+  if(sa==='manual'){await bot('정확한 금액 알려주세요.');const mv=await money({hint:'매도 부대비용 (만원)',placeholder:String(estSell),min:0});A.saleExp=typeof mv==='number'?mv:estSell}
+  else A.saleExp=estSell;
+  prog();
+
+  /* Q5b 양도 예상 시기 */
+  await bot('좋아요. 마지막으로 하나만요. 양도 시기에 따라 세금이 꽤 달라져서요.');
+  await bot('언제쯤 매도하실 생각이세요?');
+  const sd=await dateYM({minY:NOWY,maxY:NOWY+3,defY:NOWY,defM:Math.min(12,NOWM+2),forget:true,forgetLabel:'잘 모르겠어요',onForget:async()=>{
+    await bot('괜찮아요. 일단 현재 시점 기준으로 계산해드릴게요. 임의 시기를 선택해주셔도 돼요.');
+  }});
+  A.saleDate=sd;prog();
+  const sm=monthsBetween({y:NOWY,m:NOWM},sd);
+  if(sm<=3)await bot('곧 매도 예정이시군요. 그 시점 기준으로 계산해드릴게요.');
+  else if(sm<=6)await bot(fmtYM(sd.y,sd.m)+' 시점으로 계산해드릴게요. 그때까지 거주 채우기 같은 시나리오 있으면 봐드릴게요.');
+  else await bot('시간이 좀 있으시네요. 절세 전략 폭이 넓어요.');
+
+  /* Q6 명의 */
+  await bot('이제 명의 얘기로 넘어갈게요. 단독·공동에 따라 절세 방향이 달라져요.');
+  await bot('이 집은 누구 명의로 되어 있나요?');
+  A.own=await chips([{label:'단독',value:'single'},{label:'공동 ?icon:joint',value:'joint'}]);prog();
+  A.members=[];
+  if(A.own==='joint'){
+    await bot('공동명의시군요. 절세에 도움이 될 수 있어요. 누구와 어떤 비율인지 여쭤볼게요.');
+    await bot('본인 포함해서 명의자가 모두 몇 명인가요?');
+    const n=await chips([{label:'나 포함 2명',value:2},{label:'나 포함 3명',value:3},{label:'4명 이상',value:4}]);
+    A.coCount=n;
+    const relLabels={spouse:'배우자',parent:'부모',child:'자녀',sibling:'형제자매',other:'기타'};
+    for(let i=1;i<n;i++){
+      await bot('본인 외 '+i+'번째 명의자는 누구세요?');
+      const rel=await chips([{label:'배우자',value:'spouse'},{label:'부모',value:'parent'},{label:'자녀',value:'child'},{label:'형제자매',value:'sibling'},{label:'기타',value:'other'}]);
+      A.members.push({rel});
+    }
+    await bot('본인 지분은 몇 %인가요? (나머지는 다른 분들께 균등 배분할게요)');
+    const sh=await money({hint:'본인 지분을 %로 입력해주세요 (1~99)',placeholder:'예: 50',min:1,max:99,fmt:v=>v+'%',rangeMsg:'1~99 사이 숫자로 입력해주세요'});
+    A.myShare=typeof sh==='number'?sh:50;
+    const others=A.members.length, each=(100-A.myShare)/others;
+    A.members.forEach(mb=>mb.share=each);
+    const onlySpouse=A.members.every(mb=>mb.rel==='spouse');
+    if(onlySpouse){
+      await bot('배우자분과 공동이시군요. 부부 공동명의는 절세에 유리할 수 있어요.');
+      A.members.forEach(mb=>mb.same=true);
+    }else{
+      const nm=relLabels[A.members.find(mb=>mb.rel!=='spouse').rel];
+      await bot(nm+'분과 공동이시군요. 한 가지만 더 확인할게요. 세금 계산에 중요해요.');
+      await bot("세법은 '함께 살면서 생계를 같이하는' 가족을 같은 세대로 봐서요.");
+      await bot(nm+'분과 같이 살고 계세요?');
+      const sh2=await chips([{label:'같이 살아요',value:true},{label:'따로 살아요',value:false},{label:'잘 모르겠어요 ?icon:household',value:'dunno'}]);
+      let sameAns=sh2;
+      if(sh2==='dunno'){
+        await bot('괜찮아요. 보통 같은 주소에 사시면 같은 세대로 봐요. 다시 한번 선택해주세요.');
+        sameAns=await chips([{label:'같이 살아요',value:true},{label:'따로 살아요',value:false}]);
+      }
+      A.members.forEach(mb=>{mb.same=mb.rel==='spouse'?true:sameAns});
+      if(sameAns===false)await bot('따로 사시면 별도 세대로 봐서, 그분 주택은 영향이 없어요.');
+      else await bot('같은 세대시군요. 한 가지만 더 여쭤볼게요.');
+    }
+    const anySame=A.members.some(mb=>mb.same);
+    if(anySame){
+      await bot('1세대 1주택 비과세 판정에 중요한 마지막 질문이에요.');
+      const tgt=A.members.every(mb=>mb.rel==='spouse')?'배우자분이':'동거 중인 명의자분들 중에';
+      await bot(tgt+' 다른 집을 가지고 '+(A.members.every(mb=>mb.rel==='spouse')?'계세요?':'계신 분이 있나요?'));
+      const oh=await chips([{label:'없어요',value:false},{label:'있어요',value:true}]);
+      A.memberOtherHouse=oh;
+      await bot(oh?'그러면 1세대 다주택 판정이 들어가요. 다른 시나리오 같이 봐드릴게요.':'1세대 1주택 구조네요. 비과세 받을 수 있는 발판이에요.');
+    }else A.memberOtherHouse=false;
+  }else{
+    A.myShare=100;A.memberOtherHouse=false;
+    await bot('단독명의시군요.');
+  }
+
+  /* Q7 거주 */
+  await bot('이제 정말 중요한 질문이에요. 거주 여부가 비과세 요건에 결정적이에요.');
+  await bot('이 집에서 거주하신 적 있어요? ?icon:reside');
+  A.resType=await chips([
+    {label:'처음부터 쭉 살아요',value:'continuous'},{label:'중간에 끊긴 적 있어요',value:'broken'},
+    {label:'지금은 안 살아요',value:'past'},{label:'한 번도 안 살았어요',value:'never'}
+  ]);prog();
+  A.resMonthsNow=0;A.resMonthsAtSale=0;A.currentlyLiving=false;
+  const hiVal=A.salePrice>120000; // 12억 초과 고가주택 — 거주 '연수'가 장기보유특별공제(표2)에 직접 영향. 그 외엔 2년 요건·D-Day만 필요
+  if(A.resType!=='never'&&!hiVal){
+    /* 12억 이하: 거주 정확값은 세액에 영향 없음 → 2년 충족 여부만(미달 시 D-Day용 개월) */
+    A.currentlyLiving=(A.resType==='continuous'||A.resType==='broken');
+    await bot('이 집에 <b>2년 이상</b> 사셨어요? <span style="color:var(--sub)">끊긴 적 있으면 실제 거주만 합쳐서요</span>');
+    const over=await chips([{label:'네, 2년 이상 살았어요',value:1},{label:'아직 2년 안 됐어요',value:0}]);
+    if(over){
+      A.resMonthsNow=24;A.resMonthsAtSale=24; // 요건 충족(정확값 불필요)
+      await bot('거주 2년 채우셨네요. 비과세 거주 요건 충족이에요.');
+    }else{
+      await bot(A.currentlyLiving?'2년까지 얼마 남았는지 봐야 D-Day를 알려드려요. 지금까지 사신 기간을 알려주세요.':'그때 사신 총 기간을 알려주세요.');
+      const ym=await yearsMonthsInput({onForget:async()=>{await bot('괜찮아요. 주민등록 초본의 전입·전출 기록으로 확인할 수 있어요. 대략적인 기간이라도 알려주세요.');}});
+      A.resMonthsNow=ym.months;A.resMonthsAtSale=A.currentlyLiving?ym.months+Math.max(0,monthsBetween({y:NOWY,m:NOWM},A.saleDate)):ym.months;
+      if(A.resMonthsNow>=18)await bot('총 '+A.resMonthsNow+'개월이시군요. 2년이 코앞이에요. 결과에서 D-Day로 보여드릴게요.');
+      else await bot('총 '+A.resMonthsNow+'개월이시군요. 거주 요건은 아직 시간이 필요해요.');
+    }
+  }
+  else if(A.resType==='continuous'){
+    A.currentlyLiving=true;
+    await bot('쭉 거주하셨군요! 거주 시작일을 알려주시면 자동 계산해드릴게요.');
+    await bot('언제부터 거주하셨나요? 거주 2년이 절세의 핵심 기준이에요.');
+    A.resStart=await dateYM({minY:Math.max(1990,A.acqDate.y),maxY:NOWY,defY:A.acqDate.y,defM:A.acqDate.m,forget:true,onForget:async()=>{
+      await bot('대략적인 시기만 알려주셔도 돼요. 정확한 날짜가 필요하면 전입신고 기록을 참고하실 수 있어요.');
+    }});
+    A.resMonthsNow=Math.max(0,monthsBetween(A.resStart,{y:NOWY,m:NOWM}));
+    A.resMonthsAtSale=Math.max(0,monthsBetween(A.resStart,A.saleDate));
+    if(A.resMonthsNow>=22&&A.resMonthsNow<24){
+      await bot('…잠깐만요.',{slow:true});
+      await bot(fmtYM(A.resStart.y,A.resStart.m)+'부터면 지금 거의 24개월 다 채우셨어요.');
+      await bot('이거 결과 화면에서 중요한 얘기 드릴게요. 다음 질문 갈게요.');
+    }else if(A.resMonthsNow>=18&&A.resMonthsNow<22){
+      await bot(A.resMonthsNow+'개월차이시네요. 2년 채우는 시점이 코앞이에요. 결과에서 자세히 보여드릴게요.');
+    }else if(A.resMonthsNow>=24){
+      await bot('거주 2년 채우셨네요. 비과세 요건 보유·거주 모두 충족이에요.');
+    }else{
+      await bot(A.resMonthsNow+'개월차이시군요. 거주 요건은 아직 시간이 필요해요.');
+    }
+  }else if(A.resType==='broken'){
+    A.currentlyLiving=true;
+    await bot('거주가 끊겼다 다시 시작되셨군요. 세법은 총 누적 거주 기간으로 봐서, 합쳐서 알려주시면 돼요.');
+    await bot('총 누적 거주 기간이 얼마나 되세요? 끊긴 기간 빼고 실제 거주만 합쳐서요.');
+    const ym=await yearsMonthsInput({onForget:async()=>{
+      await bot('괜찮아요. 주민등록 초본을 보시면 전입·전출 기록이 나와요. 정부24에서 발급 가능해요. 대략적인 기간이라도 알려주세요.');
+    }});
+    A.resMonthsNow=ym.months;A.resMonthsAtSale=ym.months+Math.max(0,monthsBetween({y:NOWY,m:NOWM},A.saleDate));
+    if(ym.months>=22&&ym.months<24)await bot('총 '+ym.months+'개월이시군요. 거의 24개월 다 채우셨어요. 결과에서 중요한 얘기 드릴게요.');
+    else if(ym.months>=24)await bot('총 '+ym.months+'개월로 거주 2년 충족이세요. 비과세 요건 보유·거주 모두 OK.');
+    else if(ym.months>=18)await bot('총 '+ym.months+'개월이시군요. 2년 코앞이에요.');
+    else await bot('총 '+ym.months+'개월이시군요. 거주 요건은 아직 시간이 필요해요.');
+  }else if(A.resType==='past'){
+    await bot('과거에 거주하셨군요. 그때 거주한 총 기간을 알려주세요.');
+    const ym=await yearsMonthsInput({onForget:async()=>{
+      await bot('괜찮아요. 주민등록 초본의 전입·전출 기록으로 확인하실 수 있어요. 대략적인 기간이라도 알려주세요.');
+    }});
+    A.resMonthsNow=ym.months;A.resMonthsAtSale=ym.months;
+    await bot(ym.months>=24?'총 '+ym.months+'개월 거주하셨네요. 거주 2년 요건은 이미 충족하셨어요.':'총 '+ym.months+'개월이시군요. 2년에 못 미쳐서 거주 요건은 미충족이에요. 다른 시나리오 같이 봐드릴게요.');
+  }else{
+    await bot('거주는 안 하셨군요. 임대 상태인지 여쭤볼게요.');
+  }
+  /* Q7b 임대 (past/never) */
+  A.landlord='none';
+  if(A.resType==='past'||A.resType==='never'){
+    await bot('혹시 임대 중이신가요? 임대 상태에 따라 시나리오가 달라져요.');
+    const rent=await chips([{label:'예, 임대 중이에요',value:true},{label:'아니요',value:false}]);
+    A.isRented=rent;
+    if(rent){
+      await bot('임대 중이시군요. 임대사업자 등록 여부와 종류에 따라 절세 옵션이 갈려요.');
+      await bot('어떻게 되시나요?');
+      A.landlord=await chips([
+        {label:'등록 안 했어요',value:'none'},{label:'단기임대 4년 ?icon:rent4',value:'short4'},
+        {label:'장기임대 8년 ?icon:rent8',value:'long8'},{label:'장기임대 10년 ?icon:rent10',value:'long10'},
+        {label:'자진말소·종료 ?icon:rentEnd',value:'terminated'}
+      ]);
+      const lm={none:'일반 임대 중이시군요.',short4:'단기임대 등록 중이시군요. 거주주택 비과세 특례 적용 가능성이 있어요.',long8:'장기임대 8년 등록 중이시군요. 절세 시나리오가 강해요.',long10:'장기임대 10년 등록 중이시군요. 절세 옵션이 가장 많아요.',terminated:'임대 의무기간 끝나셨군요. 그 시점 기준으로 시나리오 봐드릴게요.'};
+      await bot(lm[A.landlord]);
+      if(A.landlord!=='none'){
+        await bot('언제 등록하셨나요? 등록 시기에 따라 세제 혜택이 달라져요.');
+        A.landlordDate=await dateYM({minY:2000,maxY:NOWY,forget:true,onForget:async()=>{
+          await bot('괜찮아요. 임대사업자 등록 증서나 렌트홈에서 확인하실 수 있어요. 대략적인 시기로 알려주세요.');
+        }});
+      }
+    }else await bot('공실이시군요. 다음 질문으로 갈게요.');
+  }
+  prog();
+
+  /* Q8 다른 주택 */
+  await bot('이제 다른 자산도 확인할게요. 1세대 보유 주택 수가 결정적이거든요.');
+  await bot('이 집 외에 다른 주택이나 분양권, 입주권 가지고 계세요? ?icon:other8');
+  A.otherCount=await chips([{label:'없어요',value:0},{label:'1채',value:1},{label:'2채',value:2},{label:'3채 이상',value:3}]);prog();
+  const r8={0:'1주택자이시군요. 1세대 1주택 비과세 가능성이 열려 있어요.',1:'1채 더 가지고 계시군요. 일시적 2주택일 수 있어 다음 질문이 중요해요.',2:'총 3주택자이시네요. 다주택 시나리오 정밀하게 봐드릴게요.',3:'다주택 보유자이시네요. 매도 순서 시뮬레이션이 핵심이 될 거예요.'}[A.otherCount];
+  await bot(r8);
+  if(A.otherCount>0){
+    await bot('가장 최근에 취득하신 다른 주택의 취득일을 알려주세요. 일시적 2주택 기한을 확인하려고요.');
+    A.otherAcq=await dateYM({minY:1990,maxY:NOWY,forget:true,onForget:async()=>{
+      await bot('괜찮아요. 대략적인 시기로 입력해주셔도 결과 보여드릴게요.');
+    }});
+    const oe=monthsBetween(A.otherAcq,{y:NOWY,m:NOWM});
+    if(oe<12)await bot('최근에 취득하셨네요. 일시적 2주택 기한이 충분히 남아 있어요.');
+    else if(oe<36)await bot(Math.floor(oe/12)+'년 전이시네요. 일시적 2주택 기한 안에 매도해야 할 수도 있어요.');
+    else await bot('3년 넘게 보유하셨네요. 일시적 2주택 비과세는 어려울 수 있어요. 결과에서 다른 시나리오를 봐드릴게요.');
+    prog();
+  }
+
+  /* 마무리 + S04-A */
+  $('#pfill').style.width='100%';
+  await bot('필요한 정보 다 받았어요. 꼼꼼히 알려주셔서 감사해요.');
+  await sleep(REPLAY?0:800);
+  await bot('분석 들어가기 전에 한 가지만 더, 결과를 이메일로도 받아보시겠어요?');
+  await bot('남기시면 정리된 결과를 메일로도 보내드려요.');
+  await emailCard();
+
+  runLoading();
+}
+
+/* S04-A email card */
+async function emailCard(){
+  if(REPLAY){const v=nextReplay();if(v!==undefined){userSay(v==='skip'?'건너뛰고 결과 보기':'이메일로 받기 ('+v+')');A.email=v==='skip'?null:v;return}}
+  return new Promise(res=>{
+    const w=document.createElement('div');w.className='emailcard';
+    w.innerHTML=`<input type="email" placeholder="email@example.com">
+    <label><input type="checkbox" class="cp"> (필수) 개인정보 수집·이용에 동의합니다 <a href="#" class="toggleC" style="color:var(--brand)">[펼치기]</a></label>
+    <div class="consent-detail">① 수집 항목 — 이메일, 입력하신 주택 정보<br>② 이용 목적 — 결과 발송 및 절세 알림<br>③ 보관 기간 — 동의 철회 시 또는 30일 후 자동 삭제</div>
+    <label><input type="checkbox" class="cm"> (선택) 절세 팁·세법 변경 등 마케팅 정보 수신 동의</label>
+    <div class="em-err" style="display:none;color:var(--bad);font-size:13px;line-height:1.5;margin:2px 0 2px"></div>
+    <button class="ok" style="width:100%;padding:12px;background:var(--brand);color:#fff;border-radius:10px;font-weight:700;font-size:15.5px;margin-top:4px">이메일로 받고 결과 보기</button>
+    <button class="forget" style="width:100%;background:none;color:var(--sub);font-size:14px;text-decoration:underline;padding:8px 0 0">건너뛰고 결과 보기</button>`;
+    w.querySelector('.toggleC').onclick=e=>{e.preventDefault();const d=w.querySelector('.consent-detail');d.style.display=d.style.display==='block'?'none':'block'};
+    w.querySelector('.ok').onclick=()=>{
+      const em=w.querySelector('input[type=email]').value.trim();
+      const errEl=w.querySelector('.em-err');const showErr=m=>{errEl.textContent=m;errEl.style.display='block';};
+      if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)){showErr('이메일 형식을 확인해주세요 (예: name@example.com)');return}
+      if(!w.querySelector('.cp').checked){showErr('개인정보 수집·이용 동의가 필요해요');return}
+      A.email=em;w.remove();userSay('이메일로 받기 ('+em+')');logAns(em);res();
+    };
+    w.querySelector('.forget').onclick=()=>{A.email=null;w.remove();userSay('건너뛰고 결과 보기');logAns('skip');res()};
+    chat.appendChild(w);scrollBottom();
+  });
+}
+
+/* ================= S04 loading ================= */
+/* 광고 슬롯 목업: 'video' | 'native' | null — 비교 평가용 토글 */
+const AD_MODE=null; /* 광고 보류 — 로딩 상단은 세꼼 신뢰 카드로 채움 */
+function loadHeroHtml(){
+  const region=(A.address&&A.address.region||'우리 지역').replace(/^서울 /,'').replace(/^경기 /,'');
+  return '<div class="load-hero"><div class="lh-spin"></div>'
+    +'<div class="lh-txt"><div class="lh-t">세꼼이가 꼼꼼히 계산하고 있어요</div>'
+    +'<div class="lh-s">'+region+' · 세법 기준일 '+LAW_ASOF+'</div></div></div>';
+}
+async function runLoading(){
+  const R=calc();A.R=R;
+  show('s04');
+  $('#adFix').innerHTML=loadHeroHtml(); // 상단 고정 신뢰 카드 (로딩 풍선 스크롤 영향 없음)
+  const sc=$('#loadScroll');sc.innerHTML='';
+  const holdM=R.holdMonths;
+  /* [멘트, 보조텍스트, 머무름ms, 생각하는시간ms] — "고민하고 계산하는" 호흡 */
+  const steps=[
+    ['분석 들어갈게요...',null,1100,300],
+    ['먼저 보유 기간을 따져볼게요.',fmtYM(A.acqDate.y,A.acqDate.m)+' '+(A.method==='inheritance'?'상속':A.method==='gift'?'증여':'매수')+' → 약 '+Math.floor(holdM/12)+'년 '+(holdM%12)+'개월 보유',1700,500],
+    [A.acqAdj?'취득 당시 조정대상지역 여부를 확인 중이에요.':'취득 당시 조정지역 여부를 확인 중이에요.',A.acqAdj?A.address.region+' — 취득 시점 조정지역. 거주 요건도 같이 봐야 해요':A.address.region+' — 취득 시점 비조정. 거주 요건은 빼고 계산할게요',1800,700],
+    ...(A.method!=='purchase'?[['상속·증여 평가액을 반영 중이에요.',null,1300,400]]:[]),
+    ...(A.converted?[['취득가는 환산값으로 추정 중이에요.',null,1300,400]]:[]),
+    ['부대비용까지 합쳐서 양도차익을 계산할게요.','취득가 + 부대비용 = 약 '+fmtMan(A.acqPrice+A.acqExp),2000,600],
+    ['장기보유공제와 거주 공제를 적용 중이에요.','보유 '+Math.floor(holdM/12)+'년 기준 공제율 계산 중...',1800,700],
+    [A.totalHouses>1?'다주택 보유 상태를 정리 중이에요.':'1세대 1주택 비과세 요건을 따져볼게요.',(A.own==='single'?'단독명의':'공동명의')+', 거주 '+R.resM+'개월',1900,800],
+    ['양도 시점의 조정지역과 다주택 중과 여부를 확인 중이에요.',fmtYM(A.saleDate.y,A.saleDate.m)+' 양도 기준',1800,600],
+    ['마지막으로 절세 시나리오를 찾고 있어요.','입력하신 조건에 맞는 시나리오를 찾는 중...',2400,900],
+    ['분석 완료! 결과를 보여드릴게요.',null,900,400],
+  ];
+  for(let i=0;i<steps.length;i++){
+    const [t,sub,d,think]=steps[i];
+    /* 단계 사이 "생각하는" 타이핑 점 */
+    if(i>0&&!REPLAY){
+      const tp=document.createElement('div');tp.className='loadbub cur';
+      tp.innerHTML='<div class="avatar">세</div><div class="typing"><s></s><s></s><s></s></div>';
+      sc.appendChild(tp);sc.scrollTop=sc.scrollHeight;
+      await sleep(think||400);tp.remove();
+    }
+    /* 직전 단계에 ✓ */
+    const prev=sc.querySelector('.loadbub.cur .bub');
+    if(prev&&!prev.dataset.done){prev.dataset.done='1';prev.innerHTML='✓ '+prev.innerHTML}
+    const div=document.createElement('div');div.className='loadbub cur';
