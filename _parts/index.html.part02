@@ -1,0 +1,551 @@
+.acc .chev{color:#9A9D92;font-size:15px;transition:transform .2s;flex:none}
+.acc[open] .chev{transform:rotate(180deg)}
+.acc .abody{padding:0 15px 15px;font-size:15px;line-height:1.7;word-break:keep-all}
+.acc .abody p{margin-bottom:8px}
+.acc .abody .expert{background:#FBFAF7;border-left:3px solid var(--brand);padding:10px 12px;border-radius:0 8px 8px 0;font-size:15px;line-height:1.7;color:#3D4A2E;margin-top:4px}
+.cmp-tbl{width:100%;font-size:15px;border-collapse:collapse;margin-top:6px}
+.cmp-tbl td{padding:9px 6px;border-bottom:1px solid var(--line)}
+.cmp-tbl td:last-child{text-align:right;font-weight:700}
+.checklist{list-style:none;font-size:15px;line-height:1.5}
+.checklist li{display:flex;gap:9px;padding:8px 0;border-bottom:1px dashed var(--line);align-items:flex-start}
+.checklist li:last-child{border:none}
+.checklist .bx{width:18px;height:18px;border:1.5px solid var(--brand);border-radius:5px;flex:none;margin-top:1px;color:var(--brand);font-size:14px;text-align:center;line-height:16px;cursor:pointer}
+.checklist .bx.on{background:var(--brand);color:#fff}
+.trap{font-size:15px;line-height:1.6;color:#8A4B00;background:#FFF7E8;border:1px solid #FFE08A;border-radius:10px;padding:10px 12px;margin-top:8px;word-break:keep-all}
+
+/* simulator */
+.sim{background:linear-gradient(#fff,#fff) padding-box,linear-gradient(135deg,#163300,#0E2200) border-box;border:1.5px solid transparent;border-radius:14px;padding:16px;margin-top:13px}
+.sim .simt{font-size:15px;font-weight:800;color:#0E2200;margin-bottom:4px}
+.sim .simsub{font-size:13.5px;color:var(--sub);margin-bottom:12px;line-height:1.5}
+.sim .ctrl{margin-bottom:12px}
+.sim .ctrl label{font-size:14px;color:var(--sub);display:block;margin-bottom:6px}
+.sim .ctrl .val{color:var(--brand);font-weight:800}
+.sim input[type=range]{width:100%;accent-color:var(--brand)}
+.sim .numrow{display:flex;gap:8px;align-items:center}
+.sim .numrow input{flex:1;padding:9px 11px;border:1px solid var(--line);border-radius:9px;font-size:15.5px;font-family:inherit}
+.sim .out{background:#161A14;color:#fff;border-radius:12px;padding:14px;margin-top:6px}
+.sim .out .big{font-size:24px;font-weight:800;letter-spacing:-0.5px}
+.sim .out .lb{font-size:13.5px;opacity:.8}
+.sim .out .row2{display:flex;justify-content:space-between;font-size:14.5px;margin-top:8px;opacity:.92;line-height:1.6}
+.sim .verdict{margin-top:10px;padding:10px 12px;border-radius:10px;font-size:15px;font-weight:700;text-align:center}
+.sim .v-good{background:#E9F7EE;color:var(--good)}
+.sim .v-bad{background:#FCEBEB;color:var(--bad)}
+.sim .v-warn{background:#FFF7E8;color:var(--warn)}
+.sim .savebtn{width:100%;margin-top:10px;padding:11px;background:#0E2200;color:#fff;border-radius:10px;font-size:15px;font-weight:700}
+.sim .savebtn:active{opacity:.85}
+
+/* ===== S12 mypage ===== */
+#s12{background:var(--bg)}
+#s12 .scroll{padding:16px 16px 40px}
+.mp-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px}
+.mp-hd h2{font-size:18px;font-weight:800}
+.mp-prop{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin-top:10px;font-size:15px;line-height:1.7}
+.mp-prop .addr{font-weight:700;font-size:15.5px}
+.mp-prop .tax{color:var(--brand);font-weight:800}
+.mp-sec-t{font-size:15.5px;font-weight:800;margin:20px 0 4px}
+.arch-card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:13px 14px;margin-top:10px}
+.arch-card .ac-top{display:flex;justify-content:space-between;align-items:center}
+.arch-card .ac-scn{font-size:15px;font-weight:700}
+.arch-card .ac-when{font-size:13.5px;color:#9A9D92}
+.arch-card .ac-head{font-size:15.5px;font-weight:800;color:var(--brand);margin-top:6px}
+.arch-card .ac-param{font-size:14px;color:var(--sub);margin-top:5px;line-height:1.6}
+.arch-card .ac-act{display:flex;gap:8px;margin-top:10px}
+.arch-card .ac-act button{flex:1;padding:8px;border-radius:8px;font-size:14px;font-weight:700;border:1px solid var(--line);background:#fff;color:var(--ink)}
+.arch-card .ac-act .del{color:var(--bad);border-color:#F6C9C9}
+.mp-empty{text-align:center;color:var(--sub);font-size:15px;padding:24px 16px;line-height:1.7;background:#fff;border:1px dashed var(--line);border-radius:12px;margin-top:10px}
+.mp-foot-note{font-size:13.5px;color:#9A9D92;text-align:center;margin-top:20px;line-height:1.6}
+.paid-banner{background:linear-gradient(135deg,#1DA45A,#17A34A);color:#fff;font-size:14px;font-weight:700;text-align:center;padding:8px;border-radius:10px;margin-top:10px}
+.dday-card{background:linear-gradient(135deg,#161A14,#2A3D1A);color:#fff;border-radius:16px;padding:16px 18px;margin-top:12px;text-align:center}
+.dday-card .dd-l{font-size:14px;opacity:.85}
+.dday-card .dd-n{font-size:34px;font-weight:800;letter-spacing:-1px;line-height:1.1;margin-top:2px}
+.dday-card .dd-n span{font-size:16.5px;font-weight:700;margin-left:3px;opacity:.9}
+.dday-card .dd-s{font-size:14px;opacity:.9;margin-top:7px;line-height:1.5;word-break:keep-all}
+.dday-card .dd-alarm{margin-top:12px;width:100%;padding:11px;border-radius:10px;background:rgba(255,255,255,.14);color:#fff;font-size:15px;font-weight:700}
+.dday-card .dd-alarm.on{background:#1DA45A}
+.mp-alert{display:flex;gap:10px;background:#EFF3E9;border-radius:14px;padding:13px 15px;margin-top:10px;font-size:14.5px;line-height:1.6;color:var(--ink)}
+.mp-alert b{color:var(--brand)}.mp-alert span{color:var(--sub)}
+
+/* ===== 설문 게이트 ===== */
+#sv{background:var(--bg)}
+#sv .scroll{padding:18px 16px 110px}
+.sv-hero{background:linear-gradient(135deg,#0E2200,#163300);color:#fff;border-radius:16px;padding:18px}
+.sv-hero .t{font-size:18px;font-weight:800;letter-spacing:-0.3px}
+.sv-hero .s{font-size:15px;opacity:.92;margin-top:8px;line-height:1.6;word-break:keep-all}
+.sv-hero .badge{display:inline-block;background:rgba(255,255,255,.18);font-size:13.5px;font-weight:700;padding:4px 10px;border-radius:999px;margin-top:10px}
+.sv-q{background:#fff;border:1px solid var(--line);border-radius:14px;padding:15px 16px;margin-top:12px}
+.sv-q .ql{font-size:15.5px;font-weight:700;line-height:1.45;word-break:keep-all}
+.sv-q .ql .req{color:var(--bad);font-size:14px;margin-left:3px}
+.sv-q .qsub{font-size:14px;color:var(--sub);margin-top:3px}
+.sv-opts{display:flex;flex-wrap:wrap;gap:8px;margin-top:11px}
+.sv-opt{border:1.5px solid var(--line);background:#fff;color:var(--ink);font-size:15px;font-weight:600;padding:9px 13px;border-radius:10px;cursor:pointer}
+.sv-opt.on{border-color:var(--brand);background:#EFF3E9;color:var(--brand)}
+.sv-stars{display:flex;gap:6px;margin-top:11px}
+.sv-star{font-size:30px;color:#CFCDC3;cursor:pointer;line-height:1}
+.sv-star.on{color:#C77700}
+.sv-q input[type=email],.sv-q textarea{width:100%;padding:11px;border:1px solid var(--line);border-radius:10px;font-size:16.5px;font-family:inherit;margin-top:10px}
+.sv-q textarea{min-height:64px;resize:vertical;font-size:15.5px}
+.sv-consent{display:flex;gap:8px;align-items:flex-start;font-size:14px;color:var(--sub);margin-top:11px;line-height:1.5}
+.sv-consent input{margin-top:2px}
+.sv-foot{position:absolute;left:0;right:0;bottom:0;background:#fff;border-top:1px solid var(--line);padding:11px 16px calc(12px + env(safe-area-inset-bottom))}
+.sv-foot .note{font-size:13.5px;color:#9A9D92;text-align:center;margin-bottom:7px}
+.sv-err{color:var(--bad);font-size:14px;text-align:center;margin-bottom:7px;min-height:14px}
+.sv-value{background:#F4F7EF;border:1px solid #CFE0BE;border-radius:14px;padding:15px 16px;margin-top:12px}
+.sv-value .svv-t{font-size:15px;font-weight:800;color:var(--brand);margin-bottom:9px}
+.sv-value ul{list-style:none;margin:0;padding:0;font-size:14.5px;color:var(--ink);line-height:1.5}
+.sv-value li{display:flex;gap:8px;align-items:flex-start;margin-bottom:7px;word-break:keep-all}
+.sv-value li::before{content:'✓';color:var(--good);font-weight:800;flex:none}
+.sv-slider{margin-top:14px}
+.sv-slider input[type=range]{width:100%}
+.sv-slider .sv-slider-val{text-align:center;font-size:20px;font-weight:800;color:var(--brand);margin-top:10px}
+.sv-slider .sv-slider-cap{display:flex;justify-content:space-between;font-size:12.5px;color:var(--sub2);margin-top:4px}
+</style>
+</head>
+<body>
+<!-- Google Tag Manager (noscript) — 'GTM-XXXXXXX'를 실제 ID로 교체 -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5JTC8935" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<div id="frame">
+
+<!-- ===== S01 ===== -->
+<div class="screen on" id="s01">
+  <div class="scroll">
+   <div class="lp">
+    <div class="lp-top">
+      <div class="lp-brand"><img src="/logo_full_dark.png" alt="세꼼이"></div>
+      <div class="lp-live"><i></i>세법 자동반영</div>
+    </div>
+    <div class="lp-hero">
+      <div class="lp-eyebrow">집 한 채 팔 때, 가장 큰 변수</div>
+      <h1 class="lp-h1">양도세 수천만 원,<br><span class="hl">꼼꼼하면 지킵니다</span></h1>
+      <p class="lp-sub">비과세·장기보유·중과까지, 세꼼이가 내 상황에 맞춰 하나하나 따져요. <b>3분 대화</b>면 내가 얼마를 아낄 수 있는지 바로 나와요.</p>
+      <div class="lp-steps">
+        <div><b>묻고</b>11~19개<br>맞춤 질문</div>
+        <div><b>계산하고</b>실제 세법<br>근거 공개</div>
+        <div><b>줄이고</b>절세 시나리오<br>제안</div>
+      </div>
+    </div>
+    <div class="lp-cta-wrap">
+      <button class="lp-cta" id="startBtn">3분 만에 내 양도세 계산하기</button>
+      <button class="lp-resume" id="resumeBtn" style="display:none">이어서 진행하기</button>
+      <div class="lp-micro">무료 · 설치 없이 채팅으로 · 2026.7 최신 세법 반영</div>
+      <a class="lp-blog" href="/blog/">양도세가 궁금하다면? 세꼼 블로그 보기 →</a>
+    </div>
+    <div class="lp-foot">
+      <div class="fl"><a href="/blog/">블로그</a> · <a href="#" onclick="openLegal('privacy');return false">개인정보처리방침</a> · <a href="#" onclick="openLegal('terms');return false">이용약관</a></div>
+      문의 <a href="mailto:sekkomi.com@gmail.com">sekkomi.com@gmail.com</a>
+    </div>
+   </div>
+  </div>
+</div>
+
+<!-- ===== S02/S03 chat ===== -->
+<div class="screen" id="s03">
+  <div class="pbar"><i id="pfill"></i></div>
+  <div class="scroll" id="chatScroll"></div>
+  <div id="dock">
+    <div class="hint" id="dockHint"></div>
+    <div class="moneyrow"><input id="dockIn" inputmode="numeric" placeholder=""><button class="ok" id="dockOk">확인</button></div>
+    <div class="kor" id="dockKor"></div>
+    <div class="subchips" id="dockChips"></div>
+  </div>
+</div>
+
+<!-- ===== S04 loading ===== -->
+<div class="screen" id="s04">
+  <div class="pbar"><i id="pfill4"></i></div>
+  <div id="adFix" style="flex:none;padding:14px 18px 0"></div>
+  <div class="scroll" id="loadScroll" style="padding:16px 18px 30px"></div>
+</div>
+
+<!-- ===== S05 result ===== -->
+<div class="screen" id="s05"><div class="scroll" id="s05Body"></div></div>
+
+<!-- ===== S06 preview ===== -->
+<div class="screen" id="s06">
+  <div class="s06-top">
+    <div class="s06-nav"><button class="backbtn" id="s06Back">←</button><b style="font-size:15.5px">절세 시나리오</b></div>
+    <div class="s06-tabs" id="s06Tabs"></div>
+  </div>
+  <div id="s06Body"></div>
+  <div class="s06-foot">
+    <div class="nmore" id="s06More"></div>
+    <button class="btn-main gate-cta" onclick="openPaySheet()">설문 답하고 전체 시나리오 열기 (베타 무료)</button>
+  </div>
+</div>
+
+<!-- ===== S07 list ===== -->
+<div class="screen" id="s07">
+  <div class="s06-top" style="padding-bottom:10px"><div class="s06-nav"><button class="backbtn" id="s07Back">←</button><b style="font-size:15.5px">전체 시나리오</b></div></div>
+  <div class="scroll" id="s07Body"></div>
+  <div class="s06-foot"><button class="btn-main gate-cta" onclick="openPaySheet()">설문 답하고 전체 시나리오 열기 (베타 무료)</button></div>
+</div>
+
+<!-- ===== S11 paid scenario consultation (chat) ===== -->
+<div class="screen" id="s11">
+  <div class="s11-top"><button class="backbtn" id="s11Back">←</button><span class="mid" id="s11Mid">절세 상담</span><button class="my" onclick="openMyPage()" title="마이페이지">☰</button></div>
+  <div class="s11-tabs" id="s11Tabs"></div>
+  <div class="s11-info" id="s11Info"></div>
+  <div class="scroll" id="s11Chat"></div>
+  <div id="s11Dock">
+    <div class="hint" id="s11DockHint"></div>
+    <div class="moneyrow"><input id="s11DockIn" inputmode="numeric"><button class="ok" id="s11DockOk">확인</button></div>
+    <div class="kor" id="s11DockKor"></div>
+  </div>
+</div>
+
+<!-- ===== S12 mypage ===== -->
+<div class="screen" id="s12">
+  <div class="s11-top"><button class="backbtn" id="s12Back">←</button><span class="mid">마이페이지</span><span style="width:26px"></span></div>
+  <div class="scroll" id="s12Body"></div>
+</div>
+
+<!-- ===== 설문 게이트 ===== -->
+<div class="screen" id="sv">
+  <div class="s11-top"><button class="backbtn" id="svBack">←</button><span class="mid">베타 설문</span><span style="width:26px"></span></div>
+  <div class="scroll" id="svBody"></div>
+  <div class="sv-foot">
+    <div class="sv-err" id="svErr"></div>
+    <div class="note" id="svNote"></div>
+    <button class="btn-main" id="svSubmit" onclick="submitSurvey()">제출하고 전체 시나리오 열기</button>
+  </div>
+</div>
+
+<!-- modals -->
+<div class="modal" id="addrModal"><div class="sheet">
+  <h3>주소 검색</h3>
+  <div id="addrEmbed" style="width:100%;height:60vh;min-height:340px;border:1px solid var(--line);border-radius:12px;overflow:hidden"></div>
+  <div id="addrManual" style="display:none">
+    <input class="addr-in" id="addrText" placeholder="예: 서울 강남구 역삼동" autocomplete="off">
+    <div id="addrTextHint" style="font-size:13px;color:var(--sub2);margin-top:8px">시·구·동까지 적어주세요. 상세주소(동·호)는 안 적어도 돼요.</div>
+    <button class="btn-main" id="addrTextOk" style="margin-top:12px">이 주소로 계속</button>
+  </div>
+  <button class="btn-ghost" id="addrManualToggle" style="margin-top:10px">검색이 안 되나요? 직접 입력하기</button>
+  <button class="close" onclick="document.getElementById('addrModal').classList.remove('on')">닫기</button>
+</div></div>
+
+<div class="modal" id="helpModal"><div class="sheet">
+  <h3 id="helpTitle">용어 풀이</h3>
+  <div class="help-body" id="helpBody"></div>
+  <button class="close" onclick="closeHelp()">닫기</button>
+</div></div>
+
+<div class="modal" id="legalModal"><div class="sheet">
+  <h3 id="legalTitle"></h3>
+  <div class="legal-body" id="legalBody"></div>
+  <button class="close" onclick="document.getElementById('legalModal').classList.remove('on')">닫기</button>
+</div></div>
+
+
+</div>
+<script>
+/* ================= helpers ================= */
+const $=s=>document.querySelector(s);
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+let REPLAY=false, replayQueue=[];
+const now=new Date(); const NOWY=now.getFullYear(), NOWM=now.getMonth()+1;
+const ymNum=(y,m)=>y*12+m;
+const monthsBetween=(a,b)=>ymNum(b.y,b.m)-ymNum(a.y,a.m);
+function fmtMan(v){ // v in 만원
+  v=Math.round(v);
+  const neg=v<0; v=Math.abs(v);
+  const eok=Math.floor(v/10000), man=v%10000;
+  let s='';
+  if(eok>0) s+=eok+'억'+(man>0?' ':'');
+  if(man>0||eok===0) s+=man.toLocaleString()+'만';
+  return (neg?'-':'')+s+'원';
+}
+function fmtYM(y,m){return y+'년 '+m+'월'}
+function addMonths(y,m,k){const t=ymNum(y,m)+k;return {y:Math.floor((t-1)/12),m:((t-1)%12)+1}}
+
+/* ====== state ====== */
+let A={}; // answers
+const SKEY='seggom_proto_v1';
+function saveState(){A._savedAt=Date.now();localStorage.setItem(SKEY,JSON.stringify({log:answerLog,at:Date.now()}))}
+let answerLog=[];
+function logAns(v){answerLog.push(v);saveState()}
+
+/* ====== screens ====== */
+function show(id){document.querySelectorAll('.screen').forEach(e=>e.classList.remove('on'));$('#'+id).classList.add('on');updateGateBtns();}
+/* 잠금 상태(PAID)에 따라 고정 게이트 버튼 문구 갱신 — 설문 완료자에겐 '설문' 문구 제거 */
+function updateGateBtns(){try{document.querySelectorAll('.gate-cta').forEach(b=>{b.textContent=(typeof PAID!=='undefined'&&PAID)?'시나리오 상담 열기 →':'설문 답하고 전체 시나리오 열기 (베타 무료)';});}catch(e){}}
+/* GTM/GA4 이벤트 전송 — dataLayer에 push (GTM 미연동 시 조용히 누적만) */
+function track(ev,params){try{window.dataLayer=window.dataLayer||[];window.dataLayer.push(Object.assign({event:ev},params||{}));}catch(e){}}
+
+/* ====== chat primitives ====== */
+const chat=$('#chatScroll');
+let firstBubbleOfTurn=true;
+let GEN=0, ansIdx=0; // GEN: 답변 수정으로 흐름 재시작 시 이전 비동기 흐름 중단용
+function scrollBottom(){chat.scrollTop=chat.scrollHeight}
+async function bot(text,opt={}){
+  const g=GEN;
+  if(!REPLAY){
+    const t=document.createElement('div');t.className='row-bot';
+    t.innerHTML='<div class="avatar'+(firstBubbleOfTurn?'':' hide')+'">세</div><div class="typing"><s></s><s></s><s></s></div>';
+    chat.appendChild(t);scrollBottom();
+    await sleep(opt.slow?1000:650);
+    t.remove();
+    if(g!==GEN)throw new Error('stale-flow');
+  }
+  const r=document.createElement('div');r.className='row-bot';
+  let inner=text.replace(/\?icon:(\w+)/g,(_,k)=>'<span class="qico" onclick="openHelp(\''+k+'\')">?</span>');
+  r.innerHTML='<div class="avatar'+(firstBubbleOfTurn?'':' hide')+'">세</div><div class="bub">'+inner+(opt.sub?'<span class="sub">└ '+opt.sub+'</span>':'')+'</div>';
+  chat.appendChild(r);scrollBottom();
+  firstBubbleOfTurn=false;
+}
+function userSay(text){
+  const r=document.createElement('div');r.className='row-user';
+  r.innerHTML='<div class="bub-user" data-idx="'+(ansIdx++)+'" title="탭하면 이 답변부터 수정할 수 있어요">'+text+'</div>';
+  chat.appendChild(r);scrollBottom();
+  firstBubbleOfTurn=true;
+}
+/* 답변 수정: 사용자 풍선 탭 → 해당 답변부터 재진행 (이전 답변은 즉시 복원) */
+chat.addEventListener('click',e=>{
+  const b=e.target.closest('.bub-user');if(!b)return;
+  editFrom(+b.dataset.idx);
+});
+function editFrom(idx){
+  if(!confirm('이 답변부터 다시 진행할까요?\n(이후 답변은 분기가 바뀔 수 있어 다시 여쭤봐요)'))return;
+  GEN++; // 진행 중이던 흐름 중단
+  replayQueue=answerLog.slice(0,idx);
+  answerLog=answerLog.slice(0,idx);
+  saveState();
+  REPLAY=replayQueue.length>0;
+  A={};pCount=0;ansIdx=0;firstBubbleOfTurn=true;
+  chat.innerHTML='';$('#dock').classList.remove('on');
+  $('#pfill').style.width='0';
+  flow().catch(()=>{});
+}
+function nextReplay(){if(replayQueue.length){return replayQueue.shift()}REPLAY=false;return undefined}
+
+async function chips(list){ // [{label,value,help,small}]
+  if(REPLAY){const v=nextReplay();if(v!==undefined){const it=list.find(x=>x.value===v);userSay(it?it.label.replace(/\?icon:\w+/,''):String(v));return v}}
+  return new Promise(res=>{
+    const w=document.createElement('div');w.className='chips';
+    /* 선택지가 하나면 = 진행/행동 버튼 → 눈에 띄는 CTA로 */
+    const isCta=list.length===1 && !list[0].small;
+    if(isCta)w.classList.add('chips-cta');
+    list.forEach(it=>{
+      const m=it.label.match(/^(.*?)\s*\?icon:(\w+)\s*$/);
+      const txt=m?m[1].trim():it.label;
+      const b=document.createElement('button');b.className=(isCta?'chip cta':'chip')+(it.small?' sm':'');
+      b.textContent=txt;
+      b.onclick=()=>{w.remove();userSay(txt);logAns(it.value);res(it.value)};
+      if(m){ // ? 는 같은 알약 안 분리 세그먼트 (오터치 방지 + 소속 명확)
+        const pair=document.createElement('span');pair.className='chip-pair'+(it.small?' sm':'');
+        const h=document.createElement('button');h.className='chip-help';h.textContent='?';
+        h.onclick=()=>openHelp(m[2]);
+        pair.appendChild(b);pair.appendChild(h);w.appendChild(pair);
+      }else w.appendChild(b);
+    });
+    chat.appendChild(w);scrollBottom();
+  });
+}
+async function dateYM(opt={}){ // returns {y,m,approx}
+  if(REPLAY){const v=nextReplay();if(v!==undefined){userSay(fmtYM(v.y,v.m)+(v.approx?' (대략)':''));return v}}
+  return new Promise(res=>{
+    const w=document.createElement('div');w.className='inline-input';
+    const y0=opt.minY||1990, y1=opt.maxY||NOWY+3;
+    let ys='';for(let y=y1;y>=y0;y--)ys+='<option value="'+y+'">'+y+'년</option>';
+    let ms='';for(let m=1;m<=12;m++)ms+='<option value="'+m+'">'+m+'월</option>';
+    w.innerHTML='<div class="drum"><select class="yy">'+ys+'</select><select class="mm">'+ms+'</select></div><button class="ok">확인</button>'+(opt.forget?'<button class="forget">'+(opt.forgetLabel||'정확히 기억 안 나요')+'</button>':'');
+    const dy=opt.defY||NOWY, dm=opt.defM||NOWM;
+    w.querySelector('.yy').value=Math.min(Math.max(dy,y0),y1);w.querySelector('.mm').value=dm;
+    let approx=false;
+    w.querySelector('.ok').onclick=()=>{
+      const v={y:+w.querySelector('.yy').value,m:+w.querySelector('.mm').value,approx};
+      w.remove();userSay(fmtYM(v.y,v.m)+(approx?' (대략)':''));logAns(v);res(v);
+    };
+    if(opt.forget)w.querySelector('.forget').onclick=async()=>{
+      approx=true;w.querySelector('.forget').style.display='none';
+      if(opt.onForget)await opt.onForget();
+      scrollBottom();
+    };
+    chat.appendChild(w);scrollBottom();
+  });
+}
+async function yearsMonthsInput(opt={}){ // returns {months,approx}
+  if(REPLAY){const v=nextReplay();if(v!==undefined){userSay(Math.floor(v.months/12)+'년 '+(v.months%12)+'개월'+(v.approx?' (대략)':''));return v}}
+  return new Promise(res=>{
+    const w=document.createElement('div');w.className='inline-input';
+    w.innerHTML='<div class="ym"><input class="iy" inputmode="numeric" placeholder="0">년 <input class="im" inputmode="numeric" placeholder="0">개월</div><button class="ok">확인</button><button class="forget">잘 모르겠어요</button>';
+    let approx=false;
+    w.querySelector('.ok').onclick=()=>{
+      const yv=+w.querySelector('.iy').value||0, mv=+w.querySelector('.im').value||0;
+      if(yv===0&&mv===0&&!confirm('0개월로 입력할까요?'))return;
+      const v={months:yv*12+mv,approx};
+      w.remove();userSay(yv+'년 '+mv+'개월'+(approx?' (대략)':''));logAns(v);res(v);
+    };
+    w.querySelector('.forget').onclick=async()=>{approx=true;w.querySelector('.forget').style.display='none';if(opt.onForget)await opt.onForget();scrollBottom()};
+    chat.appendChild(w);scrollBottom();
+  });
+}
+/* bottom dock money input */
+async function money(opt={}){ // returns 만원 number or special chip value
+  if(REPLAY){const v=nextReplay();if(v!==undefined){userSay(typeof v==='number'?fmtMan(v):(v&&v.chip!==undefined?'(선택: '+v.chip+')':String(v)));return v}}
+  return new Promise(res=>{
+    const dock=$('#dock');dock.classList.add('on');
+    $('#dockHint').textContent=opt.hint||'만원 단위로 입력해주세요';
+    const inp=$('#dockIn');inp.value='';inp.placeholder=opt.placeholder||'예: 78000';
+    $('#dockKor').textContent='';
+    const chipsEl=$('#dockChips');chipsEl.innerHTML='';
+    (opt.chips||[]).forEach(c=>{
+      const m=c.label.match(/^(.*?)\s*\?icon:(\w+)\s*$/);
+      const txt=m?m[1].trim():c.label;
+      const b=document.createElement('button');b.className='chip sm';b.textContent=txt;
+      b.onclick=()=>{cleanup();userSay(txt);logAns({chip:c.value});res({chip:c.value})};
+      if(m){
+        const pair=document.createElement('span');pair.className='chip-pair sm';
+        const h=document.createElement('button');h.className='chip-help';h.textContent='?';
+        h.onclick=()=>openHelp(m[2]);
+        pair.appendChild(b);pair.appendChild(h);chipsEl.appendChild(pair);
+      }else chipsEl.appendChild(b);
+    });
+    const F=opt.fmt||fmtMan;
+    inp.oninput=()=>{const v=parseInt(inp.value.replace(/[^0-9]/g,''))||0;$('#dockKor').textContent=v?F(v):''};
+    function cleanup(){dock.classList.remove('on');$('#dockOk').onclick=null;inp.oninput=null}
+    $('#dockOk').onclick=()=>{
+      const v=parseInt(inp.value.replace(/[^0-9]/g,''))||0;
+      if(v<(opt.min??1)||v>(opt.max??2000000)){$('#dockHint').textContent=opt.rangeMsg||'1,000~1,000,000만원 사이로 입력해주세요';return}
+      cleanup();userSay(F(v));logAns(v);res(v);
+    };
+    inp.focus();
+  });
+}
+/* address modal */
+const ADDRS=[
+ {road:'서울 강남구 테헤란로 123',region:'서울 강남구',tag:'역삼동'},
+ {road:'서울 서초구 반포대로 45',region:'서울 서초구',tag:'반포동'},
+ {road:'서울 송파구 올림픽로 99',region:'서울 송파구',tag:'잠실동'},
+ {road:'서울 용산구 이촌로 200',region:'서울 용산구',tag:'이촌동'},
+ {road:'서울 마포구 월드컵북로 56',region:'서울 마포구',tag:'성산동'},
+ {road:'서울 노원구 동일로 1234',region:'서울 노원구',tag:'상계동'},
+ {road:'경기 성남시 분당구 판교역로 14',region:'경기 성남시 분당구',tag:'백현동'},
+ {road:'경기 과천시 별양상가로 2',region:'경기 과천시',tag:'별양동'},
+ {road:'경기 화성시 동탄구 동탄대로 100',region:'경기 화성시 동탄구',tag:'동탄'},
+ {road:'경기 용인시 기흥구 흥덕중앙로 50',region:'경기 용인시 기흥구',tag:'기흥'},
+ {road:'경기 구리시 경춘로 200',region:'경기 구리시',tag:'구리'},
+ {road:'경기 고양시 일산동구 중앙로 300',region:'경기 고양시',tag:'장항동'},
+ {road:'인천 연수구 송도과학로 30',region:'인천 연수구',tag:'송도동'},
+ {road:'부산 해운대구 마린시티로 33',region:'부산 해운대구',tag:'우동'},
+ {road:'대전 유성구 대학로 99',region:'대전 유성구',tag:'궁동'},
+];
+async function address(){
+  if(REPLAY){const v=nextReplay();if(v!==undefined){userSay(v.road);return v}}
+  return new Promise(res=>{
+    const m=$('#addrModal');m.classList.add('on');
+    const embed=$('#addrEmbed'), manual=$('#addrManual');
+    function pick(a){ m.classList.remove('on'); userSay(a.road); logAns(a); res(a); }
+    /* 직접 입력 (항상 가능한 안전 경로) */
+    function useManual(){
+      embed.style.display='none'; manual.style.display='block';
+      const inp=$('#addrText'); inp.value='';
+      $('#addrTextOk').onclick=()=>{
+        const t=(inp.value||'').trim();
+        if(t.length<4){$('#addrTextHint').textContent='시·구·동까지 적어주세요 (예: 서울 강남구 역삼동)';$('#addrTextHint').style.color='var(--bad)';return;}
+        pick({road:t, region:t, tag:''}); /* region=전체문자열 → isAdj 부분매칭으로 조정지역 판정 */
+      };
+      setTimeout(()=>{try{inp.focus()}catch(e){}},60);
+    }
+    $('#addrManualToggle').onclick=useManual;
+    /* 카카오(다음) 우편번호 위젯이 로드됐으면 실제 검색, 아니면 직접 입력 */
+    if(window.daum&&window.daum.Postcode){
+      embed.style.display='block'; manual.style.display='none'; embed.innerHTML='';
+      try{
+        new daum.Postcode({
+          oncomplete:function(data){
+            const road=(data.roadAddress||data.jibunAddress||data.address);
+            const region=(data.sido+' '+data.sigungu).replace(/\s+/g,' ').trim();
+            pick({road:road, region:region, tag:(data.bname||data.sigungu||'')});
+          },
+          width:'100%', height:'100%', maxSuggestItems:5
+        }).embed(embed);
+      }catch(e){ useManual(); }
+    }else{
+      useManual();
+    }
+  });
+}
+/* help */
+const HELP={
+ nonres:["왜 묻나요?","이 집에 사시는지가 아니라, 한국에 사시는지를 여쭤보는 거예요. 다른 집·전월세여도 한국 안이면 '네'예요. 국적과는 상관없어요. 세법은 한국에 사는 분을 '거주자'로 보는데, 한국인이어도 해외 이민·장기 출국 중이면 비거주자가 되고, 비거주자는 1세대 1주택 비과세 적용이 제한돼요."],
+ offi:["오피스텔","주거용이면 양도세에서 주택으로 보고, 업무용이면 일반 부동산으로 봐요."],
+ mixed:["상가주택","1층 상가 + 위층 주택처럼 한 건물에 상가와 주택이 같이 있는 형태예요."],
+ offi_r:["주거용","전입신고하고 직접 거주하셨거나, 전입신고된 세입자에게 임대하신 경우예요."],
+ offi_b:["업무용","사업장으로 쓰셨거나 사업자 용도로 임대하신 경우예요."],
+ gift:["증여","가족 등으로부터 무상으로 받으신 거예요. 매수와 다르게 처리돼요."],
+ conv:["환산취득가액","환산취득가액 = 양도가 × (취득시 기준시가 / 양도시 기준시가). 실제 매수가가 기억 안 나거나 자료가 없을 때 추정 가능해요. 다만 추정값이라 실제 신고 시 결과가 달라질 수 있어요."],
+ expsum:["부대비용","취득세, 중개수수료, 법무사 비용, 자본적 지출(가치 높인 인테리어) 등 영수증·세금계산서 있는 항목 합계예요."],
+ capex:["자본적 지출","새시 교체, 발코니 확장, 베란다 새시 같은 가치 높이는 인테리어예요. 단순 도배·장판은 제외돼요."],
+ joint:["공동명의","한 집을 두 명 이상이 함께 소유하는 거예요. 예: 부부 공동명의."],
+ household:["동일 세대","세법은 '함께 살면서 생계를 같이하는 가족'을 같은 세대로 봐요. 보통 같은 주소면 같은 세대로 봅니다. 만 30세 이상 자녀가 따로 살고 독립 생계면 다른 세대로 인정될 수 있어요."],
+ reside:["거주의 기준","세법상 '거주'는 주민등록 전입신고 + 실제 생활이에요. 잠깐 짐만 옮긴 건 거주가 아니에요. 거주는 끊겼다 다시 시작해도 총 누적 기간으로 합산해요."],
+ rent4:["단기임대 4년","4년 임대 등록한 단기임대주택이에요. 2020년 7월 신규 등록 폐지, 기존 등록자만 해당해요."],
+ rent8:["장기임대 8년","8년 이상 임대하는 장기임대주택이에요. 거주주택 비과세 특례 등 절세 옵션이 있어요."],
+ rent10:["장기임대 10년","10년 이상 임대하는 장기임대주택이에요. 2020년 7월 이후 신규 등록 가능 유형이에요."],
+ rentEnd:["자진말소·종료","임대사업자 등록 의무기간이 끝나거나 자진말소한 경우예요."],
+ other8:["주택 수 포함 범위","아파트만이 아니라 다세대·단독 등 모든 주택이 포함돼요. 오피스텔은 용도 기준이에요 — 주거용으로 쓰고 있으면 주택으로 치고, 업무용이면 빼요. 2021년 이후 취득한 주택 분양권·조합원입주권도 포함돼요 (단, 오피스텔 분양권은 제외). 농어촌·상속 주택 등 일부는 제외될 수 있는데, 그건 시나리오에서 자세히 봐드릴게요."],
+ gain:["양도차익","판 가격에서 산 가격을 뺀 차액이에요. 양도세의 출발점."],
+ expense:["필요경비","양도세 계산에서 빼주는 비용이에요. 취득세·중개비·법무비·자본적 지출 등 영수증 있는 항목만 인정돼요."],
+ ltd:["장기보유공제","오래 보유할수록 깎아주는 제도예요. 3년부터 시작해요. 1주택 비과세 대상은 보유·거주 각각 연 4%씩 더 크게 적용돼요."],
+ base:["과세표준","세율을 적용하는 기준 금액이에요. 양도차익에서 공제를 모두 뺀 값."],
+ prog:["누진공제","세율 구간이 올라갈 때 정해진 금액을 빼주는 제도예요. 세금이 갑자기 확 뛰지 않게 보정해요."],
+ local:["지방소득세","양도세의 10%를 지방자치단체에 내는 세금이에요. 양도세와 함께 계산해요."],
+};
+function openHelp(k){const h=HELP[k];if(!h)return;$('#helpTitle').textContent=h[0];$('#helpBody').textContent=h[1];$('#helpModal').classList.add('on')}
+function closeHelp(){$('#helpModal').classList.remove('on')}
+/* ===== 이용약관 / 개인정보처리방침 ===== */
+const LEGAL={
+  privacy:['개인정보처리방침',
+    '<p>세꼼(Sekkom, 이하 “서비스”)은 「개인정보 보호법」을 준수하며, 이용자의 개인정보를 다음과 같이 처리합니다.</p>'
+    +'<h4>1. 수집하는 개인정보 항목 및 수집 방법</h4>'
+    +'<ul><li>이메일 주소</li>'
+    +'<li>부동산 계산 입력값(소재지, 취득·양도 시점 및 금액, 보유·거주 정보, 주택 수 등)</li>'
+    +'<li>설문 응답(서비스 만족도, 이용 의향, 연령대, 세무사 연결 희망 여부, 자유 의견 등)</li></ul>'
+    +'<p>수집 방법: 이용자가 화면에서 직접 입력·제출하는 방식으로만 수집합니다.</p>'
+    +'<h4>2. 수집·이용 목적</h4>'
+    +'<ul><li>양도소득세 계산 결과 및 절세 시나리오 제공</li>'
+    +'<li>결과·안내 메일 발송</li>'
+    +'<li>베타 서비스 운영·품질 개선</li>'
+    +'<li>(이용자가 별도 동의한 경우) 세무 전문가 연결</li></ul>'
+    +'<h4>3. 보유·이용 기간 및 파기</h4>'
+    +'<p>수집 목적이 달성되거나 이용자가 삭제를 요청하면 지체 없이 파기합니다. 베타 서비스 종료 시에도 보관 중인 개인정보를 파기하며, 관계 법령상 보존 의무가 있는 경우에는 해당 기간 동안 보관 후 파기합니다.</p>'
+    +'<p>파기 절차·방법: 전자적 파일 형태의 정보는 복구·재생이 불가능한 방법으로 영구 삭제합니다.</p>'
+    +'<h4>4. 제3자 제공</h4>'
+    +'<p>원칙적으로 개인정보를 외부에 제공하지 않습니다. 다만 이용자가 “세무사 연결”에 <b>별도로 동의</b>한 경우에 한하여, 연결 목적 범위 내에서 제휴 세무 전문가에게 필요한 정보(이메일·상담에 필요한 부동산 정보)를 제공합니다. 동의하지 않아도 서비스 이용에는 제한이 없습니다.</p>'
+    +'<h4>5. 처리 위탁</h4>'
+    +'<p>서비스 운영을 위해 아래 업무를 외부 사업자에게 위탁합니다. 위탁 계약 시 개인정보가 안전하게 관리되도록 합니다.</p>'
+    +'<ul><li>이메일 발송: Resend</li><li>호스팅·데이터 저장: Netlify</li><li>이용 통계 분석: Google(Google Analytics·Tag Manager)</li></ul>'
+    +'<h4>6. 개인정보의 국외 이전</h4>'
+    +'<p>위 위탁에 따라 개인정보가 국외에서 처리·보관됩니다. 이는 서비스 제공(계약 이행)에 필요한 범위에 한합니다.</p>'
+    +'<ul><li>이전받는 자: Resend(이메일 발송), Netlify(호스팅·저장), Google(이용 통계 분석)</li>'
+    +'<li>이전 국가: 미국</li>'
+    +'<li>이전 항목: 상기 1항의 수집 항목 중 해당 업무에 필요한 정보</li>'
+    +'<li>이전 일시·방법: 서비스 이용(제출) 시점에 정보통신망을 통해 전송</li>'
+    +'<li>이전 목적: 메일 발송, 호스팅·데이터 저장</li>'
+    +'<li>보유·이용 기간: 위탁 목적 달성 또는 위탁 계약 종료 시까지</li></ul>'
+    +'<h4>7. 개인정보의 안전성 확보조치</h4>'
+    +'<ul><li>전송 구간 암호화(HTTPS) 적용</li><li>개인정보 처리·접근 권한의 최소화 및 접근 통제</li><li>처리 위탁 사업자에 대한 보안 관리</li></ul>'
+    +'<h4>8. 쿠키 등 자동수집 장치</h4>'
+    +'<p>서비스 개선을 위해 Google Analytics(Google Tag Manager 경유)를 사용하며, 이 과정에서 방문·이용 통계 목적의 쿠키가 설치될 수 있어요. 광고 목적의 추적은 하지 않습니다. 또한 계산 진행·화면 유지를 위해 기기 내 저장소(로컬 스토리지)를 사용할 수 있어요.</p>'
+    +'<p>쿠키·통계 수집은 브라우저 설정에서 차단하거나, Google Analytics 차단 브라우저 부가기능(tools.google.com/dlpage/gaoptout)으로 거부할 수 있습니다.</p>'
+    +'<h4>9. 만 14세 미만 아동</h4>'
+    +'<p>서비스는 만 14세 미만 아동의 개인정보를 수집하지 않습니다.</p>'
+    +'<h4>10. 정보주체의 권리 및 행사 방법</h4>'
+    +'<p>이용자는 언제든지 본인 개인정보의 열람·정정·삭제·처리정지를 요청할 수 있으며, 요청은 아래 문의처로 접수하면 지체 없이 처리합니다.</p>'
+    +'<h4>11. 개인정보 보호책임자 · 문의</h4>'
+    +'<p>개인정보 보호책임자: 세꼼 운영자 · 이메일 sekkomi.com@gmail.com</p>'
+    +'<h4>12. 권익침해 구제 방법</h4>'
+    +'<p>개인정보 침해로 도움이 필요하시면 아래 기관에 상담·신고할 수 있습니다.</p>'
+    +'<ul><li>개인정보분쟁조정위원회 (국번없이) 1833-6972 · kopico.go.kr</li>'
+    +'<li>개인정보침해신고센터 (국번없이) 118 · privacy.kisa.or.kr</li>'
+    +'<li>대검찰청 사이버수사과 (국번없이) 1301 · spo.go.kr</li>'
+    +'<li>경찰청 사이버수사국 (국번없이) 182 · ecrm.police.go.kr</li></ul>'
+    +'<div class="asof">시행일: {ASOF} · 본 방침은 베타 운영 방침으로, 내용이 변경되면 본 화면을 통해 고지합니다.</div>'],
+  terms:['이용약관',
+    '<p>본 약관은 세꼼(Sekkom, 이하 “서비스”)의 이용 조건과 절차를 규정합니다.</p>'
+    +'<h4>제1조 (서비스 내용)</h4>'
+    +'<p>서비스는 이용자가 입력한 정보를 바탕으로 예상 양도소득세를 자동 계산하고, 참고용 절세 시나리오 정보를 제공합니다.</p>'
+    +'<h4>제2조 (정보 제공의 성격)</h4>'
+    +'<ul><li>서비스가 제공하는 계산 결과와 시나리오는 <b>일반적 정보 제공</b>이며, 세무·법률 자문이 아닙니다.</li>'
+    +'<li>실제 세액과 신고 결과는 개별 사실관계, 최신 법령 해석, 관할 세무서 판단에 따라 달라질 수 있습니다.</li>'
+    +'<li>중요한 의사결정과 실제 신고는 반드시 세무 전문가 상담 후 진행하시기를 권장합니다.</li></ul>'
+    +'<h4>제3조 (책임의 한계)</h4>'
