@@ -1,13 +1,14 @@
 /**
  * 세꼼(Sekkom) 관리자 대시보드 — Netlify Blobs
  * ────────────────────────────────────────────
- * 모든 참여 데이터(익명 계산 + 이메일 리드 + 설문)를 관리자만 조회. 토큰(ADMIN_TOKEN) 필수.
+ * 모든 참여 데이터(익명 계산 + 이메일 리드 + 설문)를 관리자만 조회.
+ * 인증: ① 세션 쿠키(어드민 OTP 로그인, /admin) ② ADMIN_TOKEN 토큰(자동화·API용) 둘 중 하나.
  *
- * 브라우저:  /api/list-leads?token=발급토큰                → HTML 대시보드
- *            /api/list-leads?token=…&kind=calc|free_email|survey  → 종류 필터
- *            /api/list-leads?token=…&format=json           → 원본 JSON
- *            /api/list-leads?token=…&format=csv            → 엑셀용 CSV
+ * 브라우저:  /admin 에서 OTP 로그인 → 이 대시보드로.
+ *            (또는) /api/list-leads?token=발급토큰
+ *            &kind=calc|free_email|survey  종류 필터 · &format=json|csv  내보내기
  *
+ * 대시보드에서 삭제(선택/테스트/전체)와 로그아웃 지원 — delete-leads.js / admin-auth.js 연동.
  * ADMIN_TOKEN 환경변수 미설정 시 전면 차단(안전 기본값).
  */
 import { getStore } from "@netlify/blobs";
@@ -30,12 +31,32 @@ const taxDisp = (s) => { const t = taxNum(s); if (t != null) return (t ? won(Mat
 const scenNum = (s) => (s.scenarios != null ? s.scenarios : (s.context && s.context.scenarios));
 const scenDisp = (s) => { const v = scenNum(s); return v != null && v !== "" ? v + "개" : "-"; };
 
+// 어드민 세션 쿠키 검증 (admin-auth.js가 발급)
+async function sessionOk(req) {
+  const m = (req.headers.get("cookie") || "").match(/(?:^|;\s*)seggom_admin=([A-Za-z0-9]+)/);
+  if (!m) return false;
+  try {
+    const store = getStore("seggom-admin");
+    const raw = await store.get("sess:" + m[1]);
+    if (!raw) return false;
+    const rec = JSON.parse(raw);
+    if (Date.now() > rec.exp) { await store.delete("sess:" + m[1]); return false; }
+    return true;
+  } catch { return false; }
+}
+
 export default async (req) => {
   const url = new URL(req.url);
   const token = url.searchParams.get("token") || req.headers.get("x-admin-token") || "";
   const need = process.env.ADMIN_TOKEN || "";
   if (!need) return new Response("ADMIN_TOKEN이 설정되지 않았어요(관리자에게 문의).", { status: 503 });
-  if (token !== need) return new Response("접근 권한이 없어요.", { status: 401 });
+  const byToken = token === need;
+  const authed = byToken || (await sessionOk(req));
+  if (!authed) {
+    const wantsHtml = (req.headers.get("accept") || "").includes("text/html") && !url.searchParams.get("format");
+    if (wantsHtml) return new Response("", { status: 302, headers: { Location: "/admin" } });
+    return new Response("접근 권한이 없어요.", { status: 401 });
+  }
 
   const store = getStore("seggom-leads");
   const { blobs } = await store.list();
@@ -72,12 +93,13 @@ export default async (req) => {
 
   const kf = url.searchParams.get("kind");
   const shown = kf ? items.filter((i) => i.kind === kf) : items;
-  const T = (k) => `?token=${esc(token)}` + (k ? `&kind=${k}` : "");
+  const T = (k) => { const ps = []; if (byToken) ps.push("token=" + esc(token)); if (k) ps.push("kind=" + k); return "?" + ps.join("&"); };
 
   const rowsHtml = shown.map((s) => {
     const taxc = (s.taxConnect === "paid" || s.taxConnect === "free")
       ? `<b style="color:#b45309">${esc(L_TAX[s.taxConnect])}★</b>` : esc(L_TAX[s.taxConnect] || "-");
     return `<tr>
+      <td style="text-align:center"><input type="checkbox" class="selrow" value="${esc(s.id || "")}"></td>
       <td>${esc(dt(s.ts))}</td>
       <td><span style="background:${KIND_COLOR[s.kind] || "#64748B"};color:#fff;padding:2px 7px;border-radius:999px;font-size:11px">${esc(KIND[s.kind] || s.kind)}</span></td>
       <td>${esc(regionOf(s) || "-")}</td>
@@ -101,6 +123,7 @@ export default async (req) => {
 <meta name="viewport" content="width=device-width, initial-scale=1"><title>세꼼 어드민</title>
 <style>body{font-family:'Pretendard','Apple SD Gothic Neo',sans-serif;background:#F9FAFB;margin:0;padding:24px;color:#191F28}
 h1{font-size:20px;margin:0 0 4px}.sub{font-size:13px;color:#6B7684;margin-bottom:16px}
+.topbar{display:flex;justify-content:space-between;align-items:flex-start}
 .cards{display:flex;gap:12px;flex-wrap:wrap;margin:14px 0}
 .c{background:#fff;border:1px solid #E5E8EB;border-radius:14px;padding:14px 18px;min-width:130px}
 .c .l{font-size:12px;color:#6B7684}.c .v{font-size:24px;font-weight:800;color:#163300;margin-top:4px}
@@ -109,11 +132,17 @@ h1{font-size:20px;margin:0 0 4px}.sub{font-size:13px;color:#6B7684;margin-bottom
 .tools{margin:10px 0}.tools a{display:inline-block;margin-right:8px;font-size:13px;color:#3182F6;text-decoration:none}
 .filters{margin:12px 0 6px}.fl{display:inline-block;margin-right:6px;padding:5px 12px;border-radius:999px;font-size:13px;text-decoration:none;color:#4E5968;background:#EEF1F4}
 .fl.on{background:#163300;color:#fff;font-weight:700}
+.dbtn{border:1px solid #E5E8EB;background:#fff;color:#D22030;font-size:13px;font-weight:700;padding:7px 14px;border-radius:10px;cursor:pointer;margin-right:6px}
+.dbtn.warn{background:#D22030;color:#fff;border-color:#D22030}
+.dbtn.ghost{color:#4E5968;font-weight:600}
 table{width:100%;border-collapse:collapse;background:#fff;border-radius:12px;overflow:hidden;font-size:13px}
 th,td{padding:9px 10px;border-bottom:1px solid #E5E8EB;text-align:left;vertical-align:top}
 th{background:#F2F4F6;color:#4E5968;font-weight:700;white-space:nowrap}</style></head><body>
-<h1>세꼼 어드민 대시보드</h1>
-<div class="sub">모든 참여 데이터 · 총 ${items.length}건 (계산 ${calcN} · 이메일 ${emailN} · 설문 ${n})</div>
+<div class="topbar">
+  <div><h1>세꼼 어드민 대시보드</h1>
+  <div class="sub">모든 참여 데이터 · 총 ${items.length}건 (계산 ${calcN} · 이메일 ${emailN} · 설문 ${n})</div></div>
+  <button class="dbtn ghost" onclick="logout()">로그아웃</button>
+</div>
 
 <div class="rowlabel">참여 퍼널</div>
 <div class="cards">
@@ -135,10 +164,41 @@ th{background:#F2F4F6;color:#4E5968;font-weight:700;white-space:nowrap}</style><
   <a href="${T(kf)}&format=csv">⬇ CSV 내보내기</a>
   <a href="${T(kf)}&format=json">원본 JSON</a>
 </div>
+<div class="tools">
+  <label style="font-size:13px;margin-right:10px"><input type="checkbox" onclick="document.querySelectorAll('.selrow').forEach(c=>c.checked=this.checked)"> 전체 선택</label>
+  <button class="dbtn" onclick="delSel()">선택 삭제</button>
+  <button class="dbtn" onclick="delFilter('test','DELETE','테스트 데이터(알려진 테스트 이메일·IP)를')">테스트 데이터 삭제</button>
+  <button class="dbtn warn" onclick="delFilter('all','DELETE-ALL','전체 데이터를')">전체 삭제</button>
+</div>
 <table><thead><tr>
-<th>일시</th><th>종류</th><th>지역</th><th>세액</th><th>시나리오</th><th>케이스</th><th>만족</th><th>구매의향</th><th>적정가</th><th>세무사</th><th>연령</th><th>이메일</th><th>의견</th>
-</tr></thead><tbody>${rowsHtml || '<tr><td colspan="13" style="text-align:center;color:#8B95A1;padding:24px">아직 데이터가 없어요.</td></tr>'}</tbody></table>
-<p style="font-size:11px;color:#8B95A1;margin-top:16px">이 페이지는 토큰으로 보호돼요. 링크를 공유하지 마세요.</p>
+<th></th><th>일시</th><th>종류</th><th>지역</th><th>세액</th><th>시나리오</th><th>케이스</th><th>만족</th><th>구매의향</th><th>적정가</th><th>세무사</th><th>연령</th><th>이메일</th><th>의견</th>
+</tr></thead><tbody>${rowsHtml || '<tr><td colspan="14" style="text-align:center;color:#8B95A1;padding:24px">아직 데이터가 없어요.</td></tr>'}</tbody></table>
+<p style="font-size:11px;color:#8B95A1;margin-top:16px">삭제는 되돌릴 수 없어요 · 세션은 7일 뒤 만료됩니다 · 이 링크를 공유하지 마세요.</p>
+<script>
+async function post(u, body){
+  const r = await fetch(u, {method:"POST", credentials:"same-origin", headers:{"Content-Type":"application/json"}, body: JSON.stringify(body)});
+  return r.json();
+}
+async function delSel(){
+  const keys = Array.from(document.querySelectorAll(".selrow:checked")).map(c=>c.value).filter(Boolean);
+  if(!keys.length) return alert("삭제할 항목을 체크하세요");
+  if(!confirm(keys.length + "건을 삭제할까요? 되돌릴 수 없어요.")) return;
+  const r = await post("/api/delete-leads", {mode:"delete", keys:keys, confirm:"DELETE"});
+  alert("삭제 " + (r.deleted!=null?r.deleted:0) + "건" + (r.error?(" / 오류: "+r.error):""));
+  location.reload();
+}
+async function delFilter(f, c, label){
+  if(!confirm(label + " 삭제할까요? 되돌릴 수 없어요.")) return;
+  if(f === "all" && !confirm("정말 전체 삭제합니까? 실사용 데이터도 모두 지워집니다.")) return;
+  const r = await post("/api/delete-leads", {mode:"delete", filter:f, confirm:c});
+  alert("삭제 " + (r.deleted!=null?r.deleted:0) + "건 (대상 " + (r.matched!=null?r.matched:"?") + ")" + (r.error?(" / 오류: "+r.error):""));
+  location.reload();
+}
+async function logout(){
+  await post("/api/admin-auth", {action:"logout"});
+  location.href = "/admin";
+}
+</script>
 </body></html>`;
   return new Response(html, { status: 200, headers: { "Content-Type": "text/html; charset=utf-8" } });
 };
