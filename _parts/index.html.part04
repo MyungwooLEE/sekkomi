@@ -1,0 +1,476 @@
+    div.innerHTML='<div class="avatar">세</div><div class="bub">'+t+(sub?'<span class="sub">└ '+sub+'</span>':'')+'</div>';
+    sc.querySelectorAll('.loadbub').forEach(e=>e.classList.remove('cur'));
+    div.classList.add('cur');
+    sc.appendChild(div);sc.scrollTop=sc.scrollHeight;
+    $('#pfill4').style.width=Math.round((i+1)/steps.length*100)+'%';
+    await sleep(REPLAY?40:d);
+  }
+  renderS05();show('s05');
+  /* 익명 계산 완료 로깅 1회 — 이메일 없이도 전체 참여(퍼널) 집계. 개인정보 최소화: 상세주소 없이 지역만 */
+  if(!A._calcLogged){A._calcLogged=true;
+    seggomSave("calc",{region:(A.address&&A.address.region)||'',ptype:A.ptype||'',tax:A.R.total,
+      scenarios:(A.S||[]).length,caseId:A.R.caseId,holdYears:A.R.holdYears,own:A.own,totalHouses:A.R.totalHouses});
+    track('calc_complete',{tax_total:A.R.total,scenarios:(A.S||[]).length,case_id:A.R.caseId,region:(A.address&&A.address.region)||''});}
+  /* 무료 이메일 남긴 경우: 서버 저장(리드) + 결과 메일 1회 (배포 시 실제, 로컬은 패스) */
+  if(A.email&&!A._resultMailed){A._resultMailed=true;
+    const lead={email:A.email,address:A.address&&A.address.road,tax:fmtMan(A.R.total),scenarios:(A.S||[]).length,
+      context:{addr:A.address&&A.address.road,tax:A.R.total,scenarios:(A.S||[]).length}};
+    seggomSave("free_email",lead);
+    track('email_lead',{source:'result'});
+    seggomMail("result",A.email,{address:lead.address,tax:lead.tax,scenarios:lead.scenarios,url:resultUrl()});}
+}
+
+/* ================= tax engine (근사) ================= */
+const BR=[[1400,6,0],[5000,15,126],[8800,24,576],[15000,35,1544],[30000,38,1994],[50000,40,2594],[100000,42,3594],[Infinity,45,6594]];
+const LAW_ASOF='2026.7.1'; // 세법 기준일 — 개정 반영 시 이 값만 갱신
+function progTaxN(base,sur=0){if(base<=0)return 0;for(const[l,r,d]of BR)if(base<=l)return Math.max(0,base*(r+sur)/100-d)}
+function calc(opt={}){
+  const salePrice=A.salePrice, acq=A.acqPrice+A.acqExp+A.saleExp;
+  const saleD=opt.saleDate||A.saleDate;
+  const holdMonths=Math.max(0,monthsBetween(A.acqDate,saleD));
+  const holdYears=Math.floor(holdMonths/12);
+  let resM=opt.resOverride!==undefined?opt.resOverride:(A.currentlyLiving?Math.max(0,A.resMonthsAtSale):A.resMonthsNow);
+  const gain=salePrice-acq;
+  const isHousing=!(A.ptype==='officetel'&&A.offiUse==='biz');
+  const totalHouses=1+(A.otherCount||0)+(A.memberOtherHouse?1:0);
+  A.totalHouses=totalHouses;
+  const saleAdj=isAdj(A.address.region,saleD.y,saleD.m);
+  // 일시적 2주택 간이 판정
+  let temp2=false,temp2Deadline=null;
+  if(A.otherCount===1&&!A.memberOtherHouse&&A.otherAcq){
+    const dl=addMonths(A.otherAcq.y,A.otherAcq.m,36);
+    temp2Deadline=dl;
+    temp2=ymNum(saleD.y,saleD.m)<=ymNum(dl.y,dl.m)&&monthsBetween(A.acqDate,A.otherAcq)>=12;
+  }
+  // 비과세 판정
+  const needRes=A.acqAdj; // 취득당시 조정지역이면 거주 2년 필요
+  const resOK=!needRes||resM>=24;
+  const holdOK=holdMonths>=24;
+  const oneHouse=(totalHouses===1)||temp2;
+  let exempt=false,exemptType=null;
+  if(A.isResident&&isHousing&&oneHouse&&holdOK&&resOK&&!opt.forceTaxable){
+    exempt=true;exemptType=salePrice<=120000?'full':'partial';
+    if(temp2&&totalHouses>1)exemptType+='_temp2';
+  }
+  let caseId='general';
+  let taxableGain=gain;
+  if(gain<=0){caseId='loss'}
+  else if(exempt){
+    if(salePrice<=120000){caseId='exempt_under';taxableGain=0}
+    else{caseId='exempt_over';taxableGain=gain*(salePrice-120000)/salePrice}
+  }
+  if(!A.isResident&&caseId!=='loss')caseId='non_resident';
+  // 상가주택: 주택 부분만 비과세 (간이)
+  if(A.ptype==='mixed'&&exempt&&A.resRatio<100){
+    taxableGain=taxableGain*( A.resRatio>=50?1:1 ) + gain*(1-(A.resRatio/100))*(salePrice<=120000?1:0)*0; // 단순화: 비과세는 주택부분만
+    if(salePrice<=120000){taxableGain=gain*(1-A.resRatio/100);caseId='exempt_under_mixed'}
+  }
+  // 다주택 중과 (양도 시 조정지역 + 2026.5 이후)
+  let surcharge=0;
+  const heavyOn=ymNum(saleD.y,saleD.m)>=ymNum(2026,5);
+  if(isHousing&&!exempt&&saleAdj&&heavyOn&&totalHouses>=2)surcharge=totalHouses>=3?30:20;
+  // 단기보유
+  let shortRate=0;
+  if(holdMonths<12)shortRate=isHousing?70:50;
+  else if(holdMonths<24)shortRate=isHousing?60:40;
+  // 장특공제
+  let ltdRate=0;
+  if(caseId!=='loss'&&!shortRate&&!surcharge){
+    if(exempt&&resM>=24&&holdYears>=3){ltdRate=Math.min(40,holdYears*4)+Math.min(40,Math.floor(resM/12)*4)} // 표2: 보유 3년 이상 요건
+    else if(holdYears>=3){ltdRate=Math.min(30,holdYears*2)}
+  }
+  const ltdAmt=taxableGain*ltdRate/100;
+  const afterLtd=taxableGain-ltdAmt;
+  // 명의 분할 계산
+  const shares=A.own==='joint'?[A.myShare,...A.members.map(mb=>mb.share)]:[100];
+  let taxSum=0,perOwner=[];
+  shares.forEach(s=>{
+    const myBase=Math.max(0,afterLtd*s/100-250);
+    let t;
+    if(shortRate){t=Math.max(myBase*shortRate/100,progTaxN(myBase,surcharge))} // 단기·중과 모두 해당 시 큰 세액 (비교과세)
+    else t=progTaxN(myBase,surcharge);
+    perOwner.push({share:s,base:myBase,tax:t});
+    taxSum+=t;
+  });
+  if(caseId==='loss'||caseId==='exempt_under'){taxSum=0;perOwner=[]}
+  const localTax=taxSum*0.1;
+  const total=taxSum+localTax;
+  return {salePrice,acqTotal:acq,gain,taxableGain,ltdRate,ltdAmt,afterLtd,holdMonths,holdYears,resM,
+    exempt,exemptType,caseId,surcharge,shortRate,taxSum,localTax,total,perOwner,saleAdj,temp2,temp2Deadline,totalHouses,needRes};
+}
+
+/* ================= scenarios ================= */
+function buildScenarios(){
+  const R=A.R, list=[];
+  const today={y:NOWY,m:NOWM};
+  // ① D-Day
+  if(R.totalHouses===1&&!R.exempt&&R.gain>0&&A.isResident&&(A.ptype!=='officetel'||A.offiUse==='res')){
+    const lack=Math.max(0,24-A.resMonthsNow);
+    {
+      const alt=calc({resOverride:24});
+      const save=R.total-alt.total;
+      if(save>1){
+        const dday=A.currentlyLiving?addMonths(NOWY,NOWM,lack):null;
+        list.push({id:'dday',no:'①',name:'D-Day (거주 2년 비과세)',save,
+          loss:'지금 매도하시면 '+fmtMan(R.total)+' 더 내셔야 해요',
+          urgency:dday?'거주 2년 충족: '+fmtYM(dday.y,dday.m)+' (D-Day '+lack+'개월)':'거주 요건 충족 시점을 시뮬레이션해보세요',
+          diag:A.address.region+' '+(A.ptype==='apartment'?'아파트':'주택')+', '+fmtYM(A.acqDate.y,A.acqDate.m)+' 취득, '+(A.own==='single'?'단독명의':'공동명의')+', 거주 '+A.resMonthsNow+'개월차.'+(A.currentlyLiving?' 거주 2년 요건까지 '+lack+'개월 남았어요.':''),
+          cmp:[['지금 매도',fmtMan(R.total)],['거주 2년 후 매도',fmtMan(alt.total)],['차이',fmtMan(save)]],
+          traps:['잠시 다른 곳에 머무신 적 있으세요? 전출 기록이 있으면 거주가 끊긴 걸로 봐요.','임대로 전환하시면 안 돼요.'],
+          actions:['이번 주: 주민등록 초본 발급 → 전입·전출 기록 확인','매도 일정 조정','양도일까지 전입 유지']});
+      }
+    }
+  }
+  // ② 일시적 2주택 — 처분기한 이내 + '종전 취득 1년 후 신규 취득' 요건을 모두 충족할 때만 추천
+  //    (기한이 이미 지났거나 1년 요건 미충족이면 적용 불가라 절세 플랜으로 제시하지 않음)
+  if(A.otherCount===1&&A.otherAcq&&A.acqDate){
+    const dl=addMonths(A.otherAcq.y,A.otherAcq.m,36);
+    const past=ymNum(today.y,today.m)>ymNum(dl.y,dl.m);
+    const acq1=addMonths(A.acqDate.y,A.acqDate.m,12);
+    const oneYrOk=ymNum(A.otherAcq.y,A.otherAcq.m)>=ymNum(acq1.y,acq1.m);
+    if(!past&&oneYrOk){
+      list.push({id:'temp2',no:'②',name:'일시적 2주택 비과세',save:R.exempt?null:Math.round(R.total*0.8),
+        loss:fmtYM(dl.y,dl.m)+'까지 매도 안 하시면 비과세 못 받아요',
+        urgency:'신규 취득('+fmtYM(A.otherAcq.y,A.otherAcq.m)+') 후 3년 = '+fmtYM(dl.y,dl.m)+'까지 양도',
+        diag:'종전주택 '+fmtYM(A.acqDate.y,A.acqDate.m)+' 취득 + 신규주택 '+fmtYM(A.otherAcq.y,A.otherAcq.m)+' 취득. 일시적 2주택 구조예요.',
+        cmp:[['기한 내 매도','비과세 적용 가능'],['기한 후 매도','일반 과세'+(R.surcharge?' + 중과':'')]],
+        traps:['처분기한은 신규 취득일 기준이에요. 하루라도 넘기면 비과세가 사라져요.','신규 자산이 주거용 오피스텔이어도 주택으로 봐요. 업무용 오피스텔·오피스텔 분양권은 주택 수에서 빠져요.'],
+        actions:['처분기한 캘린더 등록','매도 일정 역산','오피스텔 보유 시 용도 확인 (주거용/업무용)']});
+    }
+  }
+  // ④ 단기보유
+  if(R.shortRate){
+    const next=R.holdMonths<12?12:24;
+    const wait=next-R.holdMonths;
+    const altHold=calc({});
+    list.push({id:'short',no:'④',name:'단기보유 중과 회피',save:Math.round(R.total*0.3),
+      loss:wait+'개월 더 보유하시면 세율이 '+R.shortRate+'%에서 크게 떨어져요',
+      urgency:'보유 '+next+'개월 도달: '+(()=>{const d=addMonths(A.acqDate.y,A.acqDate.m,next);return fmtYM(d.y,d.m)})(),
+      diag:'보유 '+R.holdMonths+'개월. 현재 매도 시 단기보유 세율 '+R.shortRate+'%가 적용돼요.',
+      cmp:[['지금 매도','세율 '+R.shortRate+'%'],[next+'개월 후 매도','일반 누진세율']],
+      traps:['보유기간은 일 단위로 계산돼요. 임계일 직전 매도에 주의하세요.'],
+      actions:['정확한 취득일(잔금일) 확인','매도일 조정']});
+  }
+  // ⑤ 다주택 매도 순서
+  if(A.otherCount>=2){
+    list.push({id:'order',no:'⑤',name:'매도 순서 시뮬레이션',save:Math.round(R.total*0.4),
+      loss:'잘못된 순서로 매도하면 수천만 원 더 낼 수 있어요',
+      urgency:'매도 순서에 따라 중과·비과세 적용이 완전히 달라져요',
+      diag:'총 '+R.totalHouses+'주택 보유. 어떤 집을 먼저 파느냐가 핵심이에요.',
+      cmp:[['이 집 먼저','중과 가능성'],['다른 집 먼저 정리','비과세 길 열림']],
+      traps:['주택 수 산정에 분양권·입주권도 포함돼요.'],
+      actions:['보유 주택 전체 목록 정리','매도 순서 시뮬레이션']});
+  }
+  // ⑥ 증여 이월과세 (2023.1.1 이후 증여분 10년, 이전 5년)
+  if(A.method==='gift'&&A.giftDate){
+    const ge=monthsBetween(A.giftDate,today);
+    const cy=A.giftDate.y>=2023?10:5;
+    if(ge<cy*12){
+      const dl=addMonths(A.giftDate.y,A.giftDate.m,cy*12);
+      list.push({id:'gift',no:'⑥',name:'증여 이월과세 회피',save:Math.round(R.total*0.3),
+        loss:fmtYM(dl.y,dl.m)+' 전에 매도하면 증여자 취득가로 다시 계산돼 큰 손해예요',
+        urgency:'증여일('+fmtYM(A.giftDate.y,A.giftDate.m)+') + '+cy+'년 = '+fmtYM(dl.y,dl.m),
+        diag:'증여 취득 후 '+Math.floor(ge/12)+'년 '+(ge%12)+'개월 경과. '+(A.giftDate.y>=2023?'2023년 이후 증여분이라 10년 기준이 적용돼요.':'2022년 이전 증여분이라 5년 기준이 적용돼요.'),
+        cmp:[[cy+'년 내 매도','이월과세 적용 (증여자 취득가)'],[cy+'년 후 매도','증여 평가액 기준']],
+        traps:['기준은 증여일이에요. 등기일과 헷갈리지 마세요.','2023년 전후 증여인지에 따라 5년/10년이 갈려요.'],
+        actions:[cy+'년 충족 일정 확인','매도 시기 조정']});
+    }
+  }
+  // ⑦ 임대사업자
+  if(A.landlord&&A.landlord!=='none'){
+    list.push({id:'landlord',no:'⑦',name:'임대사업자 전략',save:Math.round(R.total*0.35),
+      loss:'자진말소 시점을 잘못 고르면 거주주택 비과세를 놓칠 수 있어요',
+      urgency:'등록 유형·기간에 따라 의무기간 종료 시점이 달라요',
+      diag:'임대 등록 유형: '+({short4:'단기 4년',long8:'장기 8년',long10:'장기 10년',terminated:'말소·종료'}[A.landlord])+(A.landlordDate?', 등록 '+fmtYM(A.landlordDate.y,A.landlordDate.m):''),
+      cmp:[['지금 정리','가산세 위험'],['의무기간 충족 후','특례 적용']],
+      traps:['의무기간 미충족 자진말소 시 가산세가 있을 수 있어요.'],
+      actions:['렌트홈에서 등록 정보 확인','말소·유지 시점 비교']});
+  }
+  // ⑧ 세대분리
+  if(A.memberOtherHouse){
+    list.push({id:'household',no:'⑧',name:'세대분리 전략',save:Math.round(R.total*0.5),
+      loss:'동거 가족의 주택 때문에 다주택자로 판정돼 비과세를 못 받아요',
+      urgency:'양도일 전 세대분리가 완료되어야 해요',
+      diag:'동거 명의자(가족)의 다른 주택이 1세대 주택 수에 합산되는 상태예요.',
+      cmp:[['현 상태 매도','다주택 판정'],['세대분리 후 매도','1세대 1주택 가능']],
+      traps:['위장 전입은 가산세 대상이에요. 실제 거주·생계 독립이 필요해요.'],
+      actions:['세대분리 요건 확인 (만 30세·생계 독립 등)','전입신고 일정']});
+  }
+  // ⑨ 필요경비 (세금이 있을 때만 — 0원이면 경비 추가가 무의미)
+  if(R.total>10){
+    const extra=1000; // 잠재 추가 경비 1,000만 가정
+    const alt=(()=>{const s=A.acqExp;A.acqExp=s+extra;const r=calc();A.acqExp=s;return r})();
+    const save=Math.max(0,Math.round(R.total-alt.total))||Math.round(R.total*0.05);
+    list.push({id:'expenses',no:'⑨',name:'필요경비 공제 극대화',save,
+      loss:'영수증 안 챙기시면 약 '+fmtMan(save||800)+'이 사라져요',
+      urgency:'신고 전까지 증빙을 모아야 해요 — 지금부터요',
+      diag:'부대비용 '+fmtMan(A.acqExp)+' 입력'+(A.expMode==='auto'?' (자동 추정)':A.expMode==='combined'?' (합산 입력)':' (항목별 입력)')+'. 추가로 인정받을 항목이 있는지 봐야 해요.',
+      cmp:[['증빙 없이 신고','경비 누락'],['증빙 갖춰 신고','경비 '+fmtMan(extra)+'+ 추가 인정 가능']],
+      traps:['도배·장판은 인정 안 돼요. 새시 교체는 됩니다.','카드 명세·계좌이체 기록도 보완 증빙이 돼요.'],
+      actions:['인테리어 업체에 세금계산서 재발급 요청','취득세 납부 확인서 발급','중개수수료 현금영수증 확인']});
+  }
+  /* ── 0원 케이스 전용 플랜 (맥락 분기) ── */
+  if(R.total===0&&R.exempt){
+    const broken=calc({forceTaxable:true});
+    if(broken.total>10)list.push({id:'guard',no:'🛡',name:'비과세 지키기 플랜',save:Math.round(broken.total),saveLabel:'조건이 깨지면 내게 될 세금',
+      loss:'지금은 0원이지만, 매도 완료 전에 조건이 하나라도 깨지면 '+fmtMan(broken.total)+'이 그대로 살아나요',
+      urgency:'비과세는 양도일에 확정돼요 — 그 전까지는 "예정"일 뿐',
+      diag:'현재 1세대 1주택 비과세 충족 상태예요. 보유 '+R.holdYears+'년, 거주 요건 OK. 이제 깨뜨리지 않는 게 일이에요.',
+      cmp:[['조건 유지하고 매도','0원'],['조건이 깨지면',fmtMan(broken.total)]],
+      traps:['매도 전 전출·임대 전환은 거주요건을 깨뜨릴 수 있어요.','세대원이 주택·분양권을 취득하면 1세대 1주택이 깨져요.','매도가 협상 중 12억을 넘기면 초과분 과세가 시작돼요.'],
+      actions:['매도 완료까지 전입 유지','세대원 주택 취득 계획 확인','매도가 12억 임계점 시뮬레이션']});
+    if(A.salePrice<=120000)list.push({id:'price12',no:'📈',name:'매도가 12억 초과 시뮬레이션',save:null,
+      loss:'매도가가 12억을 넘는 순간부터 세금이 시작돼요 — 호가 올리기 전에 세후 기준으로 확인하세요',
+      urgency:'12억까지 여유: '+fmtMan(120000-A.salePrice),
+      diag:'매도 희망가 '+fmtMan(A.salePrice)+'. 12억 초과분부터 비율 과세가 돼요.',
+      cmp:[['12억 이하로 매도','세금 0원'],['12억 초과로 매도','초과 비율만큼 과세']],
+      traps:['더 받는 게 항상 이득이긴 해요. 다만 세후 실수령 기준으로 봐야 정확한 판단이 돼요.'],
+      actions:['희망가별 세후 실수령 비교','호가 전략 결정']});
+  }
+  if(R.caseId==='loss'){
+    list.push({id:'lossuse',no:'♻️',name:'양도손실 활용 플랜',save:null,
+      loss:'이 손해, 그냥 버려질 수 있어요 — 같은 해 다른 부동산을 팔아 이익이 났다면 합쳐서 세금을 줄여줘요',
+      urgency:'손해와 이익을 합치는 건 같은 해에 판 것끼리만 돼요',
+      diag:'약 '+fmtMan(Math.abs(R.gain))+'의 손해가 예상돼요. 올해 다른 집·토지를 팔 계획이 있다면 파는 순서와 시기가 중요해요.',
+      cmp:[['손해만 보고 끝','세금 줄이는 효과 0'],['같은 해 이익과 합치기','이익에 붙는 세금이 줄어듦']],
+      traps:['해가 바뀌면 합칠 수 없어요. 같은 해에 팔아야 해요.'],
+      actions:['올해 팔 예정인 부동산 확인','파는 연도 맞추기']});
+  }
+
+  /* ── ⑪~⑭ 의사결정 시나리오 (v1.6 — "그 시점에 안 팔면?") ── */
+  if(R.gain>0){
+    // ⑪ 매도 연기 (세금이 있을 때만 — 0원이면 연기 비교가 무의미)
+    const alt1y=calc({saleDate:addMonths(A.saleDate.y,A.saleDate.m,12),resOverride:A.currentlyLiving?A.resMonthsAtSale+12:A.resMonthsNow});
+    const dTax=Math.round(R.total-alt1y.total);
+    if(R.total>10)list.push({id:'decide11',no:'⑪',name:'매도 연기 시뮬레이션',save:Math.abs(dTax)>1?Math.abs(dTax):null,
+      loss:dTax>1?'1년 미루면 세금은 '+fmtMan(dTax)+' 줄어요. 대신 보유비용이 따라붙어요 — 순이익인지 따져봐야 해요':'1년 미뤄도 세금은 거의 안 줄어요. 보유비용만 매일 나갈 수 있어요',
+      urgency:'미루는 동안에도 이자·재산세는 매일 쌓여요',
+      diag:fmtYM(A.saleDate.y,A.saleDate.m)+' 매도 기준 '+fmtMan(R.total)+' vs 1년 뒤 '+fmtMan(alt1y.total)+'. 여기에 대출 이자·재산세를 합쳐야 진짜 답이 나와요. (잠금 해제 후 대출 정보 미니 입력)',
+      cmp:[['지금 매도 시 세금',fmtMan(R.total)],['1년 뒤 매도 시 세금',fmtMan(alt1y.total)],['세금 차이',fmtMan(dTax)]],
+      traps:['세금만 보고 미루면 보유비용이 절세액을 잡아먹는 구간이 있어요.','미루는 사이 조정지역·세법이 바뀔 수 있어요 (알림으로 챙겨드려요).'],
+      actions:['대출 잔액·금리 입력 → 순손익 타임라인 확인','최적 매도 월 확인 → 캘린더 등록']});
+    // ⑬ 대출 이자 실수령액
+    const daily=Math.max(1,Math.round(A.salePrice*0.03/365));
+    list.push({id:'decide13',no:'⑬',name:'대출 이자 반영 실수령액',save:null,
+      loss:'이 집에 묶인 자산 기준, 하루 보유 비용이 약 '+fmtMan(daily)+'이에요 (연 3% 가정)',
+      urgency:'대출이 있다면 이자만큼 매도 순수익이 매달 줄어요',
+      diag:'매도가 '+fmtMan(A.salePrice)+' 기준. 잠금 해제 후 대출 잔액·금리를 입력하면 상환 후 실수령액과 일 단위 보유 비용이 내 숫자로 계산돼요.',
+      cmp:[['지금 매도','세금·상환 후 실수령액 확인'],['1년 더 보유','이자 누적 + 보유세']],
+      traps:['중도상환수수료 잔존 기간을 확인하세요.','실수령액 기준으로 다음 자금 계획을 세워야 해요.'],
+      actions:['대출 잔액·금리 입력','실수령액 기준 자금 계획표 확인']});
+    // ⑭ 손익분기 상승률
+    list.push({id:'decide14',no:'⑭',name:'손익분기 상승률 (보유 vs 매도)',save:null,
+      loss:'이 집이 연 몇 % 이상 올라야 보유가 이득인지, 한 줄로 알려드려요',
+      urgency:'기대 상승률을 슬라이더로 움직이며 바로 확인',
+      diag:'보유비용 + 미래 세금 변화를 집값으로 나눠 손익분기 상승률을 산출해요. 내 기대치와 비교하면 보유/매도 답이 나와요.',
+      cmp:[['기대 상승률 > 손익분기','보유 유리'],['기대 상승률 < 손익분기','매도 유리']],
+      traps:['집값이 올라도 상승분의 최대 49.5%는 세금으로 나갈 수 있어요.'],
+      actions:['기대 상승률 설정','손익분기와 비교 후 결정'],
+      });
+    // ⑫ 임대 전환 비교 (임대 중인 경우)
+    if(A.isRented){
+      list.push({id:'decide12',no:'⑫',name:'임대수익 vs 매도 비교',save:null,
+        loss:'월세 수익을 지키려다 비과세 혜택과 시세 타이밍을 놓칠 수 있어요',
+        urgency:'임대 유지 기간이 길어질수록 거주요건 충족은 멀어져요',
+        diag:'현재 임대 중이시죠. 잠금 해제 후 보증금·월세를 입력하면 [계속 임대] 연 순수익 vs [지금 매도] 세후 재운용 수익을 비교해드려요.',
+        cmp:[['계속 임대','월세 − 이자·보유세 = 연 순수익'],['지금 매도','세후 매도금 재운용 수익']],
+        traps:['임대 중에는 거주요건(비과세)을 채울 수 없어요.','임대소득은 건보료·소득세에도 영향을 줘요.'],
+        actions:['보증금·월세 입력','손익 교차 시점 확인']});
+    }
+  }
+  // 정렬: 1차 시급도 → 2차 매력도(놓치는 금액 큰 순, stable sort라 동률은 시급도 유지)
+  const order=['dday','temp2','short','gift','household','landlord','order','decide11','decide13','decide12','decide14','expenses'];
+  list.sort((a,b)=>order.indexOf(a.id)-order.indexOf(b.id));
+  list.sort((a,b)=>(b.save||0)-(a.save||0));
+  return list;
+}
+
+/* ================= S05 ================= */
+function bdRow(label,amt,detHtml,opt={}){
+  label=label.replace(/\?icon:(\w+)/g,'<span class="qico" onclick="event.stopPropagation();openHelp(\'$1\')">?</span>');
+  const cls='bd-row'+(opt.em?' em':'')+(opt.total?' total':'');
+  const amtHtml='<span class="amt"'+(opt.color?' style="color:'+opt.color+'"':'')+'>'+amt+'</span>';
+  if(!detHtml)return '<div class="'+cls+'" style="cursor:default"><span class="lb">'+label+'</span>'+amtHtml+'</div>';
+  return '<div class="'+cls+'" onclick="this.classList.toggle(\'open\')"><span class="lb">'+label+'</span>'+amtHtml+'</div><div class="bd-det">'+detHtml+'</div>';
+}
+function renderS05(){
+  const R=A.R, S=buildScenarios();A.S=S;
+  const b=$('#s05Body');
+  const headerMent={
+    exempt_under:'조건 유지 시 양도세 0원 예상 — 1세대 1주택 비과세예요.',
+    exempt_under_mixed:'주택 부분은 비과세로 예상돼요.',
+    exempt_over:'12억 초과분만 과세돼요.',
+    loss:'손실 양도라 양도세가 발생하지 않아요.',
+    non_resident:'비거주자라 비과세는 적용 안 되고 일반 양도세로 계산돼요.',
+    general:'아래에 계산 과정을 정리해드렸어요. 줄을 누르면 설명이 나와요.'
+  }[R.caseId]||'아래에 계산 과정을 정리해드렸어요. 줄을 누르면 설명이 나와요.';
+  let html='';
+
+  /* ── ① 결과 존: 금액 헤더 (개인화 + 카운트업 + 절세 여지 + 근거) ── */
+  const regShort=(A.address.region||'').replace(/^서울 /,'').replace(/^경기 /,'').replace(/^인천 /,'');
+  const ptLabel={apartment:'아파트',officetel:'오피스텔',multi:'다세대·연립',detached:'단독주택',mixed:'상가주택'}[A.ptype]||'주택';
+  const hm=R.holdMonths, subLabel=regShort+' '+ptLabel+' · '+Math.floor(hm/12)+'년 '+(hm%12)+'개월 보유';
+  const saveVals=S.map(s=>+s.save||0).filter(v=>v>0);
+  const maxSave=saveVals.length?Math.max.apply(null,saveVals):0;
+  const badgeLbl='예상 양도소득세'+(R.surcharge?' · 다주택 +'+R.surcharge+'%p':'')+(R.shortRate?' · 단기 '+R.shortRate+'%':'');
+  html+='<div class="res-head">'
+    +'<div class="rh-sub">'+subLabel+'</div>'
+    +'<div class="lab">'+badgeLbl+'</div>'
+    +'<div class="amt" id="resAmt" data-t="'+R.total+'">'+fmtMan(R.total)+'</div>'
+    +'<div class="say">'+headerMent+'</div>'
+    +(maxSave>0?'<div class="rh-save">이 중 <b>최대 '+fmtMan(maxSave)+'</b> 줄일 여지가 있어요</div>':'')
+    +'<div class="rh-trust">📅 세법 기준일 '+LAW_ASOF+' · 최신 개정 자동 반영</div>'
+    +'</div>';
+
+  /* ── ② 계산 과정 존: 영수증형 카드 1장 ── */
+  const ddayS=S.find(s=>s.id==='dday');
+  if(R.caseId==='loss'){
+    html+='<div class="bd-card">'
+      +bdRow('양도가',fmtMan(R.salePrice))
+      +bdRow('− 취득 원가 (부대비용 포함)',fmtMan(R.acqTotal))
+      +bdRow('= 양도차익',fmtMan(R.gain),'<span class="say">손해를 보고 파시는 경우라 양도세가 없어요. 이 손해는 같은 해에 다른 부동산을 팔아 이익이 났다면, 그 이익과 합쳐서 세금을 줄이는 데 쓸 수 있어요.</span>',{em:1,color:'var(--good)'})
+      +bdRow('총 예상 세액','0원',null,{total:1})
+      +'</div>';
+  }else if(R.caseId==='exempt_under'||R.caseId==='exempt_under_mixed'){
+    html+='<div class="bd-card">'
+      +bdRow('양도가',fmtMan(R.salePrice))
+      +bdRow('− 취득 원가 (부대비용 포함)',fmtMan(R.acqTotal))
+      +bdRow('= 양도차익 ?icon:gain',fmtMan(R.gain),'<span class="say">팔 가격에서 산 가격과 비용을 뺀 차액이에요. 양도세의 출발점.</span>',{em:1})
+      +bdRow('1세대 1주택 비과세','적용 ✓','<span class="say">매도가 12억 이하 + 보유 '+R.holdYears+'년 + 거주 요건 충족이에요.</span>'+(R.caseId==='exempt_under_mixed'?'상가주택은 주거 부분('+A.resRatio+'%)만 비과세가 적용돼요.':''),{em:1,color:'var(--good)'})
+      +bdRow('총 예상 세액','0원',null,{total:1})
+      +'</div>';
+  }else{
+    const expDet=(A.expMode==='items'
+      ?'취득세 '+(A.e1||0).toLocaleString()+(A.method==='purchase'?' + 중개 '+(A.e2||0).toLocaleString():'')+' + 법무 '+(A.e3||0).toLocaleString()+' + 자본적지출 '+(A.e4||0).toLocaleString()+' + 매도경비 '+A.saleExp.toLocaleString()+' (만원)'
+      :'취득 부대비용 '+fmtMan(A.acqExp)+' + 매도 부대비용 '+fmtMan(A.saleExp))
+      +(A.expMode==='auto'?'<br>※ 자동 추정값이에요. 영수증이 있으면 더 늘어날 수 있어요.':'');
+    html+='<div class="bd-card">'
+      +bdRow('양도가',fmtMan(R.salePrice),A.converted?'<span class="say">취득가는 환산취득가 추정값 기준이에요.</span>':null)
+      +bdRow('− 취득가'+(A.converted?' (환산 추정)':''),fmtMan(A.acqPrice))
+      +bdRow('− 필요경비 ?icon:expense',fmtMan(A.acqExp+A.saleExp),'<span class="say">보유 중 들어간 비용을 빼드렸어요.</span>'+expDet)
+      +bdRow('= 양도차익 ?icon:gain',fmtMan(R.gain),'<span class="say">팔 가격에서 산 가격과 비용을 뺀 차액이에요. 양도세의 출발점.</span>',{em:1})
+      +(R.caseId==='exempt_over'?(()=>{
+        const exemptAmt=R.gain-R.taxableGain;
+        const pct=Math.round(120000/R.salePrice*1000)/10;
+        return bdRow('− 비과세로 빠지는 금액','−'+fmtMan(exemptAmt),'<span class="say">1세대 1주택 비과세 덕분이에요. 매도가 '+fmtMan(R.salePrice)+' 중 12억까지의 비율('+pct+'%)만큼 차익이 비과세로 빠져요.</span>양도차익 '+fmtMan(R.gain)+' × '+pct+'% = '+fmtMan(exemptAmt))
+        +bdRow('= 과세대상 양도차익 (12억 초과분)',fmtMan(R.taxableGain),null,{em:1});
+      })():'')
+      +(()=>{ // 장특공제: 0%면 이유를 라벨에 표면 노출
+        const reason=R.ltdRate?'':(R.shortRate?'단기보유라 제외':R.surcharge?'다주택 세율 가산 대상이라 제외':'보유 3년 미만');
+        return bdRow('− 장기보유공제'+(R.ltdRate?' '+R.ltdRate+'%':' — '+reason)+' ?icon:ltd',R.ltdRate?fmtMan(R.ltdAmt):'0원',
+        '<span class="say">'+(R.ltdRate?Math.floor(R.holdMonths/12)+'년 보유하셨으니 '+R.ltdRate+'% 공제가 적용돼요.':(R.shortRate?'보유 2년 미만 단기보유에는 장기보유공제가 적용되지 않아요.':R.surcharge?'다주택 중과 대상 주택은 법적으로 장기보유공제가 배제돼요. 중과를 피하면 공제도 살아나요 — 절세 플랜에서 같이 봐요.':'장기보유공제는 보유 3년부터 시작돼요. 지금은 '+Math.floor(R.holdMonths/12)+'년 '+(R.holdMonths%12)+'개월이에요.'))+'</span>');
+      })()
+      +bdRow('− 기본공제',(A.own==='joint'?'각 250만원':'250만원'),'<span class="say">양도소득 기본공제는 물건이 아니라 사람 기준이에요. 1인당 1년에 250만원 — 같은 해에 여러 채를 팔면 한 번만 적용돼요.</span>'+(A.own==='joint'?'공동명의는 명의자별로 나눠 계산해서, 기본공제도 각자 250만원씩 적용돼요.':''))
+      +bdRow('= 과세표준 ?icon:base',fmtMan(Math.max(0,R.afterLtd-(A.own==='joint'?250*(A.members.length+1):250))),null,{em:1})
+      +(()=>{ // 세율: 적용 세율 + 세율 기준표(구간 하이라이트) + 누진공제 근거
+        const base=R.perOwner.length?R.perOwner[0].base:0;
+        let idx=BR.length-1; for(let i=0;i<BR.length;i++){ if(base<=BR[i][0]){ idx=i; break; } }
+        const bi={r:BR[idx][1],d:BR[idx][2]};
+        const BRD=[['1,400만원 이하','6%','—'],['~5,000만원','15%','126만'],['~8,800만원','24%','576만'],['~1.5억','35%','1,544만'],['~3억','38%','1,994만'],['~5억','40%','2,594만'],['~10억','42%','3,594만'],['10억 초과','45%','6,594만']];
+        const rateTbl='<table class="rate-tbl"><tr><th>과세표준</th><th>세율</th><th>누진공제</th></tr>'
+          +BRD.map((r,i)=>'<tr'+(i===idx?' class="on"':'')+'><td>'+r[0]+'</td><td>'+r[1]+'</td><td>'+r[2]+'</td></tr>').join('')+'</table>';
+        let lbl,det='',formula='';
+        if(R.shortRate){
+          lbl='× 세율 — 단기보유 '+R.shortRate+'%';
+          det='<span class="say" style="color:var(--bad)">⚠️ 보유 '+R.holdMonths+'개월 — 단기 세율 '+R.shortRate+'%와 일반세율'+(R.surcharge?'(중과 포함)':'')+' 중 큰 세액으로 계산돼요.</span>';
+          if(R.perOwner.length)formula='과세표준 '+fmtMan(R.perOwner[0].base)+' × '+R.shortRate+'% = '+fmtMan(R.taxSum)+' (단기 세율이 더 큼)';
+        }else{
+          const eff=bi.r+R.surcharge;
+          lbl='× 세율 '+bi.r+'%'+(R.surcharge?' +'+R.surcharge+'%p 중과 = '+eff+'%':'');
+          det='<span class="say">과세표준이 어느 <b>구간</b>에 드느냐로 세율이 정해져요. 지금은 '+fmtMan(base)+'이라 아래 표의 초록 줄 구간이에요.</span>'+rateTbl;
+          if(R.surcharge)det+='<span class="say" style="color:var(--bad)">⚠️ 양도 시점 조정대상지역 + 총 '+R.totalHouses+'주택이라 중과세율 +'+R.surcharge+'%p가 더 붙어요.</span>';
+          det+='<span class="say"><b>누진공제 '+fmtMan(bi.d)+'</b>은, 낮은 구간엔 이미 낮은 세율이 매겨진 만큼을 빼주려고 <b>미리 계산해둔 값</b>이에요. 이 구간이면 '+bi.d.toLocaleString()+'만원으로 정해져 있어요. (전체에 '+bi.r+'%를 곱하면 세금이 과하게 나오니 그만큼 보정)</span>';
+          if(A.own!=='joint'&&R.perOwner.length)
+            formula='과세표준 '+fmtMan(R.perOwner[0].base)+' × '+eff+'% − 누진공제 '+fmtMan(bi.d)+' = '+fmtMan(R.taxSum);
+          else if(A.own==='joint'&&R.perOwner.length)
+            formula='명의자별 계산 후 합산 ('+R.perOwner.length+'명) = '+fmtMan(R.taxSum);
+        }
+        return bdRow(lbl+' ?icon:prog','양도세 '+fmtMan(R.taxSum),det)
+          +(formula?'<div style="font-size:14px;color:var(--sub);padding:0 0 11px;border-bottom:1px dashed var(--line);line-height:1.6;word-break:keep-all">└ '+formula+'</div>':'');
+      })()
+      +bdRow('+ 지방소득세 10% ?icon:local',fmtMan(R.localTax))
+      +bdRow('총 예상 세액',fmtMan(R.total),null,{total:1,em:1})
+      +'</div>';
+    html+='<div class="bd-hint">금액 줄을 누르면 설명이 펼쳐져요</div>';
+    if(ddayS)html+='<div class="dday-line"><span class="tip-badge">절세 포인트</span> <b>거주 2년 채우시면 세금이 크게 줄어요</b> — 약 <span class="blurnum">'+fmtMan(ddayS.save)+'</span> <span class="go" onclick="openS06(\'dday\',\'s05\')">자세히 →</span></div>';
+  }
+
+  /* 면책 — 핵심 1줄 상시 노출 + 상세 접힘 */
+  html+='<div class="dis-always">이 금액은 입력값 기반 <b>예상치</b>예요. 실제 신고 전 세무사 확인을 권해드려요.</div>';
+  html+='<details class="dis"><summary>이 결과의 가정 &amp; 유의사항 자세히</summary><div>'
+    +'• 양도일: '+fmtYM(A.saleDate.y,A.saleDate.m)+' 기준 (월 중간일 가정) — 실제 매도일에 따라 달라질 수 있어요<br>'
+    +'• 부대비용: 영수증·세금계산서 증빙이 있어야 인정돼요'
+    +(A.converted?'<br>• 취득가를 환산값으로 추정 계산했어요. 실제 자료가 있으면 결과가 달라질 수 있어요':'')
+    +(R.surcharge?'<br>• 2026.5.9 이전에 매매계약을 체결하셨다면 중과 유예 보완조치(계약 후 4~6개월 내 양도) 대상일 수 있어요':'')
+    +(A.method==='gift'?'<br>• 이월과세(증여자 취득가 재계산)는 이 계산에 반영되지 않았어요. 해당되면 세금이 늘 수 있어요':'')
+    +(A.method==='inheritance'?'<br>• 상속 특례(피상속인 보유기간 합산, 주택 수 제외 등)는 단순화되어 있어요':'')
+    +'<br>• 정확한 신고는 세무사 자문을 권장해요<br>'
+    +'<b style="color:var(--sub2)">※ 본 계산은 간이 추정이라 실제 세액과 다를 수 있어요.</b></div></details>';
+
+  /* ── ③ 프리미엄 플랜 존 (전체 노출, 매력도순) ── */
+  if(S.length){
+    const isZero=R.total===0;
+    const headTxt=isZero?(R.caseId==='loss'?'손실을 자산으로 바꾸는 플랜 '+S.length+'개':'0원을 지키는 플랜 '+S.length+'개'):'세꼼이가 찾은 절세 플랜 '+S.length+'개';
+    const subTxt=isZero
+      ?(R.caseId==='loss'?'양도세는 없지만, 이 손실을 어떻게 쓰느냐에 따라 올해 내실 다른 세금이 달라져요.':'비과세는 받는 게 아니라 지키는 거예요. 매도 완료 전에 조건이 깨지면 세금이 그대로 살아나요.')
+      :'위 결과는 "지금 이대로 팔면" 기준이에요. 아래는 그 결과를 바꾸는 플랜들이에요 — 놓치고 있는 금액이 큰 순서로 정렬했어요.';
+    html+='<div class="prem-head"><span class="prem-chip">PREMIUM</span><b>'+headTxt+'</b></div>';
+    html+='<div class="prem-sub">'+subTxt+'</div>';
+    S.forEach((s,i)=>{
+      html+='<div class="prem-card" onclick="openS06(\''+s.id+'\',\'s05\')">'
+        +'<div class="prem-top"><span class="prem-rank">PLAN '+String(i+1).padStart(2,'0')+'</span><span class="prem-lock">'+(PAID?'🔓':'🔒')+'</span></div>'
+        +'<div class="prem-name">'+s.no+' '+s.name+'</div>'
+        +'<div class="prem-loss">'+s.loss+'</div>'
+        +(s.save?'<div class="prem-save"><span>'+(s.saveLabel||'지금 놓치고 있는 금액')+'</span><span class="blurnum">'+fmtMan(s.save)+'</span></div>':'')
+        +(s.urgency?'<div class="prem-urg">📅 '+s.urgency+'</div>':'')
+        +'<div class="prem-give">포함: 맞춤 진단'+(PAID?' ✓ · 함정 '+s.traps.length+'가지 ✓ · 실행 체크리스트 ✓ · 내 케이스 시뮬레이터 ✓':' ✓ 무료 공개 · 함정 '+s.traps.length+'가지 🔒 · 실행 체크리스트 🔒 · 내 케이스 시뮬레이터 🔒')+'</div>'
+        +'<div class="prem-unlock">플랜 열어보기 →</div>'
+        +'</div>';
+    });
+  }
+
+  /* ── ④ 가치 + CTA 존 (PAID면 잠금해제 상태로) ── */
+  html+='<div class="value-card"><h4>'+(PAID?'🔓 전체 시나리오 이용 중':'지금은 베타 — 설문만 답하면 전부 무료')+'</h4><ul>'+
+    '<li>✓ 절세 시나리오 '+S.length+'개 전체 잠금 해제</li>'+
+    '<li>✓ 시나리오별 채팅 상담 + 직접 시뮬레이션</li>'+
+    '<li>✓ 원하시면 전문 세무사 연결</li></ul>'+
+    '<div class="say">'+(PAID?'이미 열려 있어요. 아무 시나리오나 눌러 상담을 이어가세요.':'짧은 설문에 답해주시면 모든 시나리오를 열어드려요.')+'</div></div>';
+  html+='<div class="cta-fix"><button class="btn-main" onclick="openS07()">전체 시나리오 '+(PAID?'열기':'보기 (베타 무료)')+'</button>'+
+    '<button class="btn-ghost" onclick="resetAll()">다시 계산하기</button></div>';
+  b.innerHTML=html;
+  countUpAmount();
+}
+/* 결과 금액 카운트업 리빌 (0 → 총액, ease-out) */
+function countUpAmount(){
+  const el=document.getElementById('resAmt'); if(!el)return;
+  const target=parseInt(el.getAttribute('data-t'))||0;
+  if(target<=0){el.textContent=fmtMan(target);return;}
+  const dur=850, t0=performance.now();
+  el.classList.add('pop');
+  function step(now){
+    let p=Math.min(1,(now-t0)/dur); p=1-Math.pow(1-p,3); // ease-out cubic
+    el.textContent=fmtMan(Math.round(target*p));
+    if(p<1)requestAnimationFrame(step); else el.textContent=fmtMan(target);
+  }
+  requestAnimationFrame(step);
+}
+
+/* ================= S06 ================= */
+let s06From='s05', s06Cur=0;
+function openS06(id,from){
+  if(PAID){openS11(id,from);return;} // 결제 후엔 전체 상세로
+  s06From=from||'s05';
+  const S=A.S;
+  s06Cur=Math.max(0,S.findIndex(s=>s.id===id));
+  renderS06();show('s06');
+}
+function renderS06(){
+  const S=A.S, sc=S[s06Cur];
+  const tabs=$('#s06Tabs');
+  if(S.length>1){
+    tabs.style.display='flex';
+    tabs.innerHTML=S.map((s,i)=>'<button class="tab'+(i===s06Cur?' cur':'')+'" onclick="s06Cur='+i+';renderS06()">'+s.no+' '+s.name.split(' (')[0].slice(0,8)+'</button>').join('');
+    tabs.querySelector('.cur')?.scrollIntoView({inline:'center',block:'nearest'});
+  }else tabs.style.display='none';
+  const b=$('#s06Body');
+  let h='<span class="s06-badge">당신에게 해당됩니다</span><div class="s06-title">'+sc.no+' '+sc.name+'</div>';
