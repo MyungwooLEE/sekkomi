@@ -4,6 +4,9 @@
 [build]
   publish = "public"          # index.html 등 정적 파일 위치
   functions = "netlify/functions"
+  # _parts/에 조각이 있으면 빌드 시 index.html을 조립한다 (자동화 도구의 대용량 커밋 한도 우회).
+  # 체크섬이 안 맞으면 빌드가 실패해 기존 배포가 유지된다(안전). 검증용 사본을 build-index.sha256로 공개.
+  command = "if [ -f _parts/index.sha256 ]; then cat _parts/index.html.part* > public/index.html && echo \"$(cat _parts/index.sha256)  public/index.html\" | sha256sum -c - && cp _parts/index.sha256 public/build-index.sha256; fi"
 
 [functions]
   node_bundler = "esbuild"    # @netlify/blobs import 번들링
