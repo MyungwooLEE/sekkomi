@@ -11,6 +11,12 @@
 [functions]
   node_bundler = "esbuild"    # @netlify/blobs import 번들링
 
+# 어드민 로그인 페이지 (예쁜 URL)
+[[redirects]]
+  from = "/admin"
+  to = "/admin.html"
+  status = 200
+
 # 함수 호출 경로 단축 (선택): /api/send-email → 실제 /.netlify/functions/send-email
 [[redirects]]
   from = "/api/send-email"
@@ -35,6 +41,11 @@
 [[redirects]]
   from = "/api/delete-leads"
   to = "/.netlify/functions/delete-leads"
+  status = 200
+
+[[redirects]]
+  from = "/api/admin-auth"
+  to = "/.netlify/functions/admin-auth"
   status = 200
 
 [[redirects]]
