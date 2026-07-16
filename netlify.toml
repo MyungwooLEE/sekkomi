@@ -33,6 +33,11 @@
   status = 200
 
 [[redirects]]
+  from = "/api/delete-leads"
+  to = "/.netlify/functions/delete-leads"
+  status = 200
+
+[[redirects]]
   from = "/api/sims"
   to = "/.netlify/functions/sims"
   status = 200
