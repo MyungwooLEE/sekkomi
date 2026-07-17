@@ -106,5 +106,36 @@ export default async (req) => {
     return json(200, { ok: true }, { "Set-Cookie": `${COOKIE}=; HttpOnly; Secure; SameSite=Lax; Path=/; Max-Age=0` });
   }
 
-  return json(400, { error: "action은 request | verify | logout | check" });
+  if (action === "sessions") {
+    const s = await getSession(req);
+    if (!s) return json(401, { ok: false, error: "unauthorized" });
+    const { blobs } = await store.list({ prefix: "sess:" });
+    const sessions = [];
+    for (const b of blobs) {
+      try {
+        const rec = JSON.parse(await store.get(b.key));
+        if (Date.now() > rec.exp) { await store.delete(b.key); continue; }
+        sessions.push({ id: b.key.slice(5, 13), at: rec.at || null, exp: rec.exp, current: b.key === "sess:" + s.token });
+      } catch {}
+    }
+    sessions.sort((a, b) => (b.at || 0) - (a.at || 0));
+    return json(200, { ok: true, sessions });
+  }
+
+  if (action === "revoke") {
+    const s = await getSession(req);
+    if (!s) return json(401, { ok: false, error: "unauthorized" });
+    const target = String((body && body.target) || ""); // "others" 또는 세션 축약 id(8자)
+    if (!target) return json(400, { ok: false, error: "target 필요" });
+    const { blobs } = await store.list({ prefix: "sess:" });
+    let revoked = 0;
+    for (const b of blobs) {
+      const tok = b.key.slice(5);
+      if (tok === s.token) continue; // 현재 세션은 logout으로만
+      if (target === "others" || tok.slice(0, 8) === target) { await store.delete(b.key); revoked++; }
+    }
+    return json(200, { ok: true, revoked });
+  }
+
+  return json(400, { error: "action은 request | verify | logout | check | sessions | revoke" });
 };
