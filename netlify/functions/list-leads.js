@@ -91,6 +91,21 @@ export default async (req) => {
   const medPrice = prices.length ? prices[Math.floor(prices.length / 2)] : 0;
   const pct = (a, b) => (b > 0 ? Math.round((a / b) * 100) + "%" : "-");
 
+  // ── 발행 수 (sitemap-blog.xml 기반) ──
+  let published = null;
+  try {
+    const r = await fetch("https://sekkomi.com/sitemap-blog.xml");
+    if (r.ok) published = ((await r.text()).match(/<loc>/g) || []).length;
+  } catch {}
+
+  // ── 7월 목표 (꼼꼼이의 성장일기 v2) ──
+  const GOALS = [
+    { l: "계산 완료", cur: calcN, t: 15 },
+    { l: "이메일 리드", cur: emailN, t: 4 },
+    { l: "설문", cur: n, t: 2 },
+    { l: "블로그 발행", cur: published, t: 42 },
+  ];
+
   const kf = url.searchParams.get("kind");
   const shown = kf ? items.filter((i) => i.kind === kf) : items;
   const T = (k) => { const ps = []; if (byToken) ps.push("token=" + esc(token)); if (k) ps.push("kind=" + k); return "?" + ps.join("&"); };
@@ -144,6 +159,30 @@ th{background:#F2F4F6;color:#4E5968;font-weight:700;white-space:nowrap}</style><
   <button class="dbtn ghost" onclick="logout()">로그아웃</button>
 </div>
 
+<div class="rowlabel">7월 목표 스코어카드 (꼼꼼이의 성장일기 · ~7/31)</div>
+<div class="cards">
+${GOALS.map((g) => {
+  const cur = g.cur == null ? "?" : g.cur;
+  const p = g.cur == null ? 0 : Math.min(100, Math.round((g.cur / g.t) * 100));
+  return `<div class="c" style="min-width:150px"><div class="l">${g.l}</div><div class="v">${cur}<span style="font-size:13px;color:#8B95A1;font-weight:600"> / ${g.t}</span></div>
+  <div style="background:#EEF1F4;border-radius:99px;height:6px;margin-top:8px"><div style="background:${p >= 100 ? "#2FA968" : "#163300"};width:${p}%;height:6px;border-radius:99px"></div></div>
+  <div class="s">${p}%</div></div>`;
+}).join("")}
+  <div class="c" style="min-width:150px"><div class="l">방문·노출·클릭</div><div class="v" style="font-size:14px;line-height:1.5;font-weight:600">GA4·GSC에서 확인<br><span style="font-size:11px;color:#8B95A1">목표: 방문 250 · 노출 1,000 · 클릭 8</span></div></div>
+</div>
+
+<div class="rowlabel">운영 퀵링크</div>
+<div class="tools" style="margin-top:6px">
+  <a href="https://search.google.com/search-console" target="_blank">Search Console</a>
+  <a href="https://analytics.google.com" target="_blank">GA4</a>
+  <a href="https://searchadvisor.naver.com" target="_blank">네이버 서치어드바이저</a>
+  <a href="https://app.netlify.com/projects/sekkomi" target="_blank">Netlify</a>
+  <a href="https://github.com/MyungwooLEE/sekkomi" target="_blank">GitHub</a>
+  <a href="https://business.facebook.com" target="_blank">메타 비즈니스</a>
+  <a href="https://studio.youtube.com" target="_blank">유튜브 스튜디오</a>
+  <a href="https://sekkomi.com/blog/" target="_blank">블로그</a>
+</div>
+
 <div class="rowlabel">참여 퍼널</div>
 <div class="cards">
   ${card("계산 완료", calcN, "익명 포함")}
@@ -173,6 +212,8 @@ th{background:#F2F4F6;color:#4E5968;font-weight:700;white-space:nowrap}</style><
 <table><thead><tr>
 <th></th><th>일시</th><th>종류</th><th>지역</th><th>세액</th><th>시나리오</th><th>케이스</th><th>만족</th><th>구매의향</th><th>적정가</th><th>세무사</th><th>연령</th><th>이메일</th><th>의견</th>
 </tr></thead><tbody>${rowsHtml || '<tr><td colspan="14" style="text-align:center;color:#8B95A1;padding:24px">아직 데이터가 없어요.</td></tr>'}</tbody></table>
+<div class="rowlabel" style="margin-top:20px">로그인 세션 관리</div>
+<div id="sessBox" style="background:#fff;border:1px solid #E5E8EB;border-radius:12px;padding:14px 16px;font-size:13px;color:#6B7684">세션 정보 로딩 중... (토큰 접속 시에는 표시되지 않아요)</div>
 <p style="font-size:11px;color:#8B95A1;margin-top:16px">삭제는 되돌릴 수 없어요 · 세션은 7일 뒤 만료됩니다 · 이 링크를 공유하지 마세요.</p>
 <script>
 async function post(u, body){
@@ -198,6 +239,27 @@ async function logout(){
   await post("/api/admin-auth", {action:"logout"});
   location.href = "/admin";
 }
+async function loadSessions(){
+  const box = document.getElementById("sessBox");
+  try{
+    const r = await post("/api/admin-auth", {action:"sessions"});
+    if(!r.ok){ box.textContent = "세션 목록은 OTP 로그인 상태에서만 볼 수 있어요 (현재 토큰 접속)"; return; }
+    const dt = (ts) => ts ? new Date(ts).toLocaleString("ko-KR") : "-";
+    box.innerHTML = r.sessions.map(s =>
+      '<div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid #F2F4F6">' +
+      '<span>' + (s.current ? "🟢 <b>현재 세션</b>" : "세션 " + s.id) + ' · 로그인 ' + dt(s.at) + ' · 만료 ' + dt(s.exp) + '</span>' +
+      (s.current ? '<span style="color:#8B95A1;font-size:12px">로그아웃 버튼 사용</span>'
+        : '<button class="dbtn" style="padding:4px 10px" onclick="revoke(\\'' + s.id + '\\')">해지</button>') +
+      '</div>').join("") +
+      (r.sessions.length > 1 ? '<div style="margin-top:10px"><button class="dbtn" onclick="revoke(\\'others\\')">다른 세션 모두 로그아웃</button></div>' : "");
+  }catch(e){ box.textContent = "세션 정보를 불러오지 못했어요"; }
+}
+async function revoke(target){
+  const r = await post("/api/admin-auth", {action:"revoke", target:target});
+  alert(r.ok ? "해지 " + r.revoked + "건" : (r.error || "실패"));
+  loadSessions();
+}
+loadSessions();
 </script>
 </body></html>`;
   return new Response(html, { status: 200, headers: { "Content-Type": "text/html; charset=utf-8" } });
