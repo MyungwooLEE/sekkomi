@@ -1,3 +1,6 @@
+  }else tabs.style.display='none';
+  const b=$('#s06Body');
+  let h='<span class="s06-badge">당신에게 해당됩니다</span><div class="s06-title">'+sc.no+' '+sc.name+'</div>';
   /* [1] 손실 회피 — 전체 노출 */
   h+='<div class="sec sec-loss"><div class="stitle">[1] 이대로 가면</div><div class="sbody"><b>'+sc.loss+'.</b></div><div class="cmp">'+sc.cmp.map(c=>c[0]+' <b>'+c[1]+'</b>').join('<br>')+'</div></div>';
   /* [2] 개인화 진단 — 전체 노출 */
@@ -402,4 +405,3 @@ function chkGen(g){ if(g!==S11GEN)throw new Error('stale'); }
 /* 바닥 근처(120px)일 때만 자동 스크롤 — 사용자가 위로 올려 슬라이더를 조작 중이면 끌어내리지 않음 */
 function c2scroll(force){const c=chat2();if(!c)return;const near=c.scrollHeight-c.scrollTop-c.clientHeight<120;if(force||near)c.scrollTop=c.scrollHeight;}
 /* 인터랙티브 카드(슬라이더 등) 뒤에서 흐름을 멈추는 게이트 — 사용자가 충분히 만져본 뒤 눌러야 다음이 이어짐 */
-async function c2simGate(g){ await c2chips([{label:'다 살펴봤어요, 계속 →',value:1,silent:true}],g); }
