@@ -1,3 +1,5 @@
+.acc .atitle{font-size:15px;font-weight:700;display:flex;align-items:center;gap:7px}
+.acc .acount{font-size:13.5px;font-weight:700;color:var(--brand);background:#EFF3E9;border-radius:999px;padding:2px 8px}
 .acc .chev{color:#9A9D92;font-size:15px;transition:transform .2s;flex:none}
 .acc[open] .chev{transform:rotate(180deg)}
 .acc .abody{padding:0 15px 15px;font-size:15px;line-height:1.7;word-break:keep-all}
@@ -547,5 +549,3 @@ const LEGAL={
     +'<h4>제2조 (정보 제공의 성격)</h4>'
     +'<ul><li>서비스가 제공하는 계산 결과와 시나리오는 <b>일반적 정보 제공</b>이며, 세무·법률 자문이 아닙니다.</li>'
     +'<li>실제 세액과 신고 결과는 개별 사실관계, 최신 법령 해석, 관할 세무서 판단에 따라 달라질 수 있습니다.</li>'
-    +'<li>중요한 의사결정과 실제 신고는 반드시 세무 전문가 상담 후 진행하시기를 권장합니다.</li></ul>'
-    +'<h4>제3조 (책임의 한계)</h4>'
