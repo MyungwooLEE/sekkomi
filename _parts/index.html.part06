@@ -1,3 +1,4 @@
+async function c2simGate(g){ await c2chips([{label:'다 살펴봤어요, 계속 →',value:1,silent:true}],g); }
 /* 상담 호흡: 글자 수에 비례한 타이핑 시간 (상담사가 생각하며 말하는 속도) */
 function thinkMs(html,g){ const len=String(html).replace(/<[^>]+>/g,'').length; return Math.min(2200,700+len*28); }
 async function c2bot(html,g,opt){
