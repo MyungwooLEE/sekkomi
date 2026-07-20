@@ -280,5 +280,128 @@ const SIM_CONF={
   decide13:{sim:'netcash',simsub:'대출을 넣으면 상환 후 실수령액과 하루 보유 비용을 계산해요.',
     inputs:[{key:'loanBal',label:'대출 잔액',unit:'만원',won:true,ph:'예: 30000'},{key:'loanRate',label:'금리(연)',unit:'%',dec:true,ph:'예: 4.3'}]},
   decide12:{sim:'rent',simsub:'보증금·월세를 넣으면 계속 임대 vs 지금 매도를 비교해요.',
-    inputs:[{key:'deposit',label:'보증금',unit:'만원',won:true,ph:'예: 50000'},{key:'rentMonthly',label:'월세',unit:'%',dec:true,ph:'예: 4.3'}]},
+    inputs:[{key:'deposit',label:'보증금',unit:'만원',won:true,ph:'예: 50000'},{key:'rentMonthly',label:'월세',unit:'만원',won:true,ph:'예: 150'}]},
 };
+
+/* ================= 전문가 콘텐츠 ================= */
+const CONTENT={
+  dday:{title:'D-Day — 거주 2년만 채우면 비과세',
+    expert:'1세대 1주택 비과세의 핵심은 ‘보유’와 ‘거주’ 두 가지예요. 조정대상지역에서 취득하셨다면 보유뿐 아니라 거주도 2년을 채워야 비과세가 열립니다. 지금 며칠 차이로 이 요건을 못 채운 채 파시면, 채웠다면 0원이 됐을 세금을 그대로 내시게 돼요. 바꿔 말하면 매도 시점을 조금만 조정해도 세금이 통째로 사라지는, 가장 강력한 절세 포인트예요.',
+    how:'거주 기간은 전입신고일부터 전출일까지로 봐요. 잠깐 다른 곳에 주소를 옮긴 적이 있으면 그 기간은 빠지니, 주민등록 초본으로 실제 거주 일수를 확인하는 게 첫걸음이에요.'},
+  temp2:{title:'일시적 2주택 — 기한 안에만 팔면 비과세',
+    expert:'새 집을 사면서 기존 집을 아직 못 판 분을 위해, 일정 기간 안에 종전 주택을 팔면 1주택처럼 비과세해주는 제도예요. 핵심은 ‘신규 주택 취득일로부터 3년’이라는 기한이에요. 이 기한을 하루라도 넘기면 비과세가 사라지고 일반 과세로 돌아갑니다.',
+    how:'종전 주택을 신규 주택 취득 1년이 지난 뒤에 샀어야 하고, 신규 취득 후 3년 안에 종전 주택을 팔아야 해요. 두 조건을 모두 만족해야 비과세가 적용돼요.'},
+  short:{title:'단기보유 중과 회피 — 조금만 더 보유하면 세율이 뚝',
+    expert:'보유 기간이 1년 미만이면 70%, 2년 미만이면 60%라는 아주 높은 세율이 붙어요. 2년을 넘기는 순간 일반 누진세율(6~45%)로 내려갑니다. 임계일을 며칠 앞두고 파는 건 가장 아까운 경우예요.',
+    how:'보유 기간은 잔금일(또는 등기일) 기준으로 ‘일’ 단위로 계산해요. 달력상 2년이 아니라 정확한 잔금일로 따져야 하니, 계약서의 잔금일을 꼭 확인하세요.'},
+  gift:{title:'증여 이월과세 — 기준 기간을 넘기고 파세요',
+    expert:'배우자나 직계존비속에게 증여받은 부동산을 일정 기간 안에 팔면, 취득가를 ‘받은 가격’이 아니라 ‘원래 증여한 사람이 샀던 가격’으로 되돌려 계산해요. 그만큼 양도차익이 커져서 세금이 확 늘어납니다. 이 기간만 넘기면 받은 가격 기준으로 계산돼 부담이 크게 줄어요.',
+    how:'기준 기간은 2023년 1월 1일 이후 증여분은 10년, 그 이전은 5년이에요. 기준은 증여일이며 등기일이 아니에요.'},
+  expenses:{title:'필요경비 — 영수증이 곧 절세',
+    expert:'양도세는 ‘판 값 − 산 값 − 필요경비’로 계산해요. 필요경비를 한 푼이라도 더 인정받으면 그만큼 차익이 줄어 세금이 줄어듭니다. 문제는 영수증이 없으면 인정이 안 된다는 것. 지금부터라도 증빙을 모으면 수백만 원이 왔다 갔다 해요.',
+    how:'취득세·중개수수료·법무비, 그리고 가치를 높인 자본적 지출(새시 교체·발코니 확장 등)은 인정돼요. 단순 수리·도배·장판은 인정되지 않아요. 세금계산서·카드 명세·계좌이체 기록이 증빙이 됩니다.'},
+  order:{title:'매도 순서 — 어떤 집을 먼저 파느냐가 수천만 원',
+    sum:'비과세 받을 집은 맨 마지막에, 중과 덜한 집부터 파세요.',
+    keys:['순서만 바꿔도 같은 자산에 세금이 수천만 원 차이','한 채 팔아 1주택이 된 뒤 비과세 요건 갖춘 집을 매도','주택 수엔 분양권·입주권도 포함 — 전체 목록으로 설계'],
+    expert:'다주택자는 ‘어떤 집을 먼저 파느냐’에 따라 같은 자산이라도 세금이 완전히 달라져요. 비과세를 받을 집을 마지막에 남기고, 중과가 덜한 집부터 정리하는 순서를 짜는 게 핵심이에요.',
+    how:'한 채를 팔아 1주택이 된 뒤, 비과세 요건(보유·거주 2년)을 갖춘 집을 파는 것이 일반적인 전략이에요. 주택 수에는 분양권·입주권도 포함되니 전체 목록을 놓고 설계해야 해요.'},
+  household:{title:'세대분리 — 가족의 집 때문에 비과세를 놓치지 마세요',
+    sum:'같이 사는 가족의 집이 합산돼 비과세가 막혀요. 양도 전 세대분리가 답이에요.',
+    keys:['세법은 한 세대의 집을 모두 합쳐 주택 수를 따짐','동거 가족이 다른 집을 가지면 내 1주택도 다주택으로 판정','만 30세 이상·독립 생계 자녀는 따로 살면 별도 세대 → 양도 전 분리'],
+    expert:'세법은 ‘한 세대’가 가진 집을 모두 합쳐서 주택 수를 따져요. 같이 사는 가족이 다른 집을 가지고 있으면, 내 집이 1주택이어도 1세대 다주택으로 보여 비과세를 못 받을 수 있어요. 양도 전에 정식으로 세대를 분리하면 이 문제가 풀립니다.',
+    how:'만 30세 이상이거나 일정 소득이 있어 독립 생계가 가능한 자녀는 따로 살면 별도 세대로 인정돼요. 단, 실제 거주·생계 분리가 있어야 하고 위장 전입은 가산세 대상이에요.'},
+  landlord:{title:'임대사업자 전략 — 말소 시점이 비과세를 가른다',
+    sum:'의무기간을 채운 뒤 말소해야 거주주택 비과세를 지켜요.',
+    keys:['등록 임대주택은 거주주택 비과세 특례 등 강력한 혜택','의무기간 전 자진말소·잘못된 시점은 혜택 상실 + 가산세','등록 유형·등록일로 의무기간이 갈림 — 렌트홈에서 먼저 확인'],
+    expert:'등록 임대주택이 있으면 거주주택 비과세 특례 같은 강력한 혜택을 받을 수 있어요. 다만 의무임대기간을 채우기 전에 자진말소하거나 시점을 잘못 잡으면 혜택이 날아가고 가산세까지 붙을 수 있어요. 말소 시점 설계가 핵심이에요.',
+    how:'등록 유형(단기·장기)과 등록일에 따라 의무기간과 혜택이 달라요. 렌트홈에서 본인 등록 정보를 확인한 뒤 시점을 잡아야 해요.'},
+  decide11:{title:'매도 연기 시뮬레이션 — 미루면 정말 이득일까?',
+    expert:'‘조금만 더 들고 있으면 세금이 줄 텐데’라는 생각, 맞을 때도 있고 틀릴 때도 있어요. 미루는 동안 줄어드는 세금만 보면 함정이에요. 그 사이 나가는 대출 이자와 재산세를 빼야 진짜 손익이 나와요. 세금은 1,200만 줄어도 이자로 1,800만 나가면 600만 손해죠.',
+    how:'아래 시뮬레이터에 매도 시점을 옮기면, 그 시점의 세금과 그때까지의 보유 비용(이자+재산세)을 합쳐 순손익을 보여드려요.'},
+  decide12:{title:'임대수익 vs 매도 — 어느 쪽이 이득일까?',
+    expert:'‘팔지 말고 세 주면 어떨까’. 월세는 매력적이지만, 임대로 돌리는 순간 거주 요건이 멈춰 비과세를 놓칠 수 있고, 임대소득세·건보료도 따라와요. 계속 임대했을 때의 연 순수익과, 지금 팔아 그 돈을 굴렸을 때의 수익을 같은 잣대로 비교해야 해요.',
+    how:'보유·임대 기간을 옮기면, 그 시점까지의 임대수입에서 대출이자·재산세를 빼고 매도세 변화까지 더해 「지금 매도 대비 순손익」을 시점별로 보여드려요.'},
+  decide13:{title:'대출 이자 반영 실수령액 — 진짜 손에 쥐는 돈',
+    expert:'매도가가 13억이어도 그게 다 내 돈은 아니에요. 세금, 대출 상환, 중개비를 빼면 실제 통장에 들어오는 금액은 꽤 달라집니다. 그리고 파는 걸 미룬다면, 그 사이 하루하루 나가는 이자가 ‘보유 비용’이에요.',
+    how:'아래에 대출 잔액과 금리를 넣으면 상환 후 실수령액과, 한 달·하루 단위 보유 비용을 계산해드려요.'},
+  decide14:{title:'손익분기 상승률 — 연 몇 % 올라야 보유가 이득?',
+    expert:'보유를 정당화하려면 집값 상승이 ‘세금+보유비용’을 넘어야 해요. 그 경계가 되는 연간 상승률이 손익분기예요. 내 기대 상승률이 이보다 높으면 보유, 낮으면 매도가 합리적이에요. 단, 집값이 올라도 그 상승분의 상당 부분은 다시 세금이라는 점을 잊지 마세요.',
+    how:'아래 슬라이더로 기대 상승률을 움직이면 보유와 매도 중 어느 쪽이 유리한지 바로 알려드려요. 시세 전망은 본인 가정 기준이며 투자 권유가 아니에요.'},
+  guard:{title:'비과세 지키기 — 0원을 양도일까지 지켜내기',
+    expert:'지금은 양도세 0원이지만, 비과세는 ‘받는’ 게 아니라 ‘지키는’ 거예요. 매도가 완전히 끝나는 양도일까지 조건이 하나라도 깨지면 0원이 그대로 세금으로 살아나요. 어떤 조건이 깨지면 얼마가 되는지 미리 알고 지켜야 해요.',
+    how:'아래에서 각 조건을 ‘유지/포기’로 바꿔보면, 그 순간 세금이 어떻게 살아나는지 보여드려요.'},
+  price12:{title:'매도가 12억 초과 시뮬레이션 — 호가 올리기 전에',
+    expert:'1세대 1주택 비과세는 매도가 12억까지만이에요. 12억을 넘으면 넘는 비율만큼 세금이 시작됩니다. 더 받는 게 손해는 아니지만, 호가를 올릴 때 세후로 실제 얼마가 더 들어오는지는 미리 봐두는 게 좋아요.',
+    how:'아래 슬라이더로 매도 희망가를 움직이면 12억 초과분 세금과 세후 실수령액 변화를 보여드려요.'},
+  lossuse:{title:'양도손실 활용 — 손해를 세금 절약으로',
+    sum:'손해 본 집과 이익 난 집을 같은 해에 팔면 세금이 줄어요.',
+    keys:['양도손실은 같은 해 다른 양도이익과 합쳐 계산','이익에 붙는 세금을 손실만큼 깎아줌','해가 바뀌면 합칠 수 없음 — 같은 과세연도에 처분'],
+    expert:'손해를 보고 파는 건 아프지만, 그 손해를 그냥 버리지 마세요. 같은 해에 다른 부동산을 팔아 이익이 났다면, 그 손해와 이익을 합쳐 계산해 이익에 붙는 세금을 줄일 수 있어요. 핵심은 ‘같은 해’에 처분하는 것이에요.',
+    how:'손해 본 집과 이익 난 집을 같은 과세연도(1~12월)에 팔아야 합쳐서 계산돼요. 해가 바뀌면 합칠 수 없으니 매도 시기를 맞추는 게 중요해요.'},
+};
+
+/* ================= 보조 계산 ================= */
+function holdingCostFor(months){ // 만원: 대출이자 + 재산세 간이
+  const bal=(A.sim&&A.sim.loanBal)||0, rate=(A.sim&&A.sim.loanRate)||0;
+  const interest=bal*(rate/100)*(months/12);
+  const propTax=A.salePrice*0.0008*(months/12); // 간이 재산세 0.08%/년
+  return Math.round(interest+propTax);
+}
+
+/* ================= S11 — 시나리오별 채팅 상담 ================= */
+let s11Cur=0, s11From='s05', S11GEN=0;
+let curSimSnap=null;
+const chat2=()=>$('#s11Chat'), dock2=()=>$('#s11Dock');
+function openS11(id,from){
+  s11From=from||'s05';
+  s11Cur=Math.max(0,A.S.findIndex(s=>s.id===id));
+  track('scenario_open',{scenario:(A.S[s11Cur]&&A.S[s11Cur].id)||id||''});
+  renderS11();show('s11');
+}
+/* 유료 상담 상단 고정: 기본 입력값(물건·보유·명의 등)을 계속 확인 — 탭하면 상세 펼침 */
+function caseInfoHtml(){
+  const R=A.R||{};
+  const ptypeL={apartment:'아파트',officetel:'오피스텔',mixed:'상가주택',house:'단독/다가구'}[A.ptype]||'주택';
+  const addr=(A.address&&(A.address.road||A.address.region))||'-';
+  const hy=R.holdYears||0, hm=(R.holdMonths||0)%12;
+  const ownL=A.own==='joint'?('공동('+(A.myShare||0)+'%)'):'단독';
+  const acq=A.acqDate?fmtYM(A.acqDate.y,A.acqDate.m):'-';
+  const sale=A.saleDate?fmtYM(A.saleDate.y,A.saleDate.m):'-';
+  const res=(A.resMonthsNow!=null)?A.resMonthsNow+'개월':'-';
+  const shortAddr=addr.replace(/^(서울|경기|인천|부산|대구|대전|광주|울산|세종|강원|충북|충남|전북|전남|경북|경남|제주)\S*\s*/,'').split(' ').slice(0,2).join(' ');
+  const main=(shortAddr||addr)+' '+ptypeL+' · 보유 '+hy+'년 '+hm+'개월 · '+ownL;
+  return '<div class="ci-line" onclick="document.getElementById(\'s11Info\').classList.toggle(\'open\')">'
+    +'<span class="ci-main">'+main+'</span><span class="ci-toggle">기본정보 <span class="arr">▾</span></span></div>'
+    +'<div class="ci-detail">'
+    +'<div><b>주소</b>'+addr+'</div><div><b>유형</b>'+ptypeL+'</div>'
+    +'<div><b>취득</b>'+acq+' · '+fmtMan(A.acqPrice||0)+'</div>'
+    +'<div><b>매도(예정)</b>'+sale+' · '+fmtMan(A.salePrice||0)+'</div>'
+    +'<div><b>보유</b>'+hy+'년 '+hm+'개월</div><div><b>명의</b>'+ownL+'</div>'
+    +'<div><b>거주</b>'+res+'</div><div><b>주택수</b>'+(R.totalHouses||1)+'주택</div>'
+    +'<div><b>예상 양도세</b>'+fmtMan(R.total||0)+'</div>'
+    +'</div>';
+}
+function renderS11(){
+  const S=A.S, sc=S[s11Cur];
+  S11GEN++; const g=S11GEN;
+  const tabs=$('#s11Tabs');
+  tabs.innerHTML=S.map((s,i)=>'<button class="tab'+(i===s11Cur?' cur':'')+'" onclick="s11Cur='+i+';renderS11()">'+s.no+' '+s.name.split(' (')[0].slice(0,8)+'</button>').join('');
+  setTimeout(()=>{const cu=tabs.querySelector('.cur');if(cu)cu.scrollIntoView({inline:'center',block:'nearest'});},0);
+  const ib=$('#s11Info'); if(ib){const wasOpen=ib.classList.contains('open');ib.innerHTML=caseInfoHtml();if(wasOpen)ib.classList.add('open');}
+  $('#s11Mid').textContent='세꼼이 상담';
+  chat2().innerHTML=''; dock2().classList.remove('on'); curSimSnap=null;
+  SIM_REPLAY=s11ReplayNext; s11ReplayNext=false; if(!SIM_REPLAY)SIM_ANS=[]; SIM_ACALL=0; // 답변 캐시: 리플레이면 유지, 새 상담이면 초기화
+  const run=SCRIPT[sc.id]||SCRIPT._generic;
+  Promise.resolve().then(()=>run(sc,g)).catch(e=>{ if(e&&e.message==='stale')return; console.error(e); });
+}
+$('#s11Back').onclick=()=>{ if(s11From==='s12')openMyPage(); else show(s11From); };
+$('#s12Back').onclick=()=>show('s11');
+$('#svBack').onclick=()=>show(s06From||'s05');
+
+/* ===== 채팅 프리미티브 (S11 전용) ===== */
+/* 답변 캐시(리플레이): 사용자가 채팅에서 답한 숫자를 나중에 탭해 고치면, 그 값만 바꿔 시나리오를 다시 계산 */
+let SIM_ANS=[], SIM_ACALL=0, SIM_REPLAY=false, s11ReplayNext=false;
+function chkGen(g){ if(g!==S11GEN)throw new Error('stale'); }
+/* 바닥 근처(120px)일 때만 자동 스크롤 — 사용자가 위로 올려 슬라이더를 조작 중이면 끌어내리지 않음 */
+function c2scroll(force){const c=chat2();if(!c)return;const near=c.scrollHeight-c.scrollTop-c.clientHeight<120;if(force||near)c.scrollTop=c.scrollHeight;}
+/* 인터랙티브 카드(슬라이더 등) 뒤에서 흐름을 멈추는 게이트 — 사용자가 충분히 만져본 뒤 눌러야 다음이 이어짐 */
