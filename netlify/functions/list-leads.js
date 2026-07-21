@@ -36,7 +36,7 @@ async function sessionOk(req) {
   const m = (req.headers.get("cookie") || "").match(/(?:^|;\s*)seggom_admin=([A-Za-z0-9]+)/);
   if (!m) return false;
   try {
-    const store = getStore("seggom-admin");
+    const store = getStore({ name: "seggom-admin", consistency: "strong" });
     const raw = await store.get("sess:" + m[1]);
     if (!raw) return false;
     const rec = JSON.parse(raw);
@@ -58,10 +58,15 @@ export default async (req) => {
     return new Response("접근 권한이 없어요.", { status: 401 });
   }
 
-  const store = getStore("seggom-leads");
+  // strong consistency: 방금 저장된 레코드가 목록에 바로 보이도록 (eventual 캐시 지연 방지)
+  const store = getStore({ name: "seggom-leads", consistency: "strong" });
   const { blobs } = await store.list();
   const items = [];
-  for (const b of blobs) { try { items.push(JSON.parse(await store.get(b.key))); } catch {} }
+  let simCount = 0, parseFail = 0;
+  for (const b of blobs) {
+    if (b.key.startsWith("sim-")) { simCount++; continue; } // 시뮬 동기화 데이터(sims.js)는 리드 목록에서 제외
+    try { items.push(JSON.parse(await store.get(b.key))); } catch { parseFail++; }
+  }
   items.sort((a, b) => (b.ts || 0) - (a.ts || 0));
 
   const format = url.searchParams.get("format");
@@ -155,7 +160,8 @@ th,td{padding:9px 10px;border-bottom:1px solid #E5E8EB;text-align:left;vertical-
 th{background:#F2F4F6;color:#4E5968;font-weight:700;white-space:nowrap}</style></head><body>
 <div class="topbar">
   <div><h1>세꼼 어드민 대시보드</h1>
-  <div class="sub">모든 참여 데이터 · 총 ${items.length}건 (계산 ${calcN} · 이메일 ${emailN} · 설문 ${n})</div></div>
+  <div class="sub">모든 참여 데이터 · 총 ${items.length}건 (계산 ${calcN} · 이메일 ${emailN} · 설문 ${n})
+  · 저장소 원본 ${blobs.length}건${simCount ? ` (시뮬 동기화 ${simCount}건 제외)` : ""}${parseFail ? ` · <b style="color:#D22030">파싱 실패 ${parseFail}건</b>` : ""}</div></div>
   <button class="dbtn ghost" onclick="logout()">로그아웃</button>
 </div>
 
@@ -211,7 +217,12 @@ ${GOALS.map((g) => {
 </div>
 <table><thead><tr>
 <th></th><th>일시</th><th>종류</th><th>지역</th><th>세액</th><th>시나리오</th><th>케이스</th><th>만족</th><th>구매의향</th><th>적정가</th><th>세무사</th><th>연령</th><th>이메일</th><th>의견</th>
-</tr></thead><tbody>${rowsHtml || '<tr><td colspan="14" style="text-align:center;color:#8B95A1;padding:24px">아직 데이터가 없어요.</td></tr>'}</tbody></table>
+</tr></thead><tbody>${rowsHtml || '<tr><td colspan="14" style="text-align:center;color:#8B95A1;padding:24px">아직 데이터가 없어요. 저장이 잘 되는지 아래 [저장 파이프라인 진단]으로 확인해보세요.</td></tr>'}</tbody></table>
+<div class="rowlabel" style="margin-top:20px">저장 파이프라인 진단</div>
+<div style="background:#fff;border:1px solid #E5E8EB;border-radius:12px;padding:14px 16px;font-size:13px">
+  <button class="dbtn ghost" style="margin-bottom:8px" onclick="runDiag()">저장 파이프라인 진단 실행</button>
+  <div id="diagBox" style="color:#6B7684;line-height:1.7">테스트 레코드를 저장→조회→삭제하며 어느 단계가 문제인지 확인해요.</div>
+</div>
 <div class="rowlabel" style="margin-top:20px">로그인 세션 관리</div>
 <div id="sessBox" style="background:#fff;border:1px solid #E5E8EB;border-radius:12px;padding:14px 16px;font-size:13px;color:#6B7684">세션 정보 로딩 중... (토큰 접속 시에는 표시되지 않아요)</div>
 <p style="font-size:11px;color:#8B95A1;margin-top:16px">삭제는 되돌릴 수 없어요 · 세션은 7일 뒤 만료됩니다 · 이 링크를 공유하지 마세요.</p>
@@ -258,6 +269,38 @@ async function revoke(target){
   const r = await post("/api/admin-auth", {action:"revoke", target:target});
   alert(r.ok ? "해지 " + r.revoked + "건" : (r.error || "실패"));
   loadSessions();
+}
+async function runDiag(){
+  const box = document.getElementById("diagBox");
+  const out = [];
+  const show = () => { box.innerHTML = out.join("<br>"); };
+  out.push("1) 쓰기 테스트: /api/save-lead 호출 중..."); show();
+  let id = null;
+  try{
+    const r = await fetch("/api/save-lead", {method:"POST", headers:{"Content-Type":"application/json"},
+      body: JSON.stringify({kind:"calc", record:{region:"(진단 테스트)", diag:true}})});
+    const j = await r.json().catch(()=>({}));
+    if(r.ok && j.ok && j.id){ id = j.id; out[0] = "1) 쓰기: ✅ 성공 (id " + id + ")"; }
+    else out[0] = "1) 쓰기: ❌ 실패 — HTTP " + r.status + " " + (j.error || "") + " → save-lead 함수/Blobs 저장 문제";
+  }catch(e){ out[0] = "1) 쓰기: ❌ 네트워크 오류 — " + e.message + " → 광고차단 확장이 /api/save-lead 요청을 막고 있을 수 있어요"; }
+  show();
+  if(id){
+    out.push("2) 조회 테스트: 목록 재조회 중..."); show();
+    try{
+      const r2 = await fetch("${T("")}&format=json", {credentials:"same-origin"});
+      const arr = await r2.json();
+      const found = Array.isArray(arr) && arr.some(x => x && x.id === id);
+      out[1] = found ? "2) 조회: ✅ 방금 저장한 레코드가 목록에 보여요 — 저장·조회 모두 정상"
+                     : "2) 조회: ❌ 저장은 됐는데 목록에 안 보여요 — Blobs 조회(list) 문제";
+    }catch(e){ out[1] = "2) 조회: ❌ 오류 — " + e.message; }
+    show();
+    out.push("3) 정리: 진단 레코드 삭제 중..."); show();
+    try{
+      const r3 = await post("/api/delete-leads", {mode:"delete", keys:[id], confirm:"DELETE"});
+      out[2] = r3.deleted ? "3) 정리: ✅ 진단 레코드 삭제 완료" : "3) 정리: ⚠️ 삭제 실패 — 표에서 '(진단 테스트)' 행을 직접 삭제해주세요";
+    }catch(e){ out[2] = "3) 정리: ⚠️ " + e.message; }
+    show();
+  }
 }
 loadSessions();
 </script>

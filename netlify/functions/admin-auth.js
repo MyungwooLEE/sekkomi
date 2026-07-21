@@ -35,7 +35,7 @@ const rand = (n) => {
 export const getSession = async (req) => {
   const m = (req.headers.get("cookie") || "").match(/(?:^|;\s*)seggom_admin=([A-Za-z0-9]+)/);
   if (!m) return null;
-  const store = getStore("seggom-admin");
+  const store = getStore({ name: "seggom-admin", consistency: "strong" });
   const raw = await store.get("sess:" + m[1]);
   if (!raw) return null;
   try {
@@ -49,7 +49,7 @@ export default async (req) => {
   if (req.method !== "POST") return json(405, { error: "POST only" });
   let body; try { body = await req.json(); } catch { return json(400, { error: "bad json" }); }
   const action = (body && body.action) || "";
-  const store = getStore("seggom-admin");
+  const store = getStore({ name: "seggom-admin", consistency: "strong" });
 
   if (action === "check") {
     const s = await getSession(req);

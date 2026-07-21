@@ -25,7 +25,14 @@
   <h1>세꼼 어드민</h1>
   <div class="sub">관리자 이메일로 인증번호를 보내드려요.</div>
   <div class="acct">sekkomi.com@gmail.com</div>
-  <div class="step1">
+  <div class="step0" id="step0" style="display:none">
+    <div style="background:#163300;border:1px solid #2FA968;border-radius:12px;padding:14px;font-size:13px;color:#EAF3E1;line-height:1.6;margin-bottom:4px">
+      🟢 이미 로그인된 세션이 있어요.<br><span style="color:#9FBF8F">최근 7일 내 인증을 완료해 인증번호 없이 입장할 수 있어요.</span>
+    </div>
+    <button onclick="location.href='/api/list-leads'">대시보드 입장</button>
+    <button class="ghost" onclick="freshLogin()">로그아웃하고 새로 인증하기</button>
+  </div>
+  <div class="step1" id="step1">
     <button id="reqBtn" onclick="requestOtp()">인증번호 이메일로 받기</button>
   </div>
   <div class="step2" id="step2">
@@ -42,8 +49,15 @@ async function post(body){
     headers:{"Content-Type":"application/json"}, body: JSON.stringify(body)});
   return r.json();
 }
-// 이미 로그인돼 있으면 바로 대시보드로
-post({action:"check"}).then(r=>{ if(r && r.ok) location.href="/api/list-leads"; }).catch(()=>{});
+// 이미 로그인돼 있으면 자동 이동 대신 안내 화면 표시 (인증번호 없이 입장되는 이유를 명확히)
+post({action:"check"}).then(r=>{
+  if(r && r.ok){ $("#step0").style.display="block"; $("#step1").style.display="none"; }
+}).catch(()=>{});
+async function freshLogin(){
+  $("#msg").textContent = "로그아웃 중...";
+  try{ await post({action:"logout"}); }catch(e){}
+  $("#step0").style.display="none"; $("#step1").style.display="block"; $("#msg").textContent = "로그아웃했어요. 인증번호로 다시 로그인하세요.";
+}
 async function requestOtp(){
   $("#msg").textContent = "발송 중...";
   $("#reqBtn").disabled = true;

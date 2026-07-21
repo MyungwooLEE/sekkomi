@@ -34,7 +34,7 @@ async function sessionOk(req) {
   const m = (req.headers.get("cookie") || "").match(/(?:^|;\s*)seggom_admin=([A-Za-z0-9]+)/);
   if (!m) return false;
   try {
-    const store = getStore("seggom-admin");
+    const store = getStore({ name: "seggom-admin", consistency: "strong" });
     const raw = await store.get("sess:" + m[1]);
     if (!raw) return false;
     const rec = JSON.parse(raw);
@@ -68,8 +68,10 @@ export default async (req) => {
     } catch { return json(400, { error: "bad json" }); }
   }
 
-  const store = getStore("seggom-leads");
-  const { blobs } = await store.list();
+  const store = getStore({ name: "seggom-leads", consistency: "strong" });
+  const { blobs: allBlobs } = await store.list();
+  // 시뮬 동기화 데이터(sim-*)는 사용자 저장분이므로 리드 삭제 대상에서 항상 제외
+  const blobs = allBlobs.filter((b) => !b.key.startsWith("sim-"));
   const keySet = new Set(p.keys && p.keys.length ? p.keys : p.key ? [p.key] : []);
 
   // 대상 선별
