@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#163300">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<!-- Google Tag Manager -->
+<script>window.GTM_ID='GTM-5JTC8935';window.dataLayer=window.dataLayer||[];(function(w,d,s,l,i){if(!i||i==='GTM-XXXXXXX'||i.indexOf('GTM-')!==0)return;w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer',window.GTM_ID);</script>
+<!-- End Google Tag Manager -->
+
+<title>취득가액을 모를 때 양도세 계산법 — 환산취득가액 총정리 (2026) | 세꼼</title>
+<meta name="description" content="옛날에 사서 산 값을 모르는 집, 양도세는 어떻게? 취득가액 결정 5단계와 환산취득가액 공식(양도가액×기준시가 비율), 개산공제 3%, 신축 5년 5% 가산세까지 2026 기준으로 쉽게. 내 세금 3분 계산.">
+<link rel="canonical" href="https://sekkomi.com/blog/hwansan-chwideukgaaek-yangdose">
+<meta property="og:type" content="article">
+<meta property="og:title" content="취득가액을 모를 때 양도세 — 환산취득가액 총정리 (2026)">
+<meta property="og:description" content="산 값 증빙이 없을 때 세법은 '환산취득가액'으로 취득가를 추정해요. 공식·개산공제·가산세 함정까지 쉽게. 내 세금은 3분 만에 계산.">
+<meta property="og:image" content="https://sekkomi.com/blog/assets/hero_1sedae.png">
+<meta property="og:url" content="https://sekkomi.com/blog/hwansan-chwideukgaaek-yangdose">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "취득가액을 모를 때 양도세 계산법 — 환산취득가액 총정리 (2026)", "description": "실지취득가액을 확인할 수 없을 때 적용하는 환산취득가액의 공식, 취득가액 결정 순서, 개산공제, 신축 5년 이내 5% 가산세까지 2026년 기준으로 쉽게 정리.", "author": {"@type": "Organization", "name": "세꼼이", "url": "https://sekkomi.com"}, "publisher": {"@type": "Organization", "name": "세꼼(Sekkomi)", "url": "https://sekkomi.com"}, "datePublished": "2026-07-28", "dateModified": "2026-07-28", "mainEntityOfPage": "https://sekkomi.com/blog/hwansan-chwideukgaaek-yangdose", "inLanguage": "ko-KR"}
+</script>
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "환산취득가액은 무조건 쓸 수 있나요?", "acceptedAnswer": {"@type": "Answer", "text": "아니요. 실제 취득가액(실지거래가액)이 확인되면 그 값을 먼저 씁니다. 계약서·영수증 등으로 실제 산 값을 입증할 수 없을 때에만 매매사례가액·감정가액·환산취득가액·기준시가 순서로 적용합니다."}}, {"@type": "Question", "name": "환산취득가액 공식이 어떻게 되나요?", "acceptedAnswer": {"@type": "Answer", "text": "환산취득가액 = 양도가액 × (취득 당시 기준시가 ÷ 양도 당시 기준시가)입니다. 아파트의 기준시가는 공동주택 공시가격을 씁니다."}}, {"@type": "Question", "name": "환산취득가액을 쓰면 인테리어 비용 같은 필요경비도 따로 빼나요?", "acceptedAnswer": {"@type": "Answer", "text": "환산취득가액을 쓰면 필요경비는 원칙적으로 환산취득가액에 개산공제액(취득 당시 기준시가의 3%)을 더한 금액으로 계산합니다. 실제 공사비 등을 별도로 합산하는 데에는 제한이 있으므로, 금액이 크면 세무 전문가 확인을 권장합니다."}}, {"@type": "Question", "name": "환산취득가액으로 신고하면 가산세가 붙나요?", "acceptedAnswer": {"@type": "Answer", "text": "일반적으로 오래 보유한 아파트에는 붙지 않습니다. 다만 건물을 신축·증축하고 그 취득일부터 5년 이내에 양도하면서 환산가액으로 신고하는 경우에는 건물 환산가액의 5%가 가산세로 부과됩니다(소득세법 제114조의2)."}}]}
+</script>
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "블로그", "item": "https://sekkomi.com/blog/"}, {"@type": "ListItem", "position": 2, "name": "취득가액 · 심화", "item": "https://sekkomi.com/blog/hwansan-chwideukgaaek-yangdose"}, {"@type": "ListItem", "position": 3, "name": "취득가액을 모를 때 양도세 — 환산취득가액 (2026)", "item": "https://sekkomi.com/blog/hwansan-chwideukgaaek-yangdose"}]}
+</script>
+
+<style>
+  :root{--g:#163300;--g2:#0e2200;--lime:#9fe870;--cream:#fbfaf7;--ink:#1a2712;--accent:#ff6a3d;
+    --mute:#6e7d5c;--line:#e7e9e2;--box:#f2f4ec}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Pretendard',-apple-system,sans-serif;color:var(--ink);background:#fff;
+    line-height:1.7;-webkit-font-smoothing:antialiased}
+  a{color:inherit}
+  header{position:sticky;top:0;z-index:20;background:rgba(251,250,247,.9);backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line)}
+  .nav{max-width:960px;margin:0 auto;padding:14px 20px;display:flex;align-items:center;justify-content:space-between}
+  .logo{font-weight:800;font-size:22px;color:var(--g);text-decoration:none;display:inline-flex;align-items:center;gap:8px}
+  .logo-img{height:28px;display:block}
+  .nav-cta{background:var(--lime);color:var(--g);font-weight:800;font-size:14px;
+    padding:9px 16px;border-radius:10px;text-decoration:none}
+  .hero-wrap{background:linear-gradient(160deg,#1c4300,#0e2200)}
+  .hero-txt{max-width:960px;margin:0 auto;padding:52px 24px 56px}
+  .hero-txt .k{color:var(--lime);font-weight:800;font-size:14px;letter-spacing:1px}
+  .hero-txt .t{color:var(--cream);font-weight:800;font-size:clamp(26px,5vw,42px);line-height:1.25;letter-spacing:-.5px;margin-top:10px}
+  .hero-txt .s{color:#dde7ce;font-size:16px;margin-top:12px;max-width:560px}
+  article{max-width:720px;margin:0 auto;padding:0 20px 80px}
+  .crumb{font-size:13px;color:var(--mute);padding:26px 0 0}
+  .crumb a{text-decoration:none;color:var(--mute)}
+  .crumb-ep{color:#3a7d17;font-weight:800}
+  h1{font-size:clamp(28px,5.4vw,40px);line-height:1.25;font-weight:800;color:var(--g);letter-spacing:-.5px;margin:14px 0 16px}
+  .toc{background:var(--box);border-radius:12px;padding:16px 20px 16px;margin:0 0 28px}
+  .toc-t{font-size:13px;font-weight:800;color:var(--mute);letter-spacing:.4px;margin-bottom:8px}
+  .toc ol{margin:0;padding-left:20px}
+  .toc li{margin:5px 0;font-size:15px}
+  .toc a{color:#2f6b12;font-weight:600;text-decoration:none}
+  .toc a:hover{text-decoration:underline}
+  .series-nav{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:44px 0 14px}
+  .sn{border:1px solid var(--line);border-radius:14px;padding:15px 17px;display:flex;flex-direction:column;gap:5px;transition:box-shadow .15s,transform .15s}
+  .sn:hover{box-shadow:0 6px 22px rgba(22,51,0,.1);transform:translateY(-2px)}
+  .sn span{font-size:12.5px;color:var(--mute);font-weight:700}
+  .sn b{font-size:15.5px;color:var(--g);font-weight:800;line-height:1.35}
+  .sn.next{text-align:right}
+  @media(max-width:520px){.series-nav{grid-template-columns:1fr}.sn.next{text-align:left}}
+  .byline{font-size:14px;color:var(--mute);border-bottom:1px solid var(--line);padding-bottom:20px;margin:14px 0 26px}
+  .byline b{color:var(--ink);font-weight:700}
+  article h2{font-size:clamp(21px,3.8vw,26px);font-weight:800;color:var(--g);margin:56px 0 18px;padding-top:44px;border-top:1px solid var(--line);letter-spacing:-.3px}
+  article h2:first-of-type{border-top:none;padding-top:8px;margin-top:28px}
+  article p{margin:0 0 16px;font-size:17px}
+  article strong{font-weight:700}
+  article ul,article ol{margin:0 0 18px;padding-left:22px}
+  article li{margin-bottom:8px;font-size:17px}
+  article a.inl{color:#2f6b12;font-weight:700;text-decoration:underline;text-underline-offset:2px}
+  article p.rel{background:var(--box);border-radius:10px;padding:11px 15px;margin:0 0 12px;font-size:15.5px}
+  article p.rel::before{content:'\21b3  ';color:var(--accent);font-weight:800}
+  article p.rel a{color:#2f6b12;font-weight:700;text-decoration:none}
+  .tldr{background:#eef6e2;border:1px solid #d4e8bd;border-left:5px solid var(--lime);
+    border-radius:12px;padding:18px 20px;margin:8px 0 28px}
+  .tldr .k{font-size:13px;font-weight:800;color:#3a7d17;letter-spacing:.3px;margin-bottom:6px}
+  .tldr p{font-size:16px;margin:0}
+  .note{background:#fff7ed;border:1px solid #fadcc4;border-left:5px solid var(--accent);
+    border-radius:12px;padding:15px 18px;margin:22px 0;font-size:15px;color:#5a4632;line-height:1.6}
+  .note strong{color:#b4471f}
+  .tbl{width:100%;border-collapse:collapse;margin:8px 0 20px;font-size:15.5px;overflow:hidden;
+    border-radius:12px;border:1px solid var(--line)}
+  .tbl th,.tbl td{padding:12px 14px;text-align:left;border-bottom:1px solid var(--line)}
+  .tbl thead th{background:var(--g);color:var(--cream);font-weight:700;font-size:14px}
+  .tbl tbody tr:last-child td{border-bottom:none}
+  .tbl td:first-child{font-weight:800;color:#3a7d17}
+  .cta{display:block;background:var(--g);border-radius:16px;padding:22px 22px;margin:26px 0;text-decoration:none}
+  .cta .t{color:var(--cream);font-weight:700;font-size:16px;line-height:1.5}
+  .cta .b{display:inline-block;margin-top:12px;background:var(--lime);color:var(--g);
+    font-weight:800;font-size:15px;padding:11px 18px;border-radius:10px}
+  .cta.final{padding:30px 24px;text-align:center;background:linear-gradient(160deg,#1c4300,#0e2200)}
+  .cta.final .h{color:var(--cream);font-weight:800;font-size:22px;margin-bottom:8px}
+  .cta.final .s{color:#dde7ce;font-size:15px;margin-bottom:18px}
+  .cta.final .b{background:var(--accent);color:#fff;font-size:17px;padding:14px 26px}
+  .faq{border-top:1px solid var(--line);margin-top:12px}
+  .faq details{border-bottom:1px solid var(--line);padding:6px 0}
+  .faq summary{font-weight:700;font-size:16.5px;color:var(--g);padding:14px 0;cursor:pointer;list-style:none;
+    display:flex;justify-content:space-between;align-items:center;gap:12px}
+  .faq summary::-webkit-details-marker{display:none}
+  .faq summary::after{content:'+';color:var(--accent);font-weight:800;font-size:22px;flex:0 0 auto}
+  .faq details[open] summary::after{content:'\2212'}
+  .faq p{padding:0 0 16px;font-size:16px;color:#33402a}
+  .author{background:var(--box);border-radius:12px;padding:18px 20px;margin:34px 0 0;font-size:15px;color:#33402a}
+  .author b{color:var(--g)}
+  .sources{margin-top:26px;font-size:14px;color:var(--mute)}
+  .sources h3{font-size:15px;color:var(--ink);margin-bottom:8px}
+  .sources a{color:#3a7d17}
+  .disc{font-size:13px;color:var(--mute);margin-top:20px;line-height:1.6}
+  footer{background:var(--g);color:#c7d3b6;padding:26px 20px}
+  .ft{max-width:640px;margin:0 auto;text-align:center}
+  .ft-logo{height:22px;margin-bottom:14px}
+  .ft-links{display:flex;justify-content:center;gap:22px;flex-wrap:wrap;margin-bottom:10px}
+  .ft-links a{color:#dde7ce;text-decoration:none;font-size:14px;font-weight:600}
+  .ft-legal{color:#8ea076;font-size:12px}
+  @media(max-width:520px){article p,article li{font-size:16px}}
+</style>
+</head>
+<body>
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5JTC8935" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+
+<header>
+  <div class="nav">
+    <a class="logo" href="/blog/"><img src="assets/logo_full.png" alt="세꼼이" class="logo-img"></a>
+    <a class="nav-cta" href="https://sekkomi.com/?utm_source=blog&utm_medium=content&utm_campaign=yangdo_series&utm_content=nav" data-cta="nav" target="_blank" rel="noopener">내 양도세 계산 →</a>
+  </div>
+</header>
+
+<div class="hero-wrap">
+  <div class="hero-txt">
+    <div class="k">취득가액 · 심화</div>
+    <div class="t">취득가액을 모를 때,<br>양도세는 어떻게 계산하나요?</div>
+    <div class="s">30년 전에 산 집, 계약서도 영수증도 없다면 — 세법은 '환산취득가액'으로 산 값을 추정합니다. 공식과 함정까지 5분에 정리했어요.</div>
+  </div>
+</div>
+
+<article>
+  <div class="crumb"><a href="/blog/">블로그</a> › <span class="crumb-ep">취득가액</span> 심화</div>
+  <h1>취득가액을 모를 때 양도세 계산법 — 환산취득가액 총정리 (2026)</h1>
+  <div class="byline"><b>세꼼이</b> · 2026년 7월 28일 · 읽는 시간 5분</div>
+
+  <div class="tldr">
+    <div class="k">한 줄 답 · 2026년 7월 기준</div>
+    <p>오래 전에 사서 <strong>실제 산 값(실지취득가액)을 증빙할 수 없으면</strong>, 세법은 <strong>환산취득가액</strong>으로 취득가를 추정해요. 공식은 <strong>양도가액 × (취득 당시 기준시가 ÷ 양도 당시 기준시가)</strong>. 여기에 <strong>개산공제(취득 당시 기준시가의 3%)</strong>만 필요경비로 더합니다. 단, <strong>실제 취득가액이 확인되면 그 값이 먼저</strong>이고, 신축·증축 건물을 5년 안에 팔며 환산가액으로 신고하면 <strong>5% 가산세</strong>가 붙어요. <em>(근거: 소득세법 제97조·제114조의2, 시행령 제163조·제176조의2)</em></p>
+  </div>
+
+  <nav class="toc" aria-label="목차">
+    <div class="toc-t">이 글의 목차</div>
+    <ol>
+      <li><a href="#sec-1">환산취득가액이 뭐예요?</a></li>
+      <li><a href="#sec-2">취득가액은 이 순서로 정해져요</a></li>
+      <li><a href="#sec-3">환산취득가액 공식과 예시 계산</a></li>
+      <li><a href="#sec-4">필요경비는 '개산공제 3%'만</a></li>
+      <li><a href="#sec-5">함정 — 신축 5년 이내 5% 가산세</a></li>
+      <li><a href="#faq">자주 묻는 질문</a></li>
+      <li><a href="#sec-6">정리</a></li>
+    </ol>
+  </nav>
+
+  <p>양도세는 "판 값 − 산 값"인 <strong>양도차익</strong>에 붙어요. 그런데 <strong>1980~1990년대에 산 집</strong>은 계약서를 잃어버렸거나, 상속·증여로 받아 애초에 산 값이라는 게 없기도 하죠. 이렇게 <strong>산 값을 확인할 수 없을 때</strong> 세법이 취득가를 추정하는 방법이 바로 <strong>환산취득가액</strong>입니다.</p>
+
+  <a class="cta" href="https://sekkomi.com/?utm_source=blog&amp;utm_medium=content&amp;utm_campaign=yangdo_series&amp;utm_content=hwansan-top" data-cta="top" target="_blank" rel="noopener">
+    <div class="t"><strong>산 값이 애매한 내 집, 지금 팔면 세금이 얼마일까?</strong> 주소·취득·매도 정보만 넣으면 3분 만에.</div>
+    <span class="b">내 양도세 계산하기 →</span>
+  </a>
+
+  <h2 id="sec-1">환산취득가액이 뭐예요?</h2>
+
+  <p><strong>환산취득가액</strong>은 실제 취득가액을 알 수 없을 때, <strong>양도 당시의 실거래가에 '취득 당시 대비 양도 당시의 기준시가 비율'을 곱해</strong> 산 값을 거꾸로 추정하는 방식이에요. 쉽게 말하면 "지금 이 집이 10억인데, 살 때 공시가격이 지금의 1/8 수준이었으니 산 값도 그 비율만큼이었겠지"라고 <strong>비례로 되돌려 계산</strong>하는 거예요.</p>
+
+  <p>여기서 <strong>기준시가</strong>란 국가가 매년 고시하는 가격이에요. 아파트는 <strong>공동주택 공시가격</strong>, 단독주택은 개별주택가격, 토지는 개별공시지가를 씁니다. 실거래가가 아니라 이 공적 가격의 <strong>비율</strong>만 쓰는 게 포인트예요.</p>
+
+  <h2 id="sec-2">취득가액은 이 순서로 정해져요</h2>
+
+  <p>환산취득가액은 <strong>아무 때나 쓰는 게 아니라</strong>, 앞 단계가 불가능할 때만 내려오는 '차선책'이에요. 순서는 이렇습니다.</p>
+
+  <table class="tbl">
+<thead><tr><th>순서</th><th>취득가액 방법</th><th>언제</th></tr></thead>
+<tbody>
+<tr><td>1순위</td><td>실지거래가액</td><td>계약서·영수증 등으로 실제 산 값 확인 가능</td></tr>
+<tr><td>2순위</td><td>매매사례가액</td><td>같은·유사 자산의 실제 거래 사례가 있을 때</td></tr>
+<tr><td>3순위</td><td>감정가액</td><td>감정평가법인 2곳의 감정가액이 있을 때</td></tr>
+<tr><td>4순위</td><td><strong>환산취득가액</strong></td><td>위 방법이 모두 불가능할 때</td></tr>
+<tr><td>5순위</td><td>기준시가</td><td>환산도 어려운 예외적 경우</td></tr>
+</tbody>
+</table>
+
+  <div class="note"><strong>중요:</strong> 실제 산 값을 입증할 자료가 있다면 <strong>1순위(실지거래가액)가 무조건 먼저</strong>예요. "환산이 세금이 더 적게 나온다"는 이유로 실제 취득가를 감추고 환산을 쓸 수는 없습니다.</div>
+
+  <p class="rel">취득할 때 낸 비용도 챙기세요 → <a href="/blog/yangdose-pilyogyeongbi">양도세 필요경비, 어디까지 빼주나요?</a></p>
+
+  <h2 id="sec-3">환산취득가액 공식과 예시 계산</h2>
+
+  <p>공식은 단순해요.</p>
+
+  <table class="tbl">
+<thead><tr><th>환산취득가액 공식</th></tr></thead>
+<tbody>
+<tr><td style="color:var(--g)">양도가액 × ( <strong>취득 당시 기준시가</strong> ÷ <strong>양도 당시 기준시가</strong> )</td></tr>
+</tbody>
+</table>
+
+  <p>숫자로 보면 이해가 빨라요. <strong>아래는 이해를 돕기 위한 가정 예시</strong>입니다(실제 기준시가는 집마다 달라요).</p>
+
+  <table class="tbl">
+<thead><tr><th>항목</th><th>가정값</th></tr></thead>
+<tbody>
+<tr><td>양도가액(지금 판 값)</td><td>10억 원</td></tr>
+<tr><td>양도 당시 기준시가</td><td>8억 원</td></tr>
+<tr><td>취득 당시 기준시가</td><td>1억 원</td></tr>
+<tr><td><strong>환산취득가액</strong></td><td><strong>10억 × (1억 ÷ 8억) = 1.25억 원</strong></td></tr>
+</tbody>
+</table>
+
+  <p>이 예시에서 산 값은 <strong>1.25억 원으로 추정</strong>돼요. 즉 양도차익은 대략 "10억 − 1.25억 − 개산공제"가 됩니다. 문제는, <strong>실제로는 1.25억보다 비싸게 샀을 수도 있다는 것</strong>. 그러면 환산 방식이 차익을 크게 잡아 <strong>세금이 더 나올 수도</strong> 있어요. 반대로 아주 옛날에 헐값에 산 집이면 환산이 유리할 때도 있고요.</p>
+
+  <a class="cta" href="https://sekkomi.com/?utm_source=blog&amp;utm_medium=content&amp;utm_campaign=yangdo_series&amp;utm_content=hwansan-mid1" data-cta="mid1" target="_blank" rel="noopener">
+    <div class="t"><strong>실제 취득가 vs 환산, 어느 쪽이 유리한지 헷갈리면</strong> 세꼼이가 내 상황으로 따져드려요.</div>
+    <span class="b">내 양도세 비교하기 →</span>
+  </a>
+
+  <h2 id="sec-4">필요경비는 '개산공제 3%'만</h2>
+
+  <p>실제 산 값(실지거래가액)으로 계산할 때는 <strong>취득세·중개수수료·확장공사비</strong> 같은 실제 필요경비를 하나하나 더할 수 있어요. 하지만 <strong>환산취득가액을 쓰면 상황이 달라져요.</strong></p>
+
+  <p>환산취득가액 방식에서는 필요경비를 <strong>환산취득가액 + 개산공제액</strong>으로 계산합니다. 여기서 <strong>개산공제액 = 취득 당시 기준시가 × 3%</strong>(토지·건물 기준)예요. 위 예시라면 개산공제 = 1억 × 3% = <strong>300만 원</strong>. 즉 취득 관련 필요경비는 "1.25억 + 300만 = 약 1.253억"이 됩니다.</p>
+
+  <div class="note"><strong>주의:</strong> 환산취득가액을 쓰면 실제 인테리어·확장 공사비 등을 <strong>따로 합산하는 데 제한</strong>이 있어요. 세법에는 납세자에게 유리한 쪽으로 필요경비를 계산하도록 하는 선택 규정도 있지만, 사안마다 판단이 달라집니다. <strong>공사비가 큰 집이라면 신고 전 세무 전문가 확인</strong>을 권장해요.</div>
+
+  <h2 id="sec-5">함정 — 신축 5년 이내 5% 가산세</h2>
+
+  <p>오래 보유한 아파트를 파는 대부분의 경우엔 해당이 없지만, <strong>딱 한 가지 꼭 알아둘 함정</strong>이 있어요.</p>
+
+  <p><strong>건물을 신축(또는 증축)하고, 그 취득일부터 5년 이내에 그 건물을 양도</strong>하면서 <strong>환산가액으로 신고</strong>하면 — <strong>건물 환산가액의 5%</strong>가 가산세로 붙습니다. 심지어 양도차익이 없어서 낼 세금이 0원이어도 이 가산세는 부과돼요. <em>(소득세법 제114조의2)</em></p>
+
+  <p>취지는 간단해요. 신축은 건축비 자료가 최근이라 <strong>실제 취득가를 알 수 있는데도</strong> 일부러 환산을 써서 세금을 줄이는 걸 막으려는 거예요. 반대로 말하면, <strong>수십 년 전에 분양받은 아파트</strong>처럼 신축과 무관한 오래된 집은 이 5% 가산세와 거리가 멉니다.</p>
+
+  <p class="rel">상속·증여로 받은 집의 취득가액이 궁금하다면 → <a href="/blog/sangsok-jeungyeo-jutaek-yangdose">상속·증여받은 집 양도세 (이월과세 주의)</a></p>
+
+  <h2 id="faq">자주 묻는 질문</h2>
+  <div class="faq">
+    <details><summary>환산취득가액은 무조건 쓸 수 있나요?</summary><p>아니요. <strong>실제 취득가액(실지거래가액)이 확인되면 그 값이 먼저</strong>예요. 계약서·영수증 등으로 산 값을 입증할 수 없을 때에만 매매사례가액 → 감정가액 → 환산취득가액 → 기준시가 순으로 내려갑니다.</p></details>
+    <details><summary>기준시가는 어디서 확인하나요?</summary><p>아파트는 <strong>공동주택 공시가격</strong>을 쓰며 '부동산공시가격 알리미'에서 조회할 수 있어요. 취득 당시와 양도 당시 두 시점의 값이 모두 필요합니다.</p></details>
+    <details><summary>환산이 실제 취득가보다 세금이 적게 나오던데, 골라 써도 되나요?</summary><p>안 됩니다. 실제 취득가액을 입증할 수 있으면 그 값을 써야 해요. 환산은 어디까지나 <strong>산 값을 확인할 수 없을 때의 차선책</strong>입니다.</p></details>
+    <details><summary>환산가액으로 신고하면 무조건 가산세가 붙나요?</summary><p>아니요. <strong>신축·증축 건물을 5년 이내 양도</strong>하며 환산가액으로 신고할 때만 건물 환산가액의 5%가 붙어요(소득세법 제114조의2). 오래된 아파트 매도에는 일반적으로 해당하지 않습니다.</p></details>
+  </div>
+
+  <h2 id="sec-6">정리 — 산 값을 모르면 '비율로 되돌린다'</h2>
+
+  <p>실제 산 값을 증빙할 수 없을 때, 세법은 <strong>양도가액 × (취득 당시 기준시가 ÷ 양도 당시 기준시가)</strong>로 취득가를 추정하고, <strong>개산공제(취득 당시 기준시가의 3%)</strong>를 필요경비로 얹어줘요. 핵심은 세 가지 — <strong>①실제 취득가가 확인되면 그게 먼저 ②환산이 늘 유리한 건 아니다 ③신축 5년 내 매도는 5% 가산세 주의.</strong> 내 집이 실제 취득가와 환산 중 어느 쪽이 유리한지는 <a class="inl" href="/blog/yangdo-sodeukse-guide">양도소득세 완전정복</a>과 계산기로 이어서 확인하세요.</p>
+
+  <a class="cta final" href="https://sekkomi.com/?utm_source=blog&amp;utm_medium=content&amp;utm_campaign=yangdo_series&amp;utm_content=hwansan-bottom" data-cta="bottom" target="_blank" rel="noopener">
+    <div class="h">산 값이 애매한 내 집, 양도세 3분 만에</div>
+    <div class="s">주소·취득·매도 정보만 넣으면 <strong>2026년 최신 세법 기준</strong>으로 세액과 절세 시나리오까지. 무료예요.</div>
+    <span class="b">지금 계산하기 →</span>
+  </a>
+
+  <nav class="series-nav" aria-label="관련 글">
+    <a class="sn prev" data-nav="prev" href="/blog/yangdose-pilyogyeongbi"><span>← 관련 글 · 필요경비</span><b>양도세 필요경비, 어디까지 빼주나요?</b></a>
+    <a class="sn next" data-nav="next" href="/blog/yangdo-sodeukse-guide"><span>시리즈 허브 · EP.00 →</span><b>양도소득세 완전정복</b></a>
+  </nav>
+
+  <div class="author"><b>글쓴이 · 세꼼이</b> — 소득세법·국세청 자료를 근거로 글을 쓰고, 세법 변동 사항을 <strong>매주 모니터링</strong>해 반영합니다. 최종 검토: 2026년 7월 28일.</div>
+
+  <div class="sources">
+    <h3>출처 및 근거</h3>
+    <p>· 국가법령정보센터 — 소득세법 제97조(양도소득의 필요경비 계산)·제114조의2(감정가액 또는 환산취득가액 적용에 따른 가산세): https://www.law.go.kr<br>
+    · 국가법령정보센터 — 소득세법 시행령 제163조·제176조의2(취득가액 및 환산취득가액 계산): https://www.law.go.kr<br>
+    · 국세청 상담센터 — 양도차익 계산 자주묻는 Q&amp;A: https://call.nts.go.kr<br>
+    · 국세청 — 양도소득금액 계산명세서 작성요령(개산공제·환산취득가액): https://www.nts.go.kr</p>
+  </div>
+  <p class="disc">본 글은 일반 정보 제공이며 세무 자문이 아닙니다. 본문의 계산은 이해를 돕기 위한 가정 예시로 실제 기준시가·취득가액은 집마다 다릅니다. 환산취득가액 적용 여부, 필요경비 합산 범위, 가산세 해당 여부는 사안에 따라 달라지므로 실제 신고 전 국세청(126) 또는 세무 전문가 확인을 권장합니다. · 2026년 7월 기준</p>
+</article>
+
+<footer>
+  <div class="ft">
+    <img src="assets/logo_full_dark.png" alt="세꼼이" class="ft-logo">
+    <div class="ft-links">
+      <a href="https://sekkomi.com/" target="_blank" rel="noopener">계산기</a>
+      <a href="/blog/">블로그</a>
+      <a href="mailto:sekkomi.com@gmail.com">문의</a>
+    </div>
+    <div class="ft-legal">© 2026 세꼼이(Sekkomi)</div>
+  </div>
+</footer>
+
+<script>
+  function track(ev,params){try{window.dataLayer=window.dataLayer||[];window.dataLayer.push(Object.assign({event:ev},params||{}));}catch(e){}}
+  track('blog_article_view',{article_id:'hwansan-chwideukgaaek-yangdose',episode:'심화',category:'취득가액',series:'yangdo_series'});
+  document.querySelectorAll('a[data-cta]').forEach(function(a){
+    a.addEventListener('click',function(){ track('blog_cta_click',{cta_position:a.getAttribute('data-cta'),article:'hwansan-chwideukgaaek-yangdose'}); });
+  });
+  document.querySelectorAll('.faq details').forEach(function(d,i){
+    d.addEventListener('toggle',function(){ if(d.open) track('faq_open',{q_index:i+1,article:'hwansan-chwideukgaaek-yangdose'}); });
+  });
+  document.querySelectorAll('a[data-nav]').forEach(function(a){
+    a.addEventListener('click',function(){ track('blog_nav_click',{target:a.getAttribute('data-nav'),article:'hwansan-chwideukgaaek-yangdose'}); });
+  });
+  document.querySelectorAll('.toc a').forEach(function(a){
+    a.addEventListener('click',function(){ track('blog_toc_click',{anchor:a.getAttribute('href'),article:'hwansan-chwideukgaaek-yangdose'}); });
+  });
+  (function(){var hit={};var marks=[25,50,75,100];
+    window.addEventListener('scroll',function(){
+      var h=document.documentElement,b=document.body;
+      var st=h.scrollTop||b.scrollTop, sh=(h.scrollHeight||b.scrollHeight)-h.clientHeight;
+      var p=sh>0?(st/sh)*100:0;
+      marks.forEach(function(m){ if(p>=m&&!hit[m]){hit[m]=1;track('blog_scroll_depth',{percent:m,article:'hwansan-chwideukgaaek-yangdose'});} });
+    },{passive:true});
+  })();
+</script>
+<script type="module">
+  import {onLCP,onCLS,onINP,onFCP,onTTFB} from 'https://cdn.jsdelivr.net/npm/web-vitals@4/dist/web-vitals.js';
+  function v(m){window.dataLayer=window.dataLayer||[];window.dataLayer.push({event:'web_vitals',metric:m.name,value:Math.round(m.name==='CLS'?m.value*1000:m.value),rating:m.rating,article:'hwansan-chwideukgaaek-yangdose'});}
+  onLCP(v);onCLS(v);onINP(v);onFCP(v);onTTFB(v);
+</script>
+</body>
+</html>
