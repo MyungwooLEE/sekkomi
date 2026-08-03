@@ -1,0 +1,7 @@
+node_modules/
+fonts/
+frames/
+*.mp4
+gsap.min.js
+__pycache__/
+*.log
