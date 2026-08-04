@@ -167,3 +167,60 @@ ffmpeg `-crf 18 -pix_fmt yuv420p -movflags +faststart` 인코딩.
 ## 배포 영향 없음
 
 `netlify.toml` 의 `publish = "public"` 이라 `tools/` 이하는 사이트로 배포되지 않는다.
+단 `tools/shortform/queue/` 만은 예외적으로 **자동 게시 파이프라인의 입력**이다(아래).
+
+---
+
+## 자동 게시 파이프라인 (2026-08-04 도입)
+
+인스타 업로드까지 무인화했다. **자동화 세션이 직접 렌더하지 않는다** — 대신 렌더할 것을
+텍스트로 큐에 넣기만 하고, 렌더·게시는 레포와 Netlify가 알아서 한다.
+
+### 왜 이렇게 나눴나
+
+자동화 세션이 도는 클라우드 컨테이너는 **외부 egress가 막혀 있다**(실측: `curl` 000).
+그래서 mp4를 어디에도 올릴 수 없다. 커밋 도구도 텍스트만 실어 나르므로 1.5MB 바이너리는
+못 넣는다. 반면 Meta의 릴스 API는 **공개 mp4 URL**을 반드시 요구한다.
+
+→ 세션은 텍스트(HTML+메타)만 커밋하고, 렌더는 **GitHub Actions**(퍼블릭 레포라 무료),
+게시는 **Netlify Scheduled Function**이 맡는다. 토큰이 세션에도 레포에도 남지 않는 게 덤.
+
+### 흐름
+
+```
+세션:      tools/shortform/queue/<id>.html   ← 템플릿 텍스트만 교체한 것
+           tools/shortform/queue/<id>.json   ← { caption, blog_url, cover_time?, publish_after? }
+             │  (커밋)
+             ▼
+Actions:   .github/workflows/render-reel.yml
+           npm ci → 폰트·GSAP 복원 → render.py → public/reels/<id>.mp4
+           ffmpeg로 커버 추출 → <id>_cover.jpg
+           규격 검증(1080×1920 · 570프레임) → scripts/reel-queue-add.cjs → queue.json 갱신 → 커밋
+             ▼
+Netlify:   배포 → https://sekkomi.com/reels/<id>.mp4 공개
+             ▼
+Function:  netlify/functions/publish-reel.js  (스케줄 UTC 10:00~13:59 = KST 19~22시)
+           토큰 자동 갱신 → 컨테이너 생성 → 상태 폴링 → media_publish
+```
+
+### 세션이 할 일 (이것만)
+
+1. 템플릿을 복사해 카드 4개 텍스트만 교체 → `tools/shortform/queue/<id>.html`
+2. 같은 이름의 `<id>.json` 에 캡션 세트를 넣는다. `caption` 이 비면 큐 등록이 거부된다.
+3. 두 파일을 커밋. 끝. (mp4를 만들지도, 올리지도 않는다)
+
+`<id>` 는 `YYYY-MM-DD-슬러그` 를 쓴다. 그대로 `public/reels/<id>.mp4` 가 된다.
+
+### 안전장치
+
+- **하루 1건만** 게시한다(Blobs의 `last_published_day`). 밀린 큐가 쏟아지지 않는다.
+- **3일 지난 항목은 폐기**한다. 설정이 며칠 멈췄다가 철 지난 뉴스 릴스가 나가는 걸 막는다.
+- `IG_PUBLISH_ENABLED` 가 `1` 이 아니면 **드라이런**(로그만, 시도 횟수도 안 깎임).
+- 컨테이너 생성 전 mp4 URL에 HEAD 200을 확인한다(배포 전이면 다음 주기 재시도).
+- 실패·토큰 갱신 실패는 Resend로 오너에게 메일 발송(같은 사유 하루 1회).
+- 렌더 결과가 1080×1920이 아니면 Actions가 **커밋 전에** 실패한다.
+
+### 최초 1회 설정
+
+오너만 할 수 있는 Meta 설정 절차는 `claude/인스타-자동게시-셋업.md` 참고.
+설정 전까지는 드라이런으로 안전하게 돌아간다.
