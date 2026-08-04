@@ -271,6 +271,17 @@
     <span class="b">내 양도세 무료 계산 →</span>
   </a>
 
+  <div class="subscribe" id="subscribe" style="background:#eef6e2;border:1px solid #d4e8bd;border-left:5px solid #9fe870;border-radius:12px;padding:20px;margin:34px 0 0">
+    <div style="font-weight:800;color:#163300;font-size:17px;margin-bottom:6px">세법이 바뀌면 이 글의 숫자도 바뀝니다</div>
+    <p style="font-size:15px;margin:0 0 12px;color:#33402a">국회 통과로 수치가 확정되면, 이 개편안이 내 세금에 어떻게 적용되는지 확정 수치로 알려드릴게요.</p>
+    <form id="sub-form" style="display:flex;gap:8px;flex-wrap:wrap">
+      <input type="email" id="sub-email" required placeholder="이메일 주소" style="flex:1;min-width:200px;padding:12px 14px;border:1px solid #d4e8bd;border-radius:10px;font-size:15px;font-family:inherit">
+      <button type="submit" style="background:#163300;color:#9fe870;font-weight:800;font-size:15px;padding:12px 20px;border:none;border-radius:10px;cursor:pointer;font-family:inherit">확정되면 알림 받기</button>
+    </form>
+    <div id="sub-msg" style="display:none;font-weight:700;color:#3a7d17;font-size:15px;margin-top:10px"></div>
+    <p style="font-size:12px;color:#6e7d5c;margin:10px 0 0">알림 메일 하단의 안내로 언제든 수신거부할 수 있어요.</p>
+  </div>
+
   <div class="author"><b>세꼼이</b>는 양도소득세 계산기 세꼼(sekkomi.com)을 만드는 팀이에요. 국세청 공식 자료와 현행 세법을 기준으로, 집 팔 때 세금을 누구나 이해할 수 있게 정리합니다.</div>
 
   <div class="sources">
@@ -310,6 +321,23 @@
   document.querySelectorAll('.faq details').forEach(function(d,i){
     d.addEventListener('toggle',function(){ if(d.open) track('faq_open',{q_index:i+1,article:'seje-gaepyeonan-hwakjeong-chongjeongri-2026'}); });
   });
+  (function(){
+    var f=document.getElementById('sub-form');
+    if(f) f.addEventListener('submit',function(e){
+      e.preventDefault();
+      var em=document.getElementById('sub-email').value.trim();
+      var btn=f.querySelector('button'); btn.disabled=true;
+      fetch('/api/subscribe',{method:'POST',headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({email:em,source:'blog:seje-gaepyeonan-hwakjeong-chongjeongri-2026'})})
+        .then(function(r){return r.json();})
+        .then(function(d){
+          var m=document.getElementById('sub-msg');
+          if(d&&d.ok){f.style.display='none';m.textContent=d.already?'이미 구독 중이에요. 확정되면 알려드릴게요!':'등록됐어요. 확정되면 알려드릴게요!';m.style.display='block';track('subscribe_submit',{article:'seje-gaepyeonan-hwakjeong-chongjeongri-2026'});}
+          else{m.textContent='등록에 실패했어요. 이메일 주소를 확인해 주세요.';m.style.display='block';btn.disabled=false;}
+        })
+        .catch(function(){var m=document.getElementById('sub-msg');m.textContent='일시적인 오류예요. 잠시 후 다시 시도해 주세요.';m.style.display='block';btn.disabled=false;});
+    });
+  })();
   document.querySelectorAll('.toc a').forEach(function(a){
     a.addEventListener('click',function(){ track('blog_toc_click',{anchor:a.getAttribute('href'),article:'seje-gaepyeonan-hwakjeong-chongjeongri-2026'}); });
   });

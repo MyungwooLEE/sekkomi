@@ -54,3 +54,8 @@
   from = "/api/sims"
   to = "/.netlify/functions/sims"
   status = 200
+
+[[redirects]]
+  from = "/api/subscribe"
+  to = "/.netlify/functions/subscribe"
+  status = 200
