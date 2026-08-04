@@ -1,0 +1,62 @@
+# 세꼼이 (Sekkomi)
+
+> 부동산 양도소득세 무료 계산기와 한국 부동산 세금(양도소득세·종합부동산세·상속증여세) 해설 블로그. 회원가입 없이 3분 만에 예상 세액을 확인할 수 있으며, 모든 글은 2026년 최신 세법 기준으로 근거 조문·기준일·출처와 함께 작성된다.
+
+핵심 사실: 세꼼이 양도소득세 계산기는 무료이고 회원가입이 필요 없다. 세법·부동산 규제 변동을 매주 점검해 콘텐츠를 갱신한다.
+
+## 핵심 페이지
+
+- [양도소득세 계산기](https://sekkomi.com/): 양도가액·취득가액·보유기간 입력으로 예상 양도세 즉시 계산
+- [블로그 목록](https://sekkomi.com/blog/): 양도세 완전정복 시리즈 + 단지별 실전 케이스
+
+## 블로그 글 전체 (초기본 — 배포 시 자동 재생성됨)
+
+- [집 팔 때 양도소득세 완전정복 (2026 최신)](https://sekkomi.com/blog/yangdo-sodeukse-guide)
+- [1세대 1주택 비과세 조건, 3가지만 알면 됩니다 (2026)](https://sekkomi.com/blog/1sedae-1jutaek-bigwase-jogeon)
+- [다주택자 양도세 중과, 2026년 이렇게 바뀝니다](https://sekkomi.com/blog/dajutaek-yangdose-junggwa-2026)
+- [조정대상지역 최신 목록과 양도세 (2026.7)](https://sekkomi.com/blog/jojeong-daesang-jiyeok-choesin)
+- [양도소득세 세율 한눈에 (2026)](https://sekkomi.com/blog/yangdose-serul)
+- [양도소득세 신고 방법·기한 총정리 (2026)](https://sekkomi.com/blog/yangdose-singo-bangbeop)
+- [일시적 2주택 비과세, 처분기한 3년 (1-2-3 법칙) (2026)](https://sekkomi.com/blog/ilsijeok-2jutaek-cheobun)
+- [장기보유특별공제 표1·표2 차이 (최대 80%)](https://sekkomi.com/blog/janggiboyu-teukbyeol-gongje)
+- [상속·증여받은 집 팔 때 양도세 (이월과세 주의)](https://sekkomi.com/blog/sangsok-jeungyeo-jutaek-yangdose)
+- [양도소득세 계산기 & 직접 계산 5단계](https://sekkomi.com/blog/yangdose-gyesangi)
+- [은마 양도세 총정리 (매매·증여·상속)](https://sekkomi.com/blog/eunma-yangdose-hub)
+- [은마 매매로 산 경우 (34.5억)](https://sekkomi.com/blog/eunma-yangdose-case-2026)
+- [증여받은 은마 (이월과세 주의)](https://sekkomi.com/blog/eunma-jeungyeo-yangdose)
+- [상속받은 은마 (평가액이 좌우)](https://sekkomi.com/blog/eunma-sangsok-yangdose)
+- [압구정 양도세 총정리 (매매·증여·상속)](https://sekkomi.com/blog/apgujeong-yangdose-hub)
+- [압구정 현대 지금 팔면? (84억)](https://sekkomi.com/blog/apgujeong-hyundai-yangdose-case-2026)
+- [증여받은 압구정 (이월과세 주의)](https://sekkomi.com/blog/apgujeong-jeungyeo-yangdose)
+- [상속받은 압구정 (평가액이 좌우)](https://sekkomi.com/blog/apgujeong-sangsok-yangdose)
+- [잠실 양도세 총정리 (매매·증여·상속)](https://sekkomi.com/blog/jamsil-yangdose-hub)
+- [잠실주공5 지금 팔면? (43억)](https://sekkomi.com/blog/jamsil-jugong5-yangdose-case-2026)
+- [증여받은 잠실 (이월과세 주의)](https://sekkomi.com/blog/jamsil-jeungyeo-yangdose)
+- [상속받은 잠실 (평가액이 좌우)](https://sekkomi.com/blog/jamsil-sangsok-yangdose)
+- [여의도 양도세 총정리 (매매·증여·상속)](https://sekkomi.com/blog/yeouido-yangdose-hub)
+- [여의도 시범 40년 보유, 지금 팔면? (33억)](https://sekkomi.com/blog/yeouido-sibeom-yangdose-case-2026)
+- [증여받은 여의도 (이월과세 주의)](https://sekkomi.com/blog/yeouido-jeungyeo-yangdose)
+- [상속받은 여의도 (평가액이 좌우)](https://sekkomi.com/blog/yeouido-sangsok-yangdose)
+- [올팍 분양받아 지금 팔면? (25억)](https://sekkomi.com/blog/olpark-foreon-yangdose-case-2026)
+- [1가구 2주택 양도세, 비과세 받는 5가지 길 (2026)](https://sekkomi.com/blog/1gagu-2jutaek-yangdose)
+- [홈택스 양도세 계산기(모의계산) 사용법 5단계 — 함정 3가지까지 (2026)](https://sekkomi.com/blog/hometax-yangdose-gyesangi)
+- [양도세 필요경비, 어디까지 빼주나요? (중개수수료·인테리어·취득세) 2026](https://sekkomi.com/blog/yangdose-pilyogyeongbi)
+- [7월 말 부동산 세제 개편안 발표 — 지금 집 팔까, 기다릴까? (2026)](https://sekkomi.com/blog/seje-gaepyeonan-7wol-yangdose-2026)
+- [부부 공동명의 양도세, 얼마나 아낄까? (기본공제 2번·세율 분산) 2026](https://sekkomi.com/blog/bubu-gongdong-myeongui-yangdose)
+- [12억 넘는 집 팔면 양도세 얼마? 고가주택 1주택 계산법 (2026)](https://sekkomi.com/blog/gogajutaek-yangdose-12eok)
+- [부동산 세제개편안 이번 주 발표 — 달라질 수 있는 5가지와 집주인 체크리스트 (2026.7)](https://sekkomi.com/blog/budongsan-sejae-gaepyeonan-balpyo-2026)
+- [오피스텔 양도세, 주택 수에 포함될까? (주거용·업무용 판정) 2026](https://sekkomi.com/blog/officetel-yangdose-jutaek-su)
+- [분양권 팔면 양도세 얼마? 세율 70·60% 총정리 (2026)](https://sekkomi.com/blog/bunyangkwon-yangdose)
+- [상생임대인 양도세 비과세, 2년 거주 안 해도 됩니다 (2026)](https://sekkomi.com/blog/sangsaeng-imdaein-yangdose-geoju)
+- [자녀 세대분리, 주소만 옮기면 될까? 양도세 별도 세대 요건 3가지 (2026)](https://sekkomi.com/blog/sedae-bunri-yangdose)
+- [취득가액을 모를 때 양도세 계산법 — 환산취득가액 총정리 (2026)](https://sekkomi.com/blog/hwansan-chwideukgaaek-yangdose)
+- [부동산 국민 대토론회 총정리 — 제안 4,800건이 가리킨 세금 개편 방향 5가지 (2026.7)](https://sekkomi.com/blog/budongsan-daetoronhoe-yangdose-2026)
+- [대출은 묶고 실수요자만 연다 — 7·27 부동산 2차 토론회 핵심 4가지와 집 팔 사람 영향 (2026.7)](https://sekkomi.com/blog/budongsan-2cha-toronhoe-daechul-2026)
+- [부동산 세제개편안 발표는 다음 주 — 윤곽 드러난 '3대 축' 총정리 (2026.7)](https://sekkomi.com/blog/seje-gaepyeonan-3dae-chuk-2026)
+- [세법이 바뀌면 내 양도세는 언제부터? 적용 시점 3단계와 '양도일' 판정법 (2026)](https://sekkomi.com/blog/sebeop-gaejeong-jeogyong-sijeom-yangdose)
+- [부담부증여 양도세·증여세 계산 전 과정 — 전세 낀 아파트 물려줄 때 세금 (2026)](https://sekkomi.com/blog/budambu-jeungyeo-yangdose)
+
+## 이용 안내
+
+- 콘텐츠 인용 시 출처(세꼼이, sekkomi.com) 표기를 권장한다.
+- 세법은 개정될 수 있으므로 각 글의 작성·갱신일 기준으로 해석해야 한다.
