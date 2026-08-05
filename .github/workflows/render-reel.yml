@@ -1,1 +1,99 @@
+# 세꼼이 릴스 자동 렌더 — GitHub Actions
+# 트리거: tools/shortform/queue/ 에 큐 파일이 커밋되면 실행 (수동 실행도 가능)
+# 산출: public/reels/<id>.mp4 + <id>_cover.jpg + queue.json 갱신 커밋
+# 설치: GitHub 웹 → Add file → Create new file → 경로 ".github/workflows/render-reel.yml"
+name: render-reel
 
+on:
+  push:
+    branches: [main]
+    paths:
+      - "tools/shortform/queue/**"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: render-reel
+  cancel-in-progress: false
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/.pw-browsers
+    steps:
+      - uses: actions/checkout@v4
+
+      # 렌더 안 된 큐 항목 찾기 (public/reels/<id>.mp4 가 없는 것만)
+      - name: Find pending queue items
+        id: pending
+        run: |
+          ids=""
+          for j in tools/shortform/queue/*.json; do
+            [ -e "$j" ] || continue
+            id=$(basename "$j" .json)
+            if [ ! -f "public/reels/$id.mp4" ]; then ids="$ids $id"; fi
+          done
+          ids=$(echo $ids | xargs || true)
+          echo "ids=$ids" >> "$GITHUB_OUTPUT"
+          if [ -z "$ids" ]; then echo "렌더할 항목 없음"; else echo "렌더 대상: $ids"; fi
+
+      - name: Setup Node
+        if: steps.pending.outputs.ids != ''
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install ffmpeg + Playwright (python)
+        if: steps.pending.outputs.ids != ''
+        run: |
+          sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg jq
+          python3 -m pip install --quiet playwright
+          python3 -m playwright install --with-deps chromium
+
+      - name: Restore fonts + GSAP (npm ci)
+        if: steps.pending.outputs.ids != ''
+        working-directory: tools/shortform
+        run: npm ci --no-audit --no-fund
+
+      - name: Render pending reels
+        if: steps.pending.outputs.ids != ''
+        working-directory: tools/shortform
+        run: |
+          set -e
+          mkdir -p ../../public/reels
+          for id in ${{ steps.pending.outputs.ids }}; do
+            echo "=== render $id ==="
+            # render.py 는 서빙 루트 기준 파일명만 쓰므로 큐 HTML을 루트로 복사해 렌더
+            cp "queue/$id.html" "./$id.html"
+            python3 render.py --html "$id.html" --out "$id.mp4"
+            # 규격 검증: 1080×1920, 정확히 570프레임 — 어긋나면 커밋 전에 실패
+            probe=$(ffprobe -v error -select_streams v:0 \
+              -count_frames -show_entries stream=width,height,nb_read_frames \
+              -of csv=p=0 "$id.mp4")
+            echo "probe: $probe"
+            [ "$probe" = "1080,1920,570" ] || { echo "규격 불일치($probe) — 중단"; exit 1; }
+            # 커버 추출 (queue json 의 cover_time, 기본 2.3s)
+            t=$(jq -r '.cover_time // 2.3' "queue/$id.json")
+            ffmpeg -y -v error -ss "$t" -i "$id.mp4" -frames:v 1 -q:v 2 "../../public/reels/${id}_cover.jpg"
+            mv "$id.mp4" "../../public/reels/$id.mp4"
+            rm -f "./$id.html"
+          done
+
+      - name: Update queue.json
+        if: steps.pending.outputs.ids != ''
+        run: node scripts/reel-queue-add.cjs ${{ steps.pending.outputs.ids }}
+
+      - name: Commit rendered assets
+        if: steps.pending.outputs.ids != ''
+        run: |
+          git config user.name "sekkomi-reel-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add public/reels
+          if git diff --cached --quiet; then echo "커밋할 변경 없음"; exit 0; fi
+          git commit -m "reels: 렌더 산출물 커밋 —${{ steps.pending.outputs.ids }}"
+          git pull --rebase origin main
+          git push origin main
