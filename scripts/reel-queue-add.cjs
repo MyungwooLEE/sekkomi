@@ -89,10 +89,23 @@ if (added) {
 // 글 전용 OG 카드(1200x630) 생성 — 구글 디스커버/SNS 공유용.
 // 워크플로가 public/reels 디렉터리를 통째로 커밋하므로 여기서 만들면 함께 커밋된다.
 // 부가 산출물이라 실패해도 절대 종료 코드에 영향을 주지 않는다.
+// 이번 렌더분 + OG 카드가 아직 없는 과거 항목까지 함께 백필한다.
+// (워크플로의 렌더 대상 판정은 mp4 유무만 보므로, 여기서 보충하지 않으면
+//  기능 도입 이전 글들은 영원히 OG 카드를 못 받는다)
 try {
   const og = path.join('tools', 'shortform', 'og_render.py');
   if (fs.existsSync(og)) {
-    const r = spawnSync('python3', [og, ...ids], { stdio: 'inherit' });
+    const targets = new Set(ids);
+    try {
+      for (const f of fs.readdirSync(JOBS)) {
+        if (!f.endsWith('.json') || f === 'queue.json') continue;
+        const id = f.replace(/\.json$/, '');
+        if (!fs.existsSync(path.join('public', 'reels', `${id}_og.jpg`))) targets.add(id);
+      }
+    } catch (e) { /* 백필 목록 수집 실패는 무시 */ }
+    const list = [...targets];
+    console.log(`og 대상 ${list.length}건 (신규 ${ids.length} + 백필 ${list.length - ids.length})`);
+    const r = spawnSync('python3', [og, ...list], { stdio: 'inherit' });
     if (r.status !== 0) console.log('og_render 비정상 종료 — 무시하고 계속');
   }
 } catch (e) {
