@@ -13,6 +13,7 @@
  */
 const fs = require('fs');
 const path = require('path');
+const { spawnSync } = require('child_process');
 
 const QUEUE = path.join('public', 'reels', 'queue.json');
 const JOBS = path.join('tools', 'shortform', 'queue');
@@ -83,4 +84,17 @@ if (added) {
   fs.mkdirSync(path.dirname(QUEUE), { recursive: true });
   fs.writeFileSync(QUEUE, JSON.stringify(queue, null, 2) + '\n');
   console.log(`queue.json 갱신 — 총 ${queue.items.length}건`);
+}
+
+// 글 전용 OG 카드(1200x630) 생성 — 구글 디스커버/SNS 공유용.
+// 워크플로가 public/reels 디렉터리를 통째로 커밋하므로 여기서 만들면 함께 커밋된다.
+// 부가 산출물이라 실패해도 절대 종료 코드에 영향을 주지 않는다.
+try {
+  const og = path.join('tools', 'shortform', 'og_render.py');
+  if (fs.existsSync(og)) {
+    const r = spawnSync('python3', [og, ...ids], { stdio: 'inherit' });
+    if (r.status !== 0) console.log('og_render 비정상 종료 — 무시하고 계속');
+  }
+} catch (e) {
+  console.log(`og_render 호출 실패 — 무시하고 계속: ${e.message}`);
 }
