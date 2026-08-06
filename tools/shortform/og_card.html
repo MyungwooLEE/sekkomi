@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>세꼼이 OG 카드</title>
+<style>
+@font-face{font-family:'PretendardLocal';src:url('./fonts/Pretendard-SemiBold.otf') format('opentype');font-weight:600;font-style:normal;font-display:block}
+@font-face{font-family:'PretendardLocal';src:url('./fonts/Pretendard-Bold.otf') format('opentype');font-weight:700;font-style:normal;font-display:block}
+@font-face{font-family:'PretendardLocal';src:url('./fonts/Pretendard-ExtraBold.otf') format('opentype');font-weight:800;font-style:normal;font-display:block}
+@font-face{font-family:'PretendardLocal';src:url('./fonts/Pretendard-Black.otf') format('opentype');font-weight:900;font-style:normal;font-display:block}
+
+:root{--green:#163300;--green2:#0E2200;--lime:#9FE870;--off:#F7F5EF}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1200px;height:630px;overflow:hidden;background:var(--green)}
+body{font-family:'PretendardLocal','Pretendard',sans-serif;-webkit-font-smoothing:antialiased}
+
+#card{position:relative;width:1200px;height:630px;overflow:hidden;background:var(--green)}
+#blob{position:absolute;right:-140px;top:-200px;width:620px;height:620px;border-radius:50%;background:var(--green2)}
+#inner{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;padding:0 88px}
+
+#kicker{font-size:26px;font-weight:800;letter-spacing:.06em;color:var(--lime);margin-bottom:26px}
+#headline{font-size:68px;font-weight:800;line-height:1.24;letter-spacing:-.035em;color:var(--off);
+  display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+#headline.small{font-size:56px;-webkit-line-clamp:4}
+
+#foot{position:absolute;left:88px;bottom:56px;display:flex;align-items:center;gap:18px}
+#mark{font-size:32px;font-weight:900;color:var(--off);letter-spacing:-.02em}
+#dot{width:9px;height:9px;border-radius:50%;background:var(--lime)}
+#url{font-size:26px;font-weight:600;color:#A8BC94;letter-spacing:.01em}
+</style>
+</head>
+<body>
+<div id="card">
+  <div id="blob"></div>
+  <div id="inner">
+    <div id="kicker">세꼼이 · 부동산 세금</div>
+    <div id="headline">제목이 여기에 들어갑니다</div>
+  </div>
+  <div id="foot">
+    <div id="mark">세꼼이</div>
+    <div id="dot"></div>
+    <div id="url">sekkomi.com</div>
+  </div>
+</div>
+
+<script>
+/* render.py 가 window.setCard({headline, kicker}) 를 호출해 내용을 채운다.
+   호출 후 window.__ogReady = true 가 되면 스크린샷을 찍는다. */
+window.setCard = function (o) {
+  o = o || {};
+  var h = document.getElementById('headline');
+  var k = document.getElementById('kicker');
+  if (o.kicker) k.textContent = o.kicker;
+  if (o.headline) h.textContent = o.headline;
+  // 긴 제목은 한 단계 줄여 3~4줄 안에 들어오게 한다
+  if ((o.headline || '').length > 34) h.classList.add('small');
+  window.__ogReady = true;
+};
+window.__ogReady = false;
+</script>
+</body>
+</html>
