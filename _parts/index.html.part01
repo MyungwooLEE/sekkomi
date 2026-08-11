@@ -3,8 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>세꼼 | 집 팔 때 양도세, 꼼꼼하게</title>
-<meta name="description" content="부동산 매도 전, 채팅으로 3분이면 내 양도소득세와 절세 방법을 확인하세요. 꼼꼼한 질문으로 정확하게.">
+<title>양도세 계산기 — 비과세·장기보유공제까지 3분 자동계산 | 세꼼이</title>
+<meta name="description" content="무료 양도소득세 계산기. 주소·취득일·매도가만 넣으면 1세대 1주택 비과세, 장기보유특별공제, 다주택 중과까지 자동으로 따져 예상 양도세와 절세 시나리오를 알려드립니다. 2026년 최신 세법 반영.">
+<link rel="canonical" href="https://sekkomi.com/">
+<meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large">
 <meta name="theme-color" content="#163300">
 <meta name="naver-site-verification" content="eb47e2fabd4b8d8a0a9b0578451710acf7b6c4b3" />
 <!-- ===== Google Tag Manager (GTM 허브) — 'GTM-XXXXXXX'를 실제 컨테이너 ID로 교체하면 활성화 ===== -->
@@ -13,9 +15,19 @@
 <!-- Search Console 인증: GTM/GA 연결로 하거나, 아래 메타의 content에 인증코드를 넣고 주석 해제 -->
 <!-- <meta name="google-site-verification" content="여기에_인증코드"> -->
 <!-- ===== /Google Tag Manager ===== -->
-<meta property="og:title" content="세꼼 | 집 팔 때 양도세, 꼼꼼하게">
-<meta property="og:description" content="채팅으로 3분, 내 양도세와 절세 방법을 확인하세요.">
+<meta property="og:title" content="양도세 계산기 — 3분 자동계산 | 세꼼이">
+<meta property="og:description" content="비과세·장기보유공제·다주택 중과까지 자동으로 따지는 무료 양도소득세 계산기.">
 <meta property="og:type" content="website">
+<meta property="og:url" content="https://sekkomi.com/">
+<meta property="og:site_name" content="세꼼이">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:image" content="https://sekkomi.com/logo_full.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="양도세 계산기 — 3분 자동계산 | 세꼼이">
+<meta name="twitter:description" content="비과세·장기보유공제·다주택 중과까지 자동으로 따지는 무료 양도소득세 계산기.">
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebApplication","@id":"https://sekkomi.com/#calculator","name":"세꼼이 양도세 계산기","alternateName":["양도소득세 계산기","양도세계산기"],"url":"https://sekkomi.com/","applicationCategory":"FinanceApplication","operatingSystem":"Web","browserRequirements":"JavaScript 사용 가능한 최신 브라우저","inLanguage":"ko-KR","description":"주소·취득일·취득가·매도가 등 11~19개 질문에 답하면 1세대 1주택 비과세, 장기보유특별공제, 다주택 중과, 필요경비를 반영한 예상 양도소득세와 절세 시나리오를 계산해 주는 무료 웹 계산기.","featureList":["1세대 1주택 비과세 판정","장기보유특별공제 표1·표2 자동 적용","다주택 중과세율 판정","조정대상지역 이력 반영","취득·매도 부대비용(필요경비) 반영","절세 시나리오 비교"],"offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"isAccessibleForFree":true,"publisher":{"@id":"https://sekkomi.com/#org"}},{"@type":"Organization","@id":"https://sekkomi.com/#org","name":"세꼼이","url":"https://sekkomi.com/","logo":"https://sekkomi.com/logo_full.png","email":"sekkomi.com@gmail.com"},{"@type":"WebSite","@id":"https://sekkomi.com/#website","url":"https://sekkomi.com/","name":"세꼼이","inLanguage":"ko-KR","publisher":{"@id":"https://sekkomi.com/#org"}}]}</script>
+<!-- 계산 단계별 계측 (2026-08-11) — defer: 본체 인라인 스크립트 이후 실행 -->
+<script defer src="/calc-instr.js"></script>
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png">
