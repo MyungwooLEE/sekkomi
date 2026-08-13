@@ -1,0 +1,113 @@
+<style>
+/* =====================================================================
+   landing-desktop — PC 와이드 정교화 레이어 (2026-08-13)
+   landing-below.html 뒤에 주입되어 데스크톱 값만 덮어쓴다. 모바일 무영향.
+   ===================================================================== */
+
+@media (min-width:1024px){
+
+  /* ---------- 1) 컨테이너 폭 ---------- */
+  .lx-wrap{max-width:1240px;padding:0 48px}
+
+  /* ---------- 2) 히어로 재구성 ----------
+     기존 .lp 는 세로 flex + min-height:100% 라, 넓고 높은 화면에서
+     스텝 카드와 CTA 사이가 뷰포트 높이만큼 벌어졌다.
+     2단 그리드로 바꿔 헤드라인(좌)과 CTA 패널(우)을 같은 행에 둔다. */
+  #frame:has(#s01.on) .lp{
+    max-width:1240px;margin:0 auto;
+    padding:36px 48px 64px;
+    display:grid;
+    grid-template-columns:1.08fr 0.92fr;
+    grid-template-rows:auto 1fr;
+    column-gap:88px;
+    align-content:center;
+  }
+  #frame:has(#s01.on) .lp::before{width:min(1240px,100%);height:520px;top:-18%}
+  #frame:has(#s01.on) .lp-top{grid-column:1/-1;align-self:start;margin-bottom:8px}
+  #frame:has(#s01.on) .lp-brand img{height:30px}
+  #frame:has(#s01.on) .lp-live{font-size:13px;padding:7px 13px}
+
+  #frame:has(#s01.on) .lp-hero{
+    grid-column:1;grid-row:2;align-self:center;
+    flex:none;padding:0;
+  }
+  #frame:has(#s01.on) .lp-eyebrow{font-size:17px;letter-spacing:-.02em}
+  #frame:has(#s01.on) .lp-h1{font-size:58px;line-height:1.18;letter-spacing:-.042em;margin-top:18px}
+  #frame:has(#s01.on) .lp-sub{font-size:19px;line-height:1.7;max-width:540px;margin-top:22px}
+  #frame:has(#s01.on) .lp-steps{max-width:none;gap:12px;margin-top:36px}
+  #frame:has(#s01.on) .lp-steps div{padding:18px 14px;font-size:14px;border-radius:15px;line-height:1.55}
+  #frame:has(#s01.on) .lp-steps b{font-size:18px;margin-bottom:6px}
+
+  /* CTA 를 패널로 묶어 우측에 세운다 — 혼자 떠 있지 않게 */
+  #frame:has(#s01.on) .lp-cta-wrap{
+    grid-column:2;grid-row:2;align-self:center;
+    max-width:none;margin-top:0;
+    background:rgba(255,255,255,.055);
+    border:1px solid rgba(255,255,255,.14);
+    border-radius:22px;
+    padding:30px 28px 26px;
+    backdrop-filter:blur(2px);
+  }
+  #frame:has(#s01.on) .lp-cta{font-size:18px;padding:20px;border-radius:15px;animation:none}
+  #frame:has(#s01.on) .lp-resume{font-size:15.5px;padding:15px;margin-top:11px}
+  #frame:has(#s01.on) .lp-micro{font-size:14px;line-height:1.7;margin-top:20px}
+  #frame:has(#s01.on) .lp-blog{font-size:15.5px;margin-top:22px;padding-top:20px}
+
+  /* ---------- 3) 섹션 리듬 ---------- */
+  .lx-sec{padding:112px 0}
+  .lx-01{padding:104px 0 112px}
+  .lx-fin{padding:132px 0 116px}
+  .lx-grid2{gap:88px}
+
+  /* ---------- 4) 타이포 — 작은 글씨 상향 ---------- */
+  .lx-eyebrow{font-size:13px;letter-spacing:.16em}
+  .lx-h2{font-size:46px;line-height:1.26;margin-top:20px}
+  .lx-lead{font-size:17.5px;line-height:1.85;margin-top:20px}
+  .lx-card{padding:28px 30px;border-radius:20px}
+  .lx-card h3{font-size:19px}
+  .lx-card p{font-size:15.5px;line-height:1.8;margin-top:10px}
+  .lx-micro{font-size:12.5px;line-height:1.8}
+  .lx-barlab{font-size:15px}
+  .lx-barval{font-size:32px}
+  .lx-biglab{font-size:14px;margin-top:44px}
+  .lx-big{font-size:104px}
+  .lx-bigu{font-size:36px}
+  .lx-lede{font-size:20px;line-height:1.6;margin-top:24px}
+  .lx-spec div{padding:20px 22px}
+  .lx-spec .k{font-size:12.5px}
+  .lx-spec .v{font-size:17px;margin-top:6px;white-space:nowrap}
+  .lx-tbl th{font-size:13.5px;padding-bottom:14px}
+  .lx-tbl td{font-size:16.5px;padding:15px 0}
+  .lx-gbig{font-size:28px;margin-top:12px}
+  .lx-link{font-size:18px;padding:19px 0}
+
+  /* ---------- 5) 장식 숫자를 콘텐츠 열에 붙인다 ----------
+     기존엔 섹션(전체 폭) 기준이라 콘텐츠에서 수백 px 떨어져 떠 있었다. */
+  .lx-01 .lx-ghost{right:max(24px,calc(50% - 646px));top:32px;font-size:220px}
+  .lx-sec .lx-ghost{left:max(24px,calc(50% - 646px));top:52px;font-size:190px}
+
+  /* ---------- 6) 최종 CTA 폭 ---------- */
+  .lx-cta{padding:22px 48px;border-radius:16px}
+  .lx-cta.w{width:auto;min-width:360px}
+  .lx-fin h2{font-size:64px;line-height:1.2}
+  .lx-fin p{max-width:560px;margin-left:auto;margin-right:auto}
+
+  /* ---------- 7) 04 카드 상단 정렬 (모바일용 인라인 margin 제거) ---------- */
+  .lx-cards2 > .lx-card[style*="margin-top"]{margin-top:0 !important}
+}
+
+/* ---------- 초광폭 ---------- */
+@media (min-width:1600px){
+  .lx-wrap{max-width:1400px;padding:0 56px}
+  #frame:has(#s01.on) .lp{max-width:1400px;padding:44px 56px 76px;column-gap:104px}
+  #frame:has(#s01.on) .lp-h1{font-size:66px}
+  #frame:has(#s01.on) .lp-sub{font-size:20px;max-width:580px}
+  .lx-sec{padding:128px 0}
+  .lx-h2{font-size:52px}
+  .lx-big{font-size:120px}
+  .lx-bigu{font-size:40px}
+  .lx-fin h2{font-size:72px}
+  .lx-01 .lx-ghost{right:max(24px,calc(50% - 726px));font-size:250px}
+  .lx-sec .lx-ghost{left:max(24px,calc(50% - 726px));font-size:210px}
+}
+</style>

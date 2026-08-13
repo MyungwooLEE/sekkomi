@@ -12,6 +12,7 @@
  *
  * TARGETS
  *   1) public/index.html      <- _parts/landing-below.html  (indexable + conversion sections)
+ *                              + _parts/landing-desktop.html (desktop refinement, appended)
  *   2) public/blog/index.html <- _parts/blog-banner.html    (calculator CTA above the tabs)
  *
  * SAFETY
@@ -32,6 +33,7 @@ const INDEX = path.join(ROOT, 'public', 'index.html');
 const BLOG = path.join(ROOT, 'public', 'blog', 'index.html');
 const BLOCK = path.join(ROOT, '_parts', 'landing-below.html');
 const BANNER = path.join(ROOT, '_parts', 'blog-banner.html');
+const DESKTOP = path.join(ROOT, '_parts', 'landing-desktop.html');
 
 /* Matches the .lp-foot block plus the three closing tags of .lp / .scroll / #s01.
    Indentation makes the tail unambiguous, so no Korean literal is needed here. */
@@ -51,7 +53,13 @@ function injectLanding() {
     console.log('[landing] .lp-foot anchor not found - skip');
     return;
   }
-  const block = fs.readFileSync(BLOCK, 'utf8');
+  let block = fs.readFileSync(BLOCK, 'utf8');
+  // Desktop refinement layer. Loaded after the base block so its media queries win.
+  // Kept as a separate file because CSS is near-pure ASCII, which survives tooling
+  // round-trips far better than the Korean-heavy base block.
+  if (fs.existsSync(DESKTOP)) {
+    block += '\n' + fs.readFileSync(DESKTOP, 'utf8');
+  }
   html = html.replace(FOOT_RE, '   </div>\n' + block + '\n  </div>\n</div>');
   fs.writeFileSync(INDEX, html);
   console.log('[landing] sections injected (+' + Buffer.byteLength(block) + ' bytes)');
