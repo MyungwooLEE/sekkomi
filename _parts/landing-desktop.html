@@ -2,7 +2,15 @@
 /* =====================================================================
    landing-desktop — PC 와이드 정교화 레이어 (2026-08-13)
    landing-below.html 뒤에 주입되어 데스크톱 값만 덮어쓴다. 모바일 무영향.
+   단, 0번 블록은 미디어쿼리 밖이라 전체 폭에 적용된다.
    ===================================================================== */
+
+/* ---------- 0) 전역 보정 (미디어쿼리 밖 — 모바일에도 적용) ----------
+   칩은 <span>(인라인)이라 세로 패딩이 글자 상자 기준으로 잡힌다.
+   한글 폰트는 어센더가 커서 글자가 알약 안에서 위로 쏠린다.
+   inline-flex + line-height:1 로 글리프 기준 정중앙에 맞춘다. */
+.lx-chip{display:inline-flex;align-items:center;justify-content:center;line-height:1}
+.lx-tab{display:inline-flex;align-items:center;justify-content:center;line-height:1}
 
 @media (min-width:1024px){
 
