@@ -1,0 +1,390 @@
+
+<style>
+/* ===== 랜딩 하단(색인·전환) — lx- 네임스페이스 (2026-08-13) ===== */
+.lx{background:var(--bg);font-family:'Pretendard','Apple SD Gothic Neo',sans-serif}
+.lx-wrap{max-width:1000px;margin:0 auto;padding:0 24px}
+.lx-sec{padding:48px 0}
+.lx-eyebrow{font-size:11px;font-weight:700;letter-spacing:.18em;color:var(--sub2)}
+.lx-h2{font-size:31px;font-weight:800;line-height:1.28;letter-spacing:-.035em;color:var(--ink);margin-top:16px}
+.lx-h2 .g{color:var(--brand)}
+.lx-lead{font-size:13.5px;font-weight:400;line-height:1.8;color:var(--sub);margin-top:16px}
+.lx-card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px 20px}
+.lx-card h3{font-size:15px;font-weight:700;letter-spacing:-.02em;color:var(--ink)}
+.lx-card p{font-size:12.5px;font-weight:400;line-height:1.7;color:var(--sub);margin-top:6px}
+.lx b{font-weight:700;color:var(--brand)}
+.lx-ghost{position:absolute;font-weight:800;line-height:1;letter-spacing:-.06em;pointer-events:none}
+.lx-cta{display:block;width:100%;background:var(--accent);color:var(--brand);font-size:15px;font-weight:800;letter-spacing:-.025em;padding:17px;border-radius:14px;text-align:center;border:none;font-family:inherit;cursor:pointer}
+.lx-cta:active{background:#8FDB5F}
+.lx-cta.dk{background:var(--brand);color:#fff}
+.lx-micro{font-size:10.5px;font-weight:500;line-height:1.75;color:var(--sub2)}
+
+/* 01 — 케이스 비교 */
+.lx-01{background:var(--brand-dk);color:#fff;position:relative;overflow:hidden;padding:36px 0 40px}
+.lx-tabs{display:flex;gap:6px}
+.lx-tab{font-size:11.5px;font-weight:600;letter-spacing:-.02em;padding:8px 15px;border-radius:999px;background:rgba(255,255,255,.09);color:rgba(255,255,255,.7);border:none;font-family:inherit;cursor:pointer}
+.lx-tab.on{background:var(--accent);color:var(--brand-dk);font-weight:700}
+.lx-biglab{font-size:11.5px;font-weight:600;color:rgba(255,255,255,.52);margin-top:32px}
+.lx-big{font-size:56px;font-weight:800;line-height:1;letter-spacing:-.05em;color:var(--accent)}
+.lx-bigu{font-size:21px;font-weight:800;letter-spacing:-.04em;color:var(--accent)}
+.lx-lede{font-size:14px;font-weight:500;color:rgba(255,255,255,.8);line-height:1.65;margin-top:16px}
+.lx-barrow{display:flex;justify-content:space-between;align-items:baseline}
+.lx-barlab{font-size:11.5px;font-weight:600;color:rgba(255,255,255,.52)}
+.lx-barval{font-size:20px;font-weight:700;letter-spacing:-.035em}
+.lx-bar{height:11px;background:rgba(255,255,255,.08);border-radius:999px;margin-top:9px;overflow:hidden}
+.lx-bar i{display:block;height:100%;width:0;border-radius:999px;background:rgba(255,255,255,.4);transition:width 1.1s cubic-bezier(.22,1,.36,1)}
+.lx-bar.ac i{background:var(--accent);transition-delay:.18s}
+.lx-spec{margin-top:34px;display:grid;grid-template-columns:1fr 1fr;gap:1px;background:rgba(255,255,255,.1);border-radius:12px;overflow:hidden}
+.lx-spec div{background:var(--brand-dk);padding:14px}
+.lx-spec .k{font-size:10.5px;font-weight:500;color:rgba(255,255,255,.45)}
+.lx-spec .v{font-size:13px;font-weight:700;letter-spacing:-.02em;margin-top:5px}
+
+/* 02 — 어깋난 카드 */
+.lx-r{width:90%}
+.lx-r.off{margin-left:10%}
+.lx-r+.lx-r{margin-top:10px}
+
+/* 03 — 세율표 */
+.lx-tbl{width:100%;border-collapse:collapse}
+.lx-tbl th{font-size:11.5px;font-weight:700;color:var(--sub2);text-align:right;padding:0 0 10px;border-bottom:1px solid var(--line)}
+.lx-tbl th:first-child{text-align:left}
+.lx-tbl td{font-size:13.5px;font-weight:500;color:var(--ink);text-align:right;padding:11px 0;border-bottom:1px solid #F0EEE8}
+.lx-tbl td:first-child{text-align:left;font-weight:600}
+.lx-tbl tr:last-child td{border-bottom:none;background:var(--bg)}
+
+/* 04 — 장특공 */
+.lx-g{height:12px;background:#F0EEE8;border-radius:999px;margin-top:18px;overflow:hidden}
+.lx-g i{display:block;height:100%;width:0;border-radius:999px;background:#CFD8C4;transition:width 1s cubic-bezier(.22,1,.36,1)}
+.lx-g.ac i{background:var(--accent);transition-delay:.15s}
+.lx-gbig{font-size:24px;font-weight:800;letter-spacing:-.035em;color:var(--ink);margin-top:10px}
+
+/* 05 — 칩 */
+.lx-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:24px}
+.lx-chip{border-radius:999px;font-weight:600;letter-spacing:-.02em;white-space:nowrap;background:var(--card);color:var(--sub);font-size:12.5px;padding:10px 15px}
+.lx-chip.b{background:var(--brand);color:#fff;font-size:13px;padding:10px 15px}
+.lx-chip.l{background:var(--accent);color:var(--brand-dk);font-size:15px;font-weight:800;padding:11px 17px}
+.lx-chip.m{color:var(--brand);font-size:14px;font-weight:700;padding:11px 16px}
+
+/* 07 — 관련 글 */
+.lx-link{display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:14.5px;font-weight:700;letter-spacing:-.025em;color:var(--brand);padding:14px 0;border-bottom:1px solid var(--line);text-decoration:none}
+.lx-link:last-child{border-bottom:none}
+.lx-link span{color:var(--sub2);font-weight:400}
+
+/* 최종 CTA */
+.lx-fin{background:var(--brand);color:#fff;padding:52px 0 40px;text-align:center}
+.lx-fin h2{font-size:35px;font-weight:800;line-height:1.24;letter-spacing:-.04em}
+.lx-fin h2 .a{color:var(--accent)}
+
+/* 하단 푸터 */
+.lx-foot{text-align:center;font-size:12px;color:var(--sub2);padding:26px 0 34px;line-height:1.9;background:var(--bg)}
+.lx-foot a{color:var(--sub);text-decoration:none}
+
+/* 모션 (등장) */
+.lx-in{opacity:0;transform:translateY(12px);transition:opacity .55s ease,transform .55s cubic-bezier(.22,1,.36,1)}
+.lx-in.on{opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce){.lx-in{opacity:1;transform:none;transition:none}.lx-bar i,.lx-g i{transition:none}}
+
+/* ===== PC 와이드 — 랜딩(s01)일 때만 프레임 확장. 계산기 화면은 420px 유지 ===== */
+@media(min-width:1024px){
+  body:has(#s01.on){background:var(--brand-dk)}
+  #frame:has(#s01.on){max-width:none;box-shadow:none}
+  #frame:has(#s01.on) .lp{max-width:1000px;margin:0 auto;padding-left:40px;padding-right:40px}
+  #frame:has(#s01.on) .lp-h1{font-size:52px;letter-spacing:-1.8px}
+  #frame:has(#s01.on) .lp-sub{font-size:18px;max-width:560px}
+  #frame:has(#s01.on) .lp-eyebrow{font-size:17px}
+  #frame:has(#s01.on) .lp-steps{max-width:620px}
+  #frame:has(#s01.on) .lp-cta-wrap{max-width:420px}
+  .lx-wrap{padding:0 40px}
+  .lx-sec{padding:88px 0}
+  .lx-h2{font-size:44px;margin-top:18px}
+  .lx-lead{font-size:16px;margin-top:18px}
+  .lx-eyebrow{font-size:12px;letter-spacing:.2em}
+  .lx-card{padding:26px 28px;border-radius:18px}
+  .lx-card h3{font-size:18px}
+  .lx-card p{font-size:14.5px;margin-top:9px}
+  .lx-01{padding:76px 0 84px}
+  .lx-grid2{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:start}
+  .lx-sticky{position:sticky;top:40px}
+  .lx-big{font-size:96px}
+  .lx-bigu{font-size:34px}
+  .lx-biglab{font-size:13px;margin-top:40px}
+  .lx-lede{font-size:19px;margin-top:22px}
+  .lx-barval{font-size:30px}
+  .lx-bar{height:16px;margin-top:14px}
+  .lx-barlab{font-size:14px}
+  .lx-spec div{padding:18px 20px}
+  .lx-spec .v{font-size:16px}
+  .lx-r{width:100%}
+  .lx-r.off{margin-left:0}
+  .lx-r+.lx-r{margin-top:0}
+  .lx-cards2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .lx-cards2 .full{grid-column:1/-1}
+  .lx-cards3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+  .lx-tbl td{font-size:15px;padding:13px 0}
+  .lx-tbl th{font-size:12.5px;padding-bottom:12px}
+  .lx-gbig{font-size:26px}
+  .lx-chip{font-size:15px;padding:14px 22px}
+  .lx-chip.b{font-size:17px;padding:15px 24px}
+  .lx-chip.l{font-size:22px;padding:16px 28px}
+  .lx-chip.m{font-size:18px;padding:15px 24px}
+  .lx-fin{padding:110px 0 96px}
+  .lx-fin h2{font-size:62px}
+  .lx-cta{font-size:18px;padding:22px 52px;width:auto;display:inline-block;border-radius:16px}
+  .lx-cta.w{width:100%}
+  .lx-link{font-size:16px;padding:16px 0}
+}
+</style>
+
+<div class="lx">
+
+<!-- ===== 01 실제 계산 ===== -->
+<section class="lx-01" id="lxCase">
+  <div class="lx-ghost" style="right:-24px;top:14px;font-size:132px;color:rgba(159,232,112,.06)">01</div>
+  <div class="lx-wrap" style="position:relative">
+    <div class="lx-grid2">
+      <div>
+        <div class="lx-tabs">
+          <button class="lx-tab on" data-c="0">서울 강남</button>
+          <button class="lx-tab" data-c="1">경기 분당</button>
+        </div>
+        <h2 class="lx-biglab" style="font-weight:600">같은 집, 같은 가격. 세금 차이</h2>
+        <div style="display:flex;align-items:baseline;gap:5px;margin-top:8px">
+          <span class="lx-big" id="lxBig">9,612</span><span class="lx-bigu">만원</span>
+        </div>
+        <p class="lx-lede" id="lxLede">거주했느냐 안 했느냐.<br><b style="font-weight:800;color:#fff">그거 하나입니다.</b></p>
+        <div class="lx-spec" id="lxSpec"></div>
+      </div>
+      <div style="margin-top:36px">
+        <div class="lx-barrow"><span class="lx-barlab">거주 0년</span><span class="lx-barval" id="lxA">1억 1,412만원</span></div>
+        <div class="lx-bar"><i id="lxBarA"></i></div>
+        <div class="lx-micro" id="lxLtdA" style="color:rgba(255,255,255,.4);margin-top:8px">장기보유공제 30% 적용</div>
+        <div class="lx-barrow" style="margin-top:26px"><span class="lx-barlab" style="color:var(--accent);font-weight:700">거주 10년</span><span class="lx-barval" id="lxB" style="color:var(--accent);font-weight:800">1,799만원</span></div>
+        <div class="lx-bar ac"><i id="lxBarB"></i></div>
+        <div class="lx-micro" id="lxLtdB" style="color:rgba(159,232,112,.62);margin-top:8px">장기보유공제 80% 적용</div>
+        <div style="margin-top:32px;padding-top:24px;border-top:1px solid rgba(255,255,255,.14)">
+          <p style="font-size:13.5px;font-weight:500;color:rgba(255,255,255,.72);line-height:1.7;margin-bottom:14px">내 집은 어느 쪽에 가까울까요?</p>
+          <button class="lx-cta lxGo" data-loc="case">3분 만에 계산해보기 →</button>
+        </div>
+        <p class="lx-micro" style="color:rgba(255,255,255,.32);margin-top:20px">지방소득세 포함 · 2026년 시행 세법 기준 · 실제 신고 세액은 개별 사정에 따라 달라집니다</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 02 왜 19개나 묻나 ===== -->
+<section class="lx-sec" style="position:relative;overflow:hidden">
+  <div class="lx-ghost" style="left:-16px;top:20px;font-size:104px;color:rgba(22,51,0,.055)">02</div>
+  <div class="lx-wrap" style="position:relative">
+    <div class="lx-grid2" style="grid-template-columns:0.85fr 1.15fr;gap:72px">
+      <div class="lx-sticky">
+        <div class="lx-eyebrow">왜 19개나 묻나</div>
+        <h2 class="lx-h2">묻지 않으면,<br><span class="g">줄일 수 없습니다.</span></h2>
+        <p class="lx-lead">숫자 몇 개만 받는 계산기는 위 두 결과를 구분하지 못합니다. 거주 이력을 묻지 않았으니까요. 세꼼이가 더 묻는 건, 더 줄이기 위해서입니다.</p>
+      </div>
+      <div class="lx-cards2" style="margin-top:28px">
+        <div class="lx-card lx-r lx-in full" style="background:var(--brand);border-color:var(--brand)">
+          <h3 style="color:#fff;font-weight:800">거주 이력</h3>
+          <p style="color:rgba(255,255,255,.7)">장기보유공제를 <b style="color:var(--accent)">30%와 80%</b>로 가릅니다. 위 예시에서 9,612만원을 만든 게 이 항목입니다.</p>
+        </div>
+        <div class="lx-card lx-r off lx-in"><h3>조정대상지역 지정 시점</h3><p>취득한 <b>달</b>을 기준으로 거주 요건이 붙는지 대조합니다</p></div>
+        <div class="lx-card lx-r lx-in"><h3>다른 주택 취득일</h3><p><b>일시적 2주택</b> 처분기한이 남았는지 계산합니다</p></div>
+        <div class="lx-card lx-r off lx-in"><h3>취득 방법</h3><p>증여·상속·매수마다 취득가 산정 방식이 다릅니다</p></div>
+        <div class="lx-card lx-r lx-in"><h3>부대비용 내역</h3><p>취득세·중개보수·자본적 지출이 <b>필요경비</b>로 빠집니다</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 03 세율표 ===== -->
+<section class="lx-sec" style="background:var(--bot)">
+  <div class="lx-wrap">
+    <div class="lx-grid2">
+      <div>
+        <div class="lx-eyebrow">03 &nbsp;세율표</div>
+        <h2 class="lx-h2">2026년<br>양도소득세율</h2>
+        <p class="lx-lead">과세표준에 아래 기본세율이 적용됩니다. 보유 2년 미만이면 단일세율로 중과되고, 조정대상지역 다주택이면 20~30%p가 더 붙습니다.</p>
+        <div style="margin-top:24px"><button class="lx-cta dk lxGo" data-loc="rate">내 과세표준 계산하기 →</button></div>
+      </div>
+      <div class="lx-card" style="margin-top:28px">
+        <table class="lx-tbl">
+          <thead><tr><th>과세표준</th><th>세율</th><th>누진공제</th></tr></thead>
+          <tbody>
+            <tr><td>1,400만원 이하</td><td>6%</td><td>—</td></tr>
+            <tr><td>5,000만원 이하</td><td>15%</td><td>126만</td></tr>
+            <tr><td>8,800만원 이하</td><td>24%</td><td>576만</td></tr>
+            <tr><td>1억 5,000만원 이하</td><td>35%</td><td>1,544만</td></tr>
+            <tr><td>3억원 이하</td><td>38%</td><td>1,994만</td></tr>
+            <tr><td>5억원 이하</td><td>40%</td><td>2,594만</td></tr>
+            <tr><td>10억원 이하</td><td>42%</td><td>3,594만</td></tr>
+            <tr><td>10억원 초과</td><td>45%</td><td>6,594만</td></tr>
+          </tbody>
+        </table>
+        <p class="lx-micro" style="margin-top:14px">여기에 지방소득세 10%가 별도로 가산됩니다</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 04 장기보유특별공제 ===== -->
+<section class="lx-sec">
+  <div class="lx-wrap">
+    <div class="lx-eyebrow">04 &nbsp;장기보유특별공제</div>
+    <h2 class="lx-h2" style="max-width:620px">오래 갖고 있으면 빼주고,<br>살기까지 했으면 <span class="g">더 빼줍니다.</span></h2>
+    <div class="lx-cards2" style="margin-top:28px;gap:14px">
+      <div class="lx-card lx-in">
+        <div style="font-size:12px;font-weight:700;color:var(--sub2);letter-spacing:.1em">표 1 · 일반</div>
+        <div class="lx-gbig">3년부터 연 2%</div>
+        <p style="font-size:13.5px;line-height:1.75;color:var(--sub);margin-top:10px">15년 보유 시 <b>최대 30%</b>. 다주택이거나 비과세 요건을 못 채운 1주택에 적용됩니다.</p>
+        <div class="lx-g"><i data-w="30"></i></div>
+      </div>
+      <div class="lx-card lx-in" style="border-color:var(--brand);border-width:2px;margin-top:14px">
+        <div style="font-size:12px;font-weight:700;color:var(--brand);letter-spacing:.1em">표 2 · 1세대 1주택</div>
+        <div class="lx-gbig">보유·거주 각 연 4%</div>
+        <p style="font-size:13.5px;line-height:1.75;color:var(--sub);margin-top:10px">보유 40% + 거주 40% = <b>최대 80%</b>. 2년 이상 거주해야 이 표로 넘어옵니다.</p>
+        <div class="lx-g ac"><i data-w="80"></i></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 05 반영하는 것 ===== -->
+<section class="lx-sec" style="background:var(--brand-dk);color:#fff">
+  <div class="lx-wrap">
+    <div class="lx-eyebrow" style="color:rgba(255,255,255,.4)">05 &nbsp;반영하는 것</div>
+    <h2 class="lx-h2" style="color:#fff">세법 그대로,<br>조문 단위로.</h2>
+    <div class="lx-chips">
+      <span class="lx-chip l lx-in">1세대 1주택 비과세</span>
+      <span class="lx-chip lx-in" style="background:rgba(255,255,255,.08);color:rgba(255,255,255,.85)">12억 기준 안분</span>
+      <span class="lx-chip lx-in" style="background:#fff;color:var(--brand-dk);font-size:15px;font-weight:800">장기보유특별공제</span>
+      <span class="lx-chip lx-in" style="background:rgba(255,255,255,.08);color:rgba(255,255,255,.85)">표1 · 표2</span>
+      <span class="lx-chip lx-in" style="background:rgba(255,255,255,.08);color:#fff;font-size:14px;font-weight:700">다주택 중과세율</span>
+      <span class="lx-chip lx-in" style="background:var(--accent);color:var(--brand-dk);font-weight:700">조정지역 이력</span>
+      <span class="lx-chip lx-in" style="background:rgba(255,255,255,.08);color:rgba(255,255,255,.85)">단기보유 중과</span>
+      <span class="lx-chip lx-in" style="background:#fff;color:var(--brand-dk);font-size:14px;font-weight:700">일시적 2주택</span>
+      <span class="lx-chip lx-in" style="background:rgba(255,255,255,.08);color:rgba(255,255,255,.85)">필요경비</span>
+      <span class="lx-chip lx-in" style="background:rgba(255,255,255,.08);color:#fff;font-weight:700">공동명의 지분 분할</span>
+      <span class="lx-chip lx-in" style="background:rgba(255,255,255,.08);color:rgba(255,255,255,.85)">기본공제 250만</span>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 06 FAQ ===== -->
+<section class="lx-sec">
+  <div class="lx-wrap">
+    <div class="lx-grid2" style="grid-template-columns:0.7fr 1.3fr;gap:72px">
+      <div class="lx-sticky">
+        <div class="lx-eyebrow">06 &nbsp;자주 묻는 질문</div>
+        <h2 class="lx-h2">궁금한 걸<br>먼저 답합니다.</h2>
+      </div>
+      <div class="lx-cards2" style="margin-top:24px;gap:10px">
+        <div class="lx-card"><h3>1세대 1주택 비과세 요건은</h3><p>양도가액 <b>12억 이하</b>, <b>2년 이상 보유</b>가 기본입니다. 2017년 8월 3일 이후 조정대상지역에서 취득했다면 2년 거주 요건이 추가됩니다.</p></div>
+        <div class="lx-card"><h3>12억이 넘으면 세금은</h3><p>넘는 부분만 과세됩니다. 양도차익에서 <b>12억 초과 비율</b>만큼만 과세대상이 됩니다.</p></div>
+        <div class="lx-card"><h3>공동명의면 세금이 줄어드나</h3><p>지분별로 나눠 계산되어 <b>누진세율 구간이 낮아집니다</b>. 기본공제 250만원도 명의자마다 각각 적용됩니다.</p></div>
+        <div class="lx-card"><h3>일시적 2주택 처분기한은</h3><p>신규 주택 취득일로부터 <b>3년</b>입니다. 종전 주택을 취득하고 1년이 지난 뒤에 신규 주택을 취득했어야 합니다.</p></div>
+        <div class="lx-card"><h3>결과를 그대로 신고해도 되나</h3><p>참고용입니다. 실제 신고 세액은 개별 사정에 따라 달라질 수 있어 세무 전문가 확인을 권합니다.</p></div>
+        <div class="lx-card"><h3>개인정보를 요구하나</h3><p>아니요. <b>로그인 없이</b> 쓸 수 있고, 결과를 볼 때까지 이메일도 묻지 않습니다.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 최종 CTA ===== -->
+<section class="lx-fin">
+  <div class="lx-wrap">
+    <h2>내 집은 <span class="a">어느 쪽입니까.</span></h2>
+    <p style="font-size:14px;font-weight:400;color:rgba(255,255,255,.68);line-height:1.75;margin-top:18px">주소와 취득일만 있으면 됩니다. 나머지는 물어보면서 채워드려요.</p>
+    <div style="margin-top:26px"><button class="lx-cta w lxGo" data-loc="final">3분 만에 내 양도세 계산하기 →</button></div>
+    <p class="lx-micro" style="color:rgba(255,255,255,.5);margin-top:16px">무료 · 로그인 없음 · 결과 볼 때까지 이메일 안 물어봄</p>
+  </div>
+</section>
+
+<!-- ===== 07 더 읽을 거리 ===== -->
+<section class="lx-sec" style="padding:36px 0 30px">
+  <div class="lx-wrap">
+    <div class="lx-eyebrow">07 &nbsp;더 읽을 거리</div>
+    <div style="margin-top:14px">
+      <a class="lx-link" href="/blog/janggiboyu-teukbyeol-gongje">장기보유특별공제 표1·표2 총정리<span>→</span></a>
+      <a class="lx-link" href="/blog/jojeong-daesang-jiyeok-choesin">조정대상지역 현황과 양도세 영향<span>→</span></a>
+      <a class="lx-link" href="/blog/1sedae-1jutaek-bigwase-jogeon">1세대 1주택 비과세 조건 정리<span>→</span></a>
+    </div>
+  </div>
+</section>
+
+<div class="lx-foot">
+  <div style="margin-bottom:5px"><a href="/blog/">블로그</a> · <a href="#" onclick="openLegal('privacy');return false">개인정보처리방침</a> · <a href="#" onclick="openLegal('terms');return false">이용약관</a></div>
+  문의 <a href="mailto:sekkomi.com@gmail.com">sekkomi.com@gmail.com</a>
+</div>
+
+</div>
+
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","@id":"https://sekkomi.com/#faq","mainEntity":[{"@type":"Question","name":"1세대 1주택 비과세 요건은 무엇인가요?","acceptedAnswer":{"@type":"Answer","text":"양도가액 12억원 이하, 2년 이상 보유가 기본 요건입니다. 2017년 8월 3일 이후 조정대상지역에서 취득한 주택은 2년 거주 요건이 추가로 붙습니다."}},{"@type":"Question","name":"양도가액이 12억원을 넘으면 세금은 어떻게 되나요?","acceptedAnswer":{"@type":"Answer","text":"12억원을 넘는 부분만 과세됩니다. 양도차익 전체가 아니라, 양도가액 중 12억원 초과 비율에 해당하는 금액만 과세대상 양도차익이 됩니다."}},{"@type":"Question","name":"공동명의로 하면 양도소득세가 줄어드나요?","acceptedAnswer":{"@type":"Answer","text":"지분별로 나눠 계산되기 때문에 각자의 과세표준이 낮아져 누진세율 구간이 내려갑니다. 양도소득 기본공제 250만원도 명의자마다 각각 적용됩니다."}},{"@type":"Question","name":"일시적 2주택 처분기한은 얼마인가요?","acceptedAnswer":{"@type":"Answer","text":"신규 주택 취득일로부터 3년입니다. 다만 종전 주택을 취득하고 1년이 지난 뒤에 신규 주택을 취득했어야 특례가 적용됩니다."}},{"@type":"Question","name":"세꼼이 계산 결과를 그대로 신고해도 되나요?","acceptedAnswer":{"@type":"Answer","text":"참고용 예상치입니다. 실제 신고 세액은 개별 사정과 관할 세무서 판단에 따라 달라질 수 있으므로 신고 전 세무 전문가 확인을 권합니다."}},{"@type":"Question","name":"양도세 계산기를 쓰려면 개인정보가 필요한가요?","acceptedAnswer":{"@type":"Answer","text":"필요하지 않습니다. 로그인 없이 이용할 수 있고, 계산 결과를 확인할 때까지 이메일도 요구하지 않습니다."}}]}</script>
+
+<script>
+/* 랜딩 하단 인터렉션 — 자체 완결 (본체 스크립트 의존 없음) */
+(function(){
+  var CASES=[
+    {big:9612,a:11412,b:1799,la:'장기보유공제 30% 적용',lb:'장기보유공제 80% 적용',
+     lede:'거주했느냐 안 했느냐.<br><b style="font-weight:800;color:#fff">그거 하나입니다.</b>',
+     spec:[['주택','서울 강남구 아파트'],['보유 · 명의','15년 · 단독 1주택'],['취득','2011년 3월 · 8억원'],['양도','2026년 9월 · 20억원']]},
+    {big:1744,a:1979,b:235,la:'장기보유공제 22% 적용',lb:'장기보유공제 80% 적용',
+     lede:'금액이 작아져도<br><b style="font-weight:800;color:#fff">구조는 같습니다.</b>',
+     spec:[['주택','경기 분당구 아파트'],['보유 · 명의','11년 · 단독 1주택'],['취득','2015년 6월 · 5억원'],['양도','2026년 9월 · 14억원']]}
+  ];
+  function $(id){return document.getElementById(id)}
+  function won(n){n=Math.round(n);var e=Math.floor(n/10000),m=n%10000,s='';
+    if(e>0)s+=e+'억'+(m>0?' ':'');if(m>0||e===0)s+=m.toLocaleString()+'만';return s+'원';}
+  var timer=null;
+  function countTo(t){var el=$('lxBig');if(!el)return;if(timer)clearInterval(timer);
+    var t0=Date.now();timer=setInterval(function(){var p=Math.min(1,(Date.now()-t0)/1000),e=1-Math.pow(1-p,3);
+      el.textContent=Math.round(t*e).toLocaleString();if(p>=1)clearInterval(timer);},16);}
+  function paint(i,anim){
+    var c=CASES[i],max=Math.max(c.a,c.b);
+    $('lxLede').innerHTML=c.lede;$('lxA').textContent=won(c.a);$('lxB').textContent=won(c.b);
+    $('lxLtdA').textContent=c.la;$('lxLtdB').textContent=c.lb;
+    $('lxSpec').innerHTML=c.spec.map(function(r){
+      return '<div><div class="k">'+r[0]+'</div><div class="v">'+r[1]+'</div></div>';}).join('');
+    var ba=$('lxBarA'),bb=$('lxBarB');ba.style.width='0';bb.style.width='0';
+    setTimeout(function(){ba.style.width=Math.round(c.a/max*100)+'%';
+      bb.style.width=Math.max(5,Math.round(c.b/max*100))+'%';},40);
+    if(anim)countTo(c.big);else $('lxBig').textContent=c.big.toLocaleString();
+  }
+  var tabs=document.querySelectorAll('.lx-tab');
+  for(var i=0;i<tabs.length;i++)(function(btn){
+    btn.addEventListener('click',function(){
+      for(var j=0;j<tabs.length;j++)tabs[j].classList.remove('on');
+      btn.classList.add('on');paint(+btn.getAttribute('data-c'),true);});
+  })(tabs[i]);
+
+  /* CTA — 본체 시작 버튼으로 위임 */
+  var gos=document.querySelectorAll('.lxGo');
+  for(var k=0;k<gos.length;k++)(function(b){
+    b.addEventListener('click',function(){
+      try{window.dataLayer=window.dataLayer||[];
+        window.dataLayer.push({event:'cta_click',cta_location:'home-'+b.getAttribute('data-loc')});}catch(e){}
+      var s=document.getElementById('startBtn');if(s)s.click();});
+  })(gos[k]);
+
+  /* 스크롤 진입 시 등장 + 막대 성장 */
+  function reveal(el){el.classList.add('on');}
+  var items=document.querySelectorAll('.lx-in');
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(es){
+      es.forEach(function(e){if(e.isIntersecting){reveal(e.target);io.unobserve(e.target);}});
+    },{rootMargin:'0px 0px -12% 0px'});
+    for(var n=0;n<items.length;n++)io.observe(items[n]);
+    var gio=new IntersectionObserver(function(es){
+      es.forEach(function(e){if(e.isIntersecting){e.target.style.width=e.target.getAttribute('data-w')+'%';gio.unobserve(e.target);}});
+    },{rootMargin:'0px 0px -12% 0px'});
+    var gs=document.querySelectorAll('.lx-g i');
+    for(var m=0;m<gs.length;m++)gio.observe(gs[m]);
+    var cio=new IntersectionObserver(function(es){
+      es.forEach(function(e){if(e.isIntersecting){paint(0,true);cio.unobserve(e.target);}});
+    },{rootMargin:'0px 0px -20% 0px'});
+    var cs=document.getElementById('lxCase');if(cs)cio.observe(cs);
+  }else{
+    for(var q=0;q<items.length;q++)reveal(items[q]);
+    var gs2=document.querySelectorAll('.lx-g i');
+    for(var p=0;p<gs2.length;p++)gs2[p].style.width=gs2[p].getAttribute('data-w')+'%';
+  }
+  paint(0,false);
+})();
+</script>
