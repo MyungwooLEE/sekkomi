@@ -1,0 +1,10 @@
+# 빌드 시점에 생성되는 산출물 — 커밋하지 않는다.
+# (public/index.html 과 public/llms.txt 는 과거 경위로 이미 추적 중이라 제외했다.
+#  둘 다 배포 때 덮어써지므로 레포 안의 사본은 최신이 아닐 수 있다. _parts/README.md 참고.)
+public/rss.xml
+public/build-index.sha256
+
+# 로컬 작업 부산물
+node_modules/
+.DS_Store
+*.log

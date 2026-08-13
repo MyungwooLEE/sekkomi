@@ -25,6 +25,29 @@
   to = "/admin.html"
   status = 200
 
+# 초기 수동 업로드 잔재 폴더 차단 (2026-08-13)
+# public/sekkomi_calc_update/ 와 public/sekkomi_deploy_with_logo/ 에 계산기·블로그 전체 사본이
+# 남아 있었다. robots 허용 + canonical 없음이라 홈과 같은 키워드로 색인될 수 있는 중복 콘텐츠였다.
+# force=true 라 정적 파일보다 먼저 평가되어 실제로 서빙되지 않는다. 301이라 누적 신호는 정본으로 넘어간다.
+# 파일 자체 삭제는 별도 과제(폴더 26개 파일).
+[[redirects]]
+  from = "/sekkomi_deploy_with_logo/blog/*"
+  to = "/blog/:splat"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/sekkomi_deploy_with_logo/*"
+  to = "/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/sekkomi_calc_update/*"
+  to = "/"
+  status = 301
+  force = true
+
 # 함수 호출 경로 단축 (선택): /api/send-email → 실제 /.netlify/functions/send-email
 [[redirects]]
   from = "/api/send-email"
