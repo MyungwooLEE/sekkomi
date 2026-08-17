@@ -1,0 +1,284 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>세꼼이 숏폼 템플릿</title>
+<style>
+/* ---------- Pretendard (self-contained, relative paths) ---------- */
+@font-face{font-family:'PretendardLocal';src:url('./fonts/Pretendard-Medium.otf') format('opentype');font-weight:500;font-style:normal;font-display:block}
+@font-face{font-family:'PretendardLocal';src:url('./fonts/Pretendard-SemiBold.otf') format('opentype');font-weight:600;font-style:normal;font-display:block}
+@font-face{font-family:'PretendardLocal';src:url('./fonts/Pretendard-Bold.otf') format('opentype');font-weight:700;font-style:normal;font-display:block}
+@font-face{font-family:'PretendardLocal';src:url('./fonts/Pretendard-ExtraBold.otf') format('opentype');font-weight:800;font-style:normal;font-display:block}
+@font-face{font-family:'PretendardLocal';src:url('./fonts/Pretendard-Black.otf') format('opentype');font-weight:900;font-style:normal;font-display:block}
+
+:root{
+  --green:#163300;
+  --lime:#9FE870;
+  --off:#F7F5EF;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1080px;height:1920px;overflow:hidden;background:var(--green)}
+body{font-family:'PretendardLocal','Pretendard',sans-serif;-webkit-font-smoothing:antialiased}
+
+#stage{position:relative;width:1080px;height:1920px;overflow:hidden}
+
+/* ---------- top progress bar ---------- */
+#progress{position:absolute;top:0;left:0;width:1080px;height:12px;background:rgba(255,255,255,.14);z-index:200}
+#progress i{display:block;width:100%;height:100%;background:var(--lime);transform-origin:0 50%;transform:scaleX(0)}
+
+/* ---------- flash overlay (zoom punch) ---------- */
+#flash{position:absolute;inset:0;background:var(--off);opacity:0;z-index:190;pointer-events:none}
+
+/* ---------- cards ---------- */
+.card{position:absolute;inset:0;width:1080px;height:1920px;opacity:0;visibility:hidden;overflow:hidden}
+.card .shake{position:absolute;inset:0}
+.card .settle{position:absolute;inset:0;transform-origin:50% 50%}
+.card .content{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;padding:0 96px}
+
+#c1{z-index:10;background:var(--green);opacity:1;visibility:visible}
+#c2{z-index:20;background:var(--lime)}
+#c3{z-index:30;background:var(--off)}
+#c4{z-index:40;background:var(--green)}
+
+/* ---------- CARD 1 : 훅 ---------- */
+.hook-line{font-size:112px;font-weight:800;line-height:1.28;letter-spacing:-.035em;color:var(--off)}
+.em{position:relative;display:inline-block;padding:0 10px}
+.em .hlbar{position:absolute;left:0;right:0;top:12%;bottom:10%;background:var(--lime);transform-origin:0 50%;transform:scaleX(0);border-radius:6px;z-index:0}
+.em .hltext{position:relative;z-index:1;color:var(--off)}
+
+/* ---------- CARD 2 : 핵심 정보 ---------- */
+#c2 .content{justify-content:center}
+.big{font-size:104px;font-weight:900;letter-spacing:-.04em;color:var(--green);line-height:1.15;margin-bottom:72px;transform-origin:0 50%}
+.chips{display:flex;flex-direction:column;gap:30px;align-items:flex-start}
+.chip{font-size:50px;font-weight:800;letter-spacing:-.03em;padding:26px 46px;border-radius:999px;
+      background:var(--green);color:var(--lime);border:5px solid var(--green);white-space:nowrap}
+.chip.x{background:transparent;color:var(--green);border:5px solid var(--green);opacity:1}
+
+/* ---------- CARD 3 : 대비 반전 ---------- */
+#c3 .content{align-items:flex-start}
+.lose{font-size:104px;font-weight:800;letter-spacing:-.04em;color:#8C9682}
+.strikewrap{position:relative;display:inline-block}
+.strikewrap .strike{position:absolute;left:-8px;right:-8px;top:52%;height:12px;background:#8C9682;transform-origin:0 50%;transform:scaleX(0);border-radius:8px}
+.arrow{font-size:82px;font-weight:900;color:var(--green);margin:34px 0 34px 6px;line-height:1}
+.win{font-size:112px;font-weight:900;letter-spacing:-.04em;color:var(--green)}
+.hl{position:relative;display:inline-block;padding:0 14px}
+.hl .hlbar{position:absolute;left:0;right:0;top:10%;bottom:8%;background:var(--lime);transform-origin:0 50%;transform:scaleX(0);border-radius:8px;z-index:0}
+.hl .hltext{position:relative;z-index:1;color:var(--green)}
+.note{margin-top:64px;font-size:44px;font-weight:600;color:#5C6B52;letter-spacing:-.02em}
+
+/* ---------- CARD 4 : CTA ---------- */
+#c4 .content{align-items:center;text-align:center;justify-content:center}
+.wordmark{font-size:64px;font-weight:900;color:var(--lime);letter-spacing:-.03em;margin-bottom:56px}
+.headline{font-size:104px;font-weight:900;color:var(--off);letter-spacing:-.04em;line-height:1.2}
+.sub{margin-top:34px;font-size:48px;font-weight:600;color:rgba(247,245,239,.72);letter-spacing:-.02em}
+.btn{margin-top:86px;background:var(--lime);color:var(--green);font-size:60px;font-weight:900;letter-spacing:-.03em;
+     padding:40px 84px;border-radius:999px;transform-origin:50% 50%}
+.cta-footer{margin-top:64px;font-size:44px;font-weight:700;color:rgba(247,245,239,.6);letter-spacing:.01em}
+</style>
+</head>
+<body>
+<div id="stage">
+
+  <div id="progress"><i></i></div>
+  <div id="flash"></div>
+
+  <!-- =========================================================
+       CONTENT SWAP ZONE — only the text inside the four
+       <section class="card"> blocks below needs to change.
+       Keep the class names; the timeline is class-driven.
+       ========================================================= -->
+
+  <!-- CARD 1 : 훅 (dark green) -->
+  <section class="card" id="c1"><div class="shake"><div class="settle"><div class="content">
+    <div class="hook-line">옆 동네가 조정지역이라</div>
+    <div class="hook-line">우리 집도 그런 줄 알고</div>
+    <div class="hook-line">2년 살 준비를 했는데</div>
+    <div class="hook-line"><span class="em"><i class="hlbar"></i><span class="hltext">구 하나 차이였습니다</span></span></div>
+  </div></div></div></section>
+
+  <!-- CARD 2 : 핵심 정보 (lime) -->
+  <section class="card" id="c2"><div class="shake"><div class="settle"><div class="content">
+    <div class="big">2026년 8월<br>조정대상지역</div>
+    <div class="chips">
+      <div class="chip">서울 25개 자치구 전역</div>
+      <div class="chip">경기 15곳 (7월 3곳 추가)</div>
+      <div class="chip x">인천·지방은 0곳</div>
+      <div class="chip x">양주·파주·김포는 비규제</div>
+    </div>
+  </div></div></div></section>
+
+  <!-- CARD 3 : 대비 반전 (off-white) -->
+  <section class="card" id="c3"><div class="shake"><div class="settle"><div class="content">
+    <div class="lose"><span class="strikewrap">시 단위 확인<i class="strike"></i></span></div>
+    <div class="arrow">↓</div>
+    <div class="win"><span class="hl"><i class="hlbar"></i><span class="hltext">성남·수원·안양·용인·화성은</span></span></div>
+    <div class="win"><span class="hl"><i class="hlbar"></i><span class="hltext">구마다 갈립니다</span></span></div>
+    <div class="note">조정이면 비과세 거주 2년·다주택 중과</div>
+  </div></div></div></section>
+
+  <!-- CARD 4 : CTA (dark green) -->
+  <section class="card" id="c4"><div class="shake"><div class="settle"><div class="content">
+    <div class="wordmark">세꼼이</div>
+    <div class="headline">내 세금은<br>얼마일까?</div>
+    <div class="sub">sekkomi.com 에서 3분 무료</div>
+    <div class="btn">무료로 계산하기</div>
+    <div class="cta-footer">sekkomi.com</div>
+  </div></div></div></section>
+
+  <!-- ===================== end swap zone ===================== -->
+</div>
+
+<script src="./gsap.min.js"></script>
+<script>
+/* =======================================================================
+   세꼼이 숏폼 타임라인 — 19.0s / 4 cards
+   Timing spec:  T = {c1:0, c2:4.9, c3:9.7, c4:14.6, end:19.0}
+   Technical rules honoured:
+     - every fromTo passes immediateRender:false
+     - every animated element also gets its "from" state SET at t=0 on the
+       master timeline, so seeking to a time before the tween starts shows
+       the pre-state instead of the raw CSS state
+     - full clearProps:'all' reset before building (chip/hlbar/hltext included)
+     - no textContent tweening anywhere (proxy+onUpdate helper provided)
+     - ONE master paused timeline -> deterministic tl.seek(t) capture
+   ======================================================================= */
+(function(){
+  const DUR = 19.0;
+  const T   = { c1:0, c2:4.9, c3:9.7, c4:14.6, end:19.0 };
+
+  const $$ = (s,r)=> Array.from((r||document).querySelectorAll(s));
+
+  /* ---- hard reset (GSAP from()/replay white-out bug) ---- */
+  const RESET = ['.card','.shake','.settle','.content','.hook-line','.em','.hlbar','.hltext',
+                 '.big','.chip','.chips','.lose','.strikewrap','.strike','.arrow','.win','.hl',
+                 '.note','.wordmark','.headline','.sub','.btn','.cta-footer','#progress i','#flash'];
+  gsap.set(RESET.join(','), {clearProps:'all'});
+
+  const tl = gsap.timeline({paused:true});
+
+  /* every "appear" tween: pre-state pinned at t=0, fromTo with immediateRender:false */
+  function appear(target, fromVars, toVars, at){
+    tl.set(target, fromVars, 0);
+    toVars = Object.assign({immediateRender:false}, toVars);
+    tl.fromTo(target, fromVars, toVars, at);
+    return tl;
+  }
+
+  /* number counting helper — proxy object + onUpdate (NEVER tween textContent) */
+  window.sekkomiCountTo = function(el, from, to, at, dur){
+    const p = {v: from};
+    tl.to(p, {v: to, duration: dur||1, ease:'power1.out', immediateRender:false,
+              onUpdate(){ el.textContent = Math.round(p.v).toLocaleString('ko-KR'); }}, at);
+  };
+
+  /* ---- card stacking: c1 visible, the rest revealed by their transitions ---- */
+  tl.set('#c1', {autoAlpha:1}, 0);
+  tl.set(['#c2','#c3','#c4'], {autoAlpha:0}, 0);
+  tl.set('#flash', {opacity:0}, 0);
+
+  /* ---- global: lime progress bar across the whole 19.0s ---- */
+  appear('#progress i', {scaleX:0}, {scaleX:1, duration:DUR, ease:'none'}, 0);
+
+  /* ---- per-card 1.045 -> 1 settle (micro-motion during the holds) ---- */
+  const settle = (sel, at, dur)=>
+    appear(sel+' .settle', {scale:1.045}, {scale:1, duration:dur, ease:'none'}, at);
+
+  /* =====================  CARD 1 — 훅 (dark green)  ===================== */
+  settle('#c1', T.c1, T.c2 - T.c1);
+
+  // sentence appears line by line, 0.3s apart
+  $$('#c1 .hook-line').forEach((el,i)=>{
+    appear(el, {yPercent:45, opacity:0},
+               {yPercent:0, opacity:1, duration:.5, ease:'power3.out'}, 0.15 + i*0.3);
+  });
+
+  // lime highlighter sweep + colour inversion on the key words
+  $$('#c1 .em').forEach((em,i)=>{
+    const at = 1.80 + i*0.20;
+    appear(em.querySelector('.hlbar'), {scaleX:0},
+           {scaleX:1, duration:.40, ease:'power2.inOut'}, at);
+    appear(em.querySelector('.hltext'), {color:'#F7F5EF'},
+           {color:'#163300', duration:.22, ease:'none'}, at+0.14);
+  });
+
+  // screen shake (explicit steps => deterministic under seek())
+  (function(){
+    const sh = '#c1 .shake';
+    tl.set(sh, {x:0, y:0}, 0);
+    const steps = [[-16,10],[14,-12],[-11,-8],[9,11],[-6,-5],[0,0]];
+    let at = 2.42;
+    steps.forEach(([x,y])=>{ tl.to(sh,{x:x,y:y,duration:.05,ease:'none'}, at); at += .05; });
+  })();
+  // hold ~2.2s until T.c2
+
+  /* =====================  CARD 2 — 핵심 (lime)  ======================== */
+  /* transition #1 : vertical wipe */
+  tl.set('#c2', {autoAlpha:1}, T.c2);
+  appear('#c2', {clipPath:'inset(100% 0% 0% 0%)'},
+                {clipPath:'inset(0% 0% 0% 0%)', duration:.50, ease:'power2.inOut'}, T.c2);
+  settle('#c2', T.c2, T.c3 - T.c2);
+
+  appear('#c2 .big', {scale:.72, opacity:0},
+                     {scale:1, opacity:1, duration:.45, ease:'back.out(2)'}, T.c2+0.45);
+
+  $$('#c2 .chip').forEach((el,i)=>{
+    appear(el, {scale:.6, y:26, opacity:0},
+               {scale:1, y:0, opacity:1, duration:.38, ease:'back.out(2.4)'}, T.c2+0.95+i*0.25);
+  });
+  // hold ~2.7s until T.c3
+
+  /* =====================  CARD 3 — 대비 반전 (off-white)  ============== */
+  /* transition #2 : left/right split */
+  tl.set('#c3', {autoAlpha:1}, T.c3);
+  appear('#c3', {clipPath:'inset(0% 50% 0% 50%)'},
+                {clipPath:'inset(0% 0% 0% 0%)', duration:.50, ease:'power3.inOut'}, T.c3);
+  settle('#c3', T.c3, T.c4 - T.c3);
+
+  appear('#c3 .lose',   {y:34, opacity:0}, {y:0, opacity:1, duration:.40, ease:'power3.out'}, T.c3+0.45);
+  appear('#c3 .strike', {scaleX:0},        {scaleX:1, duration:.35, ease:'power2.inOut'},     T.c3+1.00);
+  appear('#c3 .arrow',  {y:-18, opacity:0},{y:0, opacity:1, duration:.30, ease:'power2.out'}, T.c3+1.45);
+  appear('#c3 .win',    {y:34, opacity:0}, {y:0, opacity:1, duration:.40, ease:'power3.out'}, T.c3+1.70);
+  appear('#c3 .hl .hlbar', {scaleX:0},     {scaleX:1, duration:.45, ease:'power2.inOut'},     T.c3+2.05);
+  appear('#c3 .note',   {y:20, opacity:0}, {y:0, opacity:1, duration:.35, ease:'power2.out'}, T.c3+2.60);
+  // hold ~1.95s until T.c4
+
+  /* =====================  CARD 4 — CTA (dark green)  =================== */
+  /* transition #3 : zoom punch + flash */
+  appear('#flash', {opacity:0}, {opacity:.85, duration:.10, ease:'none'}, T.c4-0.10);
+  tl.to('#flash', {opacity:0, duration:.38, ease:'power2.out'}, T.c4+0.04);
+
+  tl.set('#c4', {autoAlpha:1}, T.c4);
+  // opacity snaps in fast so the previous card never ghosts through the punch
+  appear('#c4', {opacity:0}, {opacity:1, duration:.14, ease:'none'}, T.c4);
+  appear('#c4', {scale:1.55}, {scale:1, duration:.50, ease:'power3.out'}, T.c4);
+  settle('#c4', T.c4, T.end - T.c4);
+
+  appear('#c4 .wordmark',   {y:-24, opacity:0},{y:0, opacity:1, duration:.35, ease:'power2.out'},   T.c4+0.30);
+  appear('#c4 .headline',   {y:38, opacity:0}, {y:0, opacity:1, duration:.40, ease:'power3.out'},   T.c4+0.55);
+  appear('#c4 .sub',        {y:26, opacity:0}, {y:0, opacity:1, duration:.35, ease:'power2.out'},   T.c4+0.80);
+  appear('#c4 .btn',        {scale:.7, opacity:0},{scale:1, opacity:1, duration:.35, ease:'back.out(2.2)'}, T.c4+1.00);
+  appear('#c4 .cta-footer', {y:18, opacity:0}, {y:0, opacity:1, duration:.25, ease:'power2.out'},   T.c4+1.15);
+
+  // lime button pulses for the whole 3.0s hold (finite repeat => finite duration)
+  tl.to('#c4 .btn', {scale:1.065, duration:.5, ease:'sine.inOut', yoyo:true, repeat:5}, T.c4+1.40);
+
+  // pin total duration to exactly 19.0s
+  tl.set({}, {}, DUR);
+
+  window.tl = tl;
+  window.SEKKOMI = {DUR:DUR, T:T};
+
+  /* Deterministic frame accessor for the renderer.
+     GSAP skips rendering when the requested time equals the current time,
+     which would leave frame 0 showing raw CSS instead of the t=0 state —
+     hence the epsilon nudge. */
+  window.frameAt = function(t){
+    window.tl.seek(t <= 0 ? 0.0001 : t, false);
+  };
+
+  window.__ready = true;
+  window.frameAt(0);
+})();
+</script>
+</body>
+</html>
