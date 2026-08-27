@@ -1,0 +1,21 @@
+{
+  "note": "Blog slugs excluded from search indexing. build-noindex.cjs injects robots noindex at build time; indexnow-notify.cjs skips them; daily automation must exclude these slugs from the sitemap/ItemList integrity check. Reason (2026-08-27): GSC showed all 16 as 'Discovered - currently not indexed' since 2026-07-11 with zero crawls; keyword volume 0 (Ahrefs 2026-08-14). Reversible: remove a slug from this list and it is indexed again on the next build.",
+  "slugs": [
+    "apgujeong-hyundai-yangdose-case-2026",
+    "apgujeong-sangsok-yangdose",
+    "apgujeong-yangdose-hub",
+    "eunma-jeungyeo-yangdose",
+    "eunma-sangsok-yangdose",
+    "eunma-yangdose-case-2026",
+    "eunma-yangdose-hub",
+    "jamsil-jeungyeo-yangdose",
+    "jamsil-jugong5-yangdose-case-2026",
+    "jamsil-sangsok-yangdose",
+    "jamsil-yangdose-hub",
+    "olpark-foreon-yangdose-case-2026",
+    "yeouido-jeungyeo-yangdose",
+    "yeouido-sangsok-yangdose",
+    "yeouido-sibeom-yangdose-case-2026",
+    "yeouido-yangdose-hub"
+  ]
+}
