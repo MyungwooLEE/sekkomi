@@ -30,7 +30,8 @@ const cp = require('child_process');
 const HOST = 'sekkomi.com';
 const KEY = 'd72450a05e091c0e5ff9d9bc72789b11';
 const KEY_LOCATION = 'https://' + HOST + '/' + KEY + '.txt';
-const SEED_UNTIL = '2026-08-30'; // inclusive, YYYY-MM-DD (KST)
+const SEED_UNTIL = '2026-09-05'; // inclusive, YYYY-MM-DD (KST). Extended from 08-30: the first build
+// submitted before its own key file was live, so the next builds must re-seed once the key is reachable.
 const ENDPOINTS = [
   'https://searchadvisor.naver.com/indexnow',
   'https://api.indexnow.org/indexnow',
