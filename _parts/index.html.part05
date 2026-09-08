@@ -92,7 +92,7 @@ function openS07(){
     +'<ul class="conv-ul"><li>🔓 잠긴 절세액과 실행법 전부 공개</li>'
     +'<li>💬 세꼼이와 1:1 채팅으로 내 케이스만 파고들기</li>'
     +'<li>🧮 슬라이더로 “언제 팔지” 직접 시뮬레이션</li>'
-    +'<li>🤝 원하시면 전문 세무사까지 연결</li></ul>'
+    +'</ul>'
     +'<button class="btn-main conv-cta" onclick="openPaySheet()">'+(PAID?'시나리오 상담 열기 →':'설문 답하고 전부 열기 →')+'</button>'
     +(PAID?'':'<div class="conv-foot">약 1분이면 끝 · 지금은 베타라 무료예요</div>')
     +'</div>';
@@ -214,7 +214,7 @@ function openSurvey(){
     +'<li>시나리오별 세꼼이 1:1 채팅 상담</li>'
     +'<li>언제·얼마에 팔지 직접 돌려보는 시뮬레이터</li>'
     +'<li>놓치기 쉬운 함정 + 이번 주 실행 체크리스트</li>'
-    +'<li>원하시면 전문 세무사 연결</li></ul></div>';
+    +'</ul></div>';
   h+='<div class="sv-q"><div class="ql">만약 유료로 전환된다면, 그래도 이용하실 생각이 있으세요?<span class="req">*</span></div>'
     +svRadioHTML('buyIntent',[{v:'yes',l:'네, 이용할게요'},{v:'maybe',l:'고민될 것 같아요'},{v:'no',l:'아니요'}])+'</div>';
   h+='<div class="sv-q"><div class="ql">이런 서비스라면, 얼마가 적정하다고 보세요?</div>'
@@ -222,15 +222,12 @@ function openSurvey(){
     +'<div class="sv-slider"><input type="range" min="0" max="30000" step="500" value="'+(SV.fairPrice||0)+'" id="svPriceR" oninput="svPriceSlide(this.value)">'
     +'<div class="sv-slider-cap"><span>0원</span><span>3만원+</span></div>'
     +'<div class="sv-slider-val" id="svPriceV">'+((SV.fairPrice||0)===0?'0원 · 무료였으면 좋겠어요':(SV.fairPrice).toLocaleString()+'원')+'</div></div></div>';
-  h+='<div class="sv-q"><div class="ql">전문 세무사 상담 연결을 원하시나요?</div>'
-    +'<div class="qsub">세꼼이 결과를 바탕으로 실제 신고·상담을 도와드려요</div>'
-    +svRadioHTML('taxConnect',[{v:'paid',l:'유료여도 좋다'},{v:'free',l:'무료면 좋다'},{v:'later',l:'나중에'},{v:'no',l:'필요 없다'}])+'</div>';
-  h+='<div class="sv-q"><div class="ql">결과와 세무사 연결을 받으실 이메일<span class="req">*</span></div>'
+  h+='<div class="sv-q"><div class="ql">결과를 받으실 이메일<span class="req">*</span></div>'
     +'<input type="email" id="svEmail" placeholder="email@example.com" value="'+((A.email)||'')+'">'
     +'<div class="ql" style="margin-top:14px">연령대 <span class="qsub">(선택)</span></div>'
     +svRadioHTML('ageBand',[{v:'30',l:'30대 이하'},{v:'40',l:'40대'},{v:'50',l:'50대'},{v:'60',l:'60대 이상'}])
     +'<label class="sv-consent"><input type="checkbox" id="svConsent"><span><b>(필수)</b> 개인정보 수집·이용에 동의합니다. 이메일·설문 답변은 결과 발송과 베타 운영·개선에 사용돼요. <a href="#" onclick="openLegal(\'privacy\');return false" style="color:var(--brand)">방침 보기</a></span></label>'
-    +'<label class="sv-consent"><input type="checkbox" id="svConsent3rd"><span><b>(선택)</b> 세무사 연결을 위해 제휴 세무 전문가에게 내 정보(이메일·상담에 필요한 부동산 정보) 제공에 동의합니다. 동의하지 않아도 이용에 제한이 없어요.</span></label></div>';
+    +'</div>';
   h+='<div class="sv-q"><div class="ql">바라는 점·아쉬운 점이 있다면? <span class="qsub">(선택)</span></div>'
     +'<textarea id="svFree" placeholder="자유롭게 적어주세요"></textarea></div>';
   $('#svBody').innerHTML=h;
@@ -246,20 +243,18 @@ function submitSurvey(){
   if(!SV.satisfaction)errs.push('만족도');
   if(!SV.buyIntent)errs.push('이용 의향');
   if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email.trim()))errs.push('이메일');
-  const consent=($('#svConsent')||{}).checked, consent3rd=($('#svConsent3rd')||{}).checked;
+  const consent=($('#svConsent')||{}).checked;
   if(!consent)errs.push('개인정보 수집·이용 동의(필수)');
-  const wantTax=(SV.taxConnect==='paid'||SV.taxConnect==='free');
-  if(wantTax&&!consent3rd)errs.push('세무사 연결에는 제3자 제공 동의(선택)가 필요해요');
   if(errs.length){$('#svErr').textContent=errs.join(' · ')+' 항목을 확인해주세요';$('#svBody').scrollTop=0;return;}
-  const rec=Object.assign({},SV,{email:email.trim(),freeText:($('#svFree')||{}).value||'',consent:true,consent3rd:!!consent3rd,ts:Date.now(),
+  const rec=Object.assign({},SV,{email:email.trim(),freeText:($('#svFree')||{}).value||'',consent:true,ts:Date.now(),
     context:{addr:A.address&&A.address.road,tax:A.R&&A.R.total,scenarios:(A.S||[]).length}});
   try{const all=JSON.parse(localStorage.getItem(SVKEY)||'[]');all.push(rec);localStorage.setItem(SVKEY,JSON.stringify(all));}catch(e){}
   A.email=email.trim();
   if(!A.syncId)A.syncId=genSync(); // 저장 시뮬 서버 복원용 개인키 — 감사 메일 링크에 담김
   /* 서버 저장(영속) + 메일(고객 감사 + 관리자 알림). 배포 시 실제 동작, 로컬은 패스 */
   seggomSave("survey",rec);
-  track('survey_submit',{buy_intent:SV.buyIntent,fair_price:SV.fairPrice||0,tax_connect:SV.taxConnect,age_band:SV.ageBand||''});
-  seggomMail("survey_thanks",rec.email,{taxConnect:rec.taxConnect,url:resultUrl(true)}); // 설문 완료자 → 잠금해제 + 저장기록 복원 링크
+  track('survey_submit',{buy_intent:SV.buyIntent,fair_price:SV.fairPrice||0,age_band:SV.ageBand||''});
+  seggomMail("survey_thanks",rec.email,{url:resultUrl(true)}); // 설문 완료자 → 잠금해제 + 저장기록 복원 링크
   seggomMail("admin_lead",rec.email,{survey:rec});
   PAID=true;
   const id=payPendingScn||(A.S&&A.S[0]&&A.S[0].id);
