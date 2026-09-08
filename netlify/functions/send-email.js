@@ -9,7 +9,7 @@
  *
  * - type=otp           → 6자리 인증코드 생성 → Blobs에 5분 저장 → 메일 발송
  * - type=result        → 무료 양도세 결과 요약 메일 (data: {address, tax, scenarios})
- * - type=survey_thanks → 베타 설문 완료 감사 메일 (data: {taxConnect})
+ * - type=survey_thanks → 베타 설문 완료 감사 메일 (data: {url})
  * - type=admin_lead    → 관리자 알림 메일 (수신처는 ADMIN_EMAIL로 강제, 클라 to 무시)
  *
  * 발신/수신 정리:
@@ -126,16 +126,12 @@ const tplResult = (d) => wrap(
 );
 
 const tplSurveyThanks = (d) => {
-  const wantsTax = d && (d.taxConnect === "paid" || d.taxConnect === "free" || d.taxConnect === "later");
   return wrap(
     `<b style="font-size:17px;color:#0f172a">설문 응답 고맙습니다</b>
      <p style="margin:10px 0 0">소중한 의견 잘 받았어요.</p>
      <p style="margin:8px 0 0;padding:12px 14px;background:#E9F7EE;border-radius:10px;color:#0F7A3D;font-size:14px">
        베타 기간 절세 시나리오를 <b>모두 무료</b>로 열어드렸어요.</p>
      <p style="margin:14px 0 0">남겨주신 의견은 세꼼이를 더 똑똑하게 만드는 데 쓰여요.</p>
-     ${wantsTax
-       ? `<p style="margin:10px 0 0">세무사 상담 연결을 원하셨죠?<br>준비되는 대로 회신으로 안내드릴게요.</p>`
-       : ``}
      ${ctaBtn(safeUrl(d.url), "내 절세 시나리오 다시 보기 →")}
      <p style="margin:12px 0 0;color:#475569">오늘도 편안한 하루 보내세요.</p>`
   );
