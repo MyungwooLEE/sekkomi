@@ -238,7 +238,6 @@ function buildScenarios(){
       traps:['해가 바뀌면 합칠 수 없어요. 같은 해에 팔아야 해요.'],
       actions:['올해 팔 예정인 부동산 확인','파는 연도 맞추기']});
   }
-
   /* ── ⑪~⑭ 의사결정 시나리오 (v1.6 — "그 시점에 안 팔면?") ── */
   if(R.gain>0){
     // ⑪ 매도 연기 (세금이 있을 때만 — 0원이면 연기 비교가 무의미)
@@ -435,7 +434,7 @@ function renderS05(){
   html+='<div class="value-card"><h4>'+(PAID?'🔓 전체 시나리오 이용 중':'지금은 베타 — 설문만 답하면 전부 무료')+'</h4><ul>'+
     '<li>✓ 절세 시나리오 '+S.length+'개 전체 잠금 해제</li>'+
     '<li>✓ 시나리오별 채팅 상담 + 직접 시뮬레이션</li>'+
-    '<li>✓ 원하시면 전문 세무사 연결</li></ul>'+
+    '</ul>'+
     '<div class="say">'+(PAID?'이미 열려 있어요. 아무 시나리오나 눌러 상담을 이어가세요.':'짧은 설문에 답해주시면 모든 시나리오를 열어드려요.')+'</div></div>';
   html+='<div class="cta-fix"><button class="btn-main" onclick="openS07()">전체 시나리오 '+(PAID?'열기':'보기 (베타 무료)')+'</button>'+
     '<button class="btn-ghost" onclick="resetAll()">다시 계산하기</button></div>';
