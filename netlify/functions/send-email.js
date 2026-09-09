@@ -140,7 +140,6 @@ const tplSurveyThanks = (d) => {
 // ───── 관리자 알림 메일(admin_lead) ─────
 const L_VS = { better: "훨씬 낫다", similar: "비슷하다", worse: "별로다", na: "비교 불가/모름" };
 const L_BUY = { yes: "네, 결제 의향", maybe: "고민 중", no: "아니오" };
-const L_TAX = { paid: "유료여도 좋다", free: "무료면 좋다", later: "나중에 생각", no: "원치 않음" };
 
 const adminRow = (label, value) =>
   `<tr>
@@ -152,23 +151,13 @@ const tplAdminLead = (s) => {
   s = s || {};
   const ctx = s.context || {};
   const liked = Array.isArray(s.liked) ? s.liked.filter(Boolean) : [];
-  const wantsTax = s.taxConnect === "paid" || s.taxConnect === "free";
-
-  const taxConnectCell = wantsTax
-    ? `<span style="display:inline-block;padding:4px 10px;background:#fef3c7;border:1px solid #f59e0b;border-radius:8px;color:#b45309;font-weight:800">★ ${esc(L_TAX[s.taxConnect])} — 세무사 연결 희망</span>`
-    : esc(L_TAX[s.taxConnect] || s.taxConnect || "-");
-
-  const highlight = wantsTax
-    ? `<div style="margin:0 0 16px;padding:14px 16px;background:#fffbeb;border:2px solid #f59e0b;border-radius:12px;color:#92400e;font-size:15px;font-weight:800">
-         🔥 세무사 연결 희망 리드입니다 — 우선 응대 대상</div>`
-    : ``;
+  const highlight = ``;
 
   const rows = [
     adminRow("만족도", `${stars(s.satisfaction)} <span style="color:#64748b;font-size:12px">(${esc(s.satisfaction || "-")}/5)</span>`),
     adminRow("타 서비스 대비", esc(L_VS[s.vsOthers] || s.vsOthers || "-")),
     adminRow("결제 의향", esc(L_BUY[s.buyIntent] || s.buyIntent || "-")),
     adminRow("적정가(생각)", won(s.fairPrice)),
-    adminRow("세무사 연결", taxConnectCell),
     adminRow("좋았던 점", liked.length ? esc(liked.join(", ")) : "-"),
     adminRow("연령대", s.ageBand ? esc(s.ageBand) + "대" : "-"),
     adminRow("응답자 이메일", s.email ? `<a href="mailto:${esc(s.email)}" style="color:#163300">${esc(s.email)}</a>` : "-"),
@@ -210,9 +199,8 @@ export default async (req) => {
   if (type === "admin_lead") {
     const survey = (data && data.survey) || {};
     const sat = survey.satisfaction ? `★${survey.satisfaction}` : "★-";
-    const tax = L_TAX[survey.taxConnect] || "미응답";
     try {
-      await sendViaResend(ADMIN_EMAIL, `[세꼼 관리자] 새 베타 설문 응답 (만족도 ${sat} · 세무사연결: ${tax})`, tplAdminLead(survey));
+      await sendViaResend(ADMIN_EMAIL, `[세꼼 관리자] 새 베타 설문 응답 (만족도 ${sat})`, tplAdminLead(survey));
       return new Response(JSON.stringify({ ok: true }), { status: 200, headers: cors() });
     } catch (e) {
       return new Response(JSON.stringify({ error: String(e.message || e) }), { status: 502, headers: cors() });
