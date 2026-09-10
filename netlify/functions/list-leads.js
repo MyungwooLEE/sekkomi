@@ -17,7 +17,6 @@ const esc = (s) => String(s == null ? "" : s)
   .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 const L_VS = { better: "훨씬 낫다", similar: "비슷하다", worse: "별로다", na: "모름" };
 const L_BUY = { yes: "결제의향", maybe: "고민", no: "아니오" };
-const L_TAX = { paid: "유료OK", free: "무료면", later: "나중에", no: "불필요" };
 const L_CASE = { general: "일반과세", exempt_under: "비과세(12억↓)", exempt_over: "비과세 초과분", exempt_under_mixed: "비과세(상가주택)", loss: "손실", non_resident: "비거주자" };
 const KIND = { survey: "설문", free_email: "이메일", calc: "계산" };
 const KIND_COLOR = { survey: "#1D9BF0", free_email: "#7C3AED", calc: "#64748B" };
@@ -74,13 +73,13 @@ export default async (req) => {
     return new Response(JSON.stringify(items, null, 2), { status: 200, headers: { "Content-Type": "application/json; charset=utf-8" } });
 
   if (format === "csv") {
-    const head = ["일시", "종류", "지역", "세액(만원)", "시나리오", "케이스", "만족", "비교", "구매의향", "적정가(원)", "세무사", "연령", "이메일", "의견"].join(",");
+    const head = ["일시", "종류", "지역", "세액(만원)", "시나리오", "케이스", "만족", "비교", "구매의향", "적정가(원)", "연령", "이메일", "의견"].join(",");
     const rows = items.map((s) => [
       dt(s.ts), KIND[s.kind] || s.kind, regionOf(s), taxNum(s) != null ? taxNum(s) : "", scenNum(s) != null ? scenNum(s) : "",
       L_CASE[s.caseId] || s.caseId || "", s.satisfaction || "", L_VS[s.vsOthers] || "", L_BUY[s.buyIntent] || "",
-      s.fairPrice || "", L_TAX[s.taxConnect] || "", s.ageBand || "", s.email || "", String(s.freeText || "").replace(/[\r\n,]/g, " "),
+      s.fairPrice || "", s.ageBand || "", s.email || "", String(s.freeText || "").replace(/[\r\n,]/g, " "),
     ].map((v) => `"${String(v == null ? "" : v).replace(/"/g, '""')}"`).join(","));
-    return new Response("﻿" + head + "\n" + rows.join("\n"),
+    return new Response("\ufeff" + head + "\n" + rows.join("\n"),
       { status: 200, headers: { "Content-Type": "text/csv; charset=utf-8", "Content-Disposition": "attachment; filename=seggom-leads.csv" } });
   }
 
@@ -90,7 +89,6 @@ export default async (req) => {
   const surveys = items.filter((i) => i.kind === "survey");
   const n = surveys.length;
   const avgSat = n ? (surveys.reduce((a, s) => a + (Number(s.satisfaction) || 0), 0) / n).toFixed(2) : "-";
-  const wantTax = surveys.filter((s) => s.taxConnect === "paid" || s.taxConnect === "free").length;
   const buyYes = surveys.filter((s) => s.buyIntent === "yes").length;
   const prices = surveys.map((s) => Number(s.fairPrice)).filter((v) => isFinite(v) && v > 0).sort((a, b) => a - b);
   const medPrice = prices.length ? prices[Math.floor(prices.length / 2)] : 0;
@@ -116,8 +114,6 @@ export default async (req) => {
   const T = (k) => { const ps = []; if (byToken) ps.push("token=" + esc(token)); if (k) ps.push("kind=" + k); return "?" + ps.join("&"); };
 
   const rowsHtml = shown.map((s) => {
-    const taxc = (s.taxConnect === "paid" || s.taxConnect === "free")
-      ? `<b style="color:#b45309">${esc(L_TAX[s.taxConnect])}★</b>` : esc(L_TAX[s.taxConnect] || "-");
     return `<tr>
       <td style="text-align:center"><input type="checkbox" class="selrow" value="${esc(s.id || "")}"></td>
       <td>${esc(dt(s.ts))}</td>
@@ -129,7 +125,6 @@ export default async (req) => {
       <td style="text-align:center">${s.satisfaction ? "★" + esc(s.satisfaction) : "-"}</td>
       <td>${esc(L_BUY[s.buyIntent] || "-")}</td>
       <td style="text-align:right">${won(s.fairPrice)}</td>
-      <td>${taxc}</td>
       <td>${esc(s.ageBand ? s.ageBand + "대" : "-")}</td>
       <td>${esc(s.email || "-")}</td>
       <td style="max-width:200px">${esc(s.freeText || "")}</td>
@@ -194,7 +189,6 @@ ${GOALS.map((g) => {
   ${card("계산 완료", calcN, "익명 포함")}
   ${card("이메일 남김", emailN, "전환 " + pct(emailN, calcN))}
   ${card("설문 완료", n, "전환 " + pct(n, calcN))}
-  ${card("세무사 연결 희망", wantTax)}
 </div>
 
 <div class="rowlabel">설문 인사이트</div>
@@ -216,8 +210,8 @@ ${GOALS.map((g) => {
   <button class="dbtn warn" onclick="delFilter('all','DELETE-ALL','전체 데이터를')">전체 삭제</button>
 </div>
 <table><thead><tr>
-<th></th><th>일시</th><th>종류</th><th>지역</th><th>세액</th><th>시나리오</th><th>케이스</th><th>만족</th><th>구매의향</th><th>적정가</th><th>세무사</th><th>연령</th><th>이메일</th><th>의견</th>
-</tr></thead><tbody>${rowsHtml || '<tr><td colspan="14" style="text-align:center;color:#8B95A1;padding:24px">아직 데이터가 없어요. 저장이 잘 되는지 아래 [저장 파이프라인 진단]으로 확인해보세요.</td></tr>'}</tbody></table>
+<th></th><th>일시</th><th>종류</th><th>지역</th><th>세액</th><th>시나리오</th><th>케이스</th><th>만족</th><th>구매의향</th><th>적정가</th><th>연령</th><th>이메일</th><th>의견</th>
+</tr></thead><tbody>${rowsHtml || '<tr><td colspan="13" style="text-align:center;color:#8B95A1;padding:24px">아직 데이터가 없어요. 저장이 잘 되는지 아래 [저장 파이프라인 진단]으로 확인해보세요.</td></tr>'}</tbody></table>
 <div class="rowlabel" style="margin-top:20px">저장 파이프라인 진단</div>
 <div style="background:#fff;border:1px solid #E5E8EB;border-radius:12px;padding:14px 16px;font-size:13px">
   <button class="dbtn ghost" style="margin-bottom:8px" onclick="runDiag()">저장 파이프라인 진단 실행</button>
