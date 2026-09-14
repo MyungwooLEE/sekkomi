@@ -20,6 +20,10 @@
   # 아래 경로에 변경이 있을 때만 빌드. (스크립트 exit 0 = 빌드 스킵, exit 1 = 빌드 진행)
   ignore = "git diff --quiet $CACHED_COMMIT_REF $COMMIT_REF -- public netlify netlify.toml scripts _parts package.json"
 
+# 2026-09-14 웹훅 프로브: 9/11 커밋 1350147(빌드 대상)이 배포되지 않아 현재 라이브는 9/10자 dd46026이다.
+# 이 주석 커밋은 netlify.toml 변경이라 ignore 규칙상 빌드 대상이며, git 웹훅 생존 여부를 가른다.
+# 배포가 생성되면 웹훅 정상 + 9/11 어드민 수정이 함께 라이브로 올라간다.
+
 [functions]
   node_bundler = "esbuild"    # @netlify/blobs import 번들링
 
