@@ -90,8 +90,11 @@ function main() {
 
     const lastmods = readLastmods();
 
-    // ItemList 는 오래된 글부터 쌓인다 → 최신순으로 뒤집고 상한을 둔다
-    const ordered = items.slice().reverse().slice(0, MAX_ITEMS);
+    // ItemList 는 최신 글이 position 1 이다(카드를 시리즈 그리드 맨 위에 넣고 1~N 재부여).
+    // 2026-09-15 수정: 여기서 .reverse() 를 하고 있었다. '오래된 글부터 쌓인다'는 전제가
+    // 실제와 반대여서 RSS 에 가장 오래된 30편이 실리고 최근 글은 영원히 들어가지 않았다.
+    // || true 로 감싸여 있어 exit 0 으로 조용히 통과했다.
+    const ordered = items.slice(0, MAX_ITEMS);
 
     const out = [];
     out.push('<?xml version="1.0" encoding="UTF-8"?>');
