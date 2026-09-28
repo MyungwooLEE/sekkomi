@@ -81,7 +81,7 @@ function main() {
     html = html.replace('</head>', HEAD + '</head>');
     const i = html.lastIndexOf('</body>');
     html = html.slice(0, i) + BODY + html.slice(i);
-    fs.writeFileSync(file, html);
+    fs.writeFileSync(FILE, html);
     log('applied (' + PUB + ')');
   } catch (e) {
     log('error (ignored): ' + (e && e.message));
