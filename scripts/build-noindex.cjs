@@ -48,3 +48,7 @@ function main() {
 }
 
 main();
+
+// 2026-09-28: AdSense injection for public/index.html (see build-ads.cjs).
+// Chained here so netlify.toml need not be edited. Failure never breaks the build.
+try { require('./build-ads.cjs'); } catch (e) { console.log('[build-ads] load error (ignored): ' + (e && e.message)); }
