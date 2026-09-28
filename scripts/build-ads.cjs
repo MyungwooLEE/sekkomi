@@ -1,28 +1,26 @@
 /**
  * build-ads.cjs - Google AdSense on the calculator (public/index.html only).
  *
- * Added 2026-09-28 on owner decision (monetize at the result step).
- * Build output only; _parts/ sources stay untouched (Korean-file transcription
- * risk via MCP, see _parts/README.md). All Korean UI text is \u-escaped so this
- * file stays ASCII-only.
+ * 2026-09-28 (owner decision, v2 after design review):
+ *  - Ad is a fixed-size 320x100 unit pinned at the top of the calculating
+ *    screen (#s04), under the "calculating" card, with a one-line explanation
+ *    ("ads keep the calculator free"). Results still open automatically.
+ *  - v1's "result" button + vignette gate was dropped (felt abrupt, double ad).
  *
- * What it does:
+ * Build output only; _parts/ sources stay untouched (Korean-file transcription
+ * risk via MCP, see _parts/README.md). Korean text is \u-escaped: ASCII-only file.
+ *
+ * What it injects:
  *  1. <head>: google-adsense-account meta (site verification) + a loader that
  *     adds adsbygoogle.js ONLY when the URL carries no result deep link (?r= / #r=).
- *     Deep links encode the user's inputs (address, e-mail); ad requests carry the
- *     page URL, so those pages never load ads (no PII to the ad network).
- *  2. runLoading(): "renderS05();show('s05');" -> results are prepared, then a
- *     "result" LINK to /?view=result is shown. A real same-site navigation is what
- *     lets AdSense vignette (full-screen, may be video) appear between the pages.
- *     State travels in sessionStorage, never in the URL.
- *  3. /?view=result restores from sessionStorage and renders the result screen.
- *     Missing/broken state -> falls back to the landing page.
- *  4. Appends an ads/cookie clause to the privacy policy (LEGAL.privacy).
- *
- * Measurement note: calc_complete still fires when the calculation finishes
- * (before the click). Result screens actually opened = page_view with
- * page_location containing view=result (result_view dataLayer event also pushed,
- * but GTM has no tag for it as of 2026-09-28).
+ *     Deep links encode user inputs (address, e-mail); ad requests carry the page
+ *     URL, so those pages never load ads (no PII to the ad network).
+ *  2. #s04: the ad block, ONLY if SLOT_LOADING is set. Ad units can be created only
+ *     after AdSense approves the site, so until then SLOT_LOADING is '' and nothing
+ *     visible is added. To enable: put the unit's data-ad-slot id below, push.
+ *     Block shows only if adsbygoogle.js actually ran (blocked -> stays hidden);
+ *     hides itself again if Google reports the slot unfilled.
+ *  3. Privacy policy: ads/cookie clause appended to LEGAL.privacy.
  *
  * Idempotent (marker id="sek-ads"). Never fails the build. Invoked at the end of
  * build-noindex.cjs so that netlify.toml (Korean-heavy) need not be re-uploaded.
@@ -32,9 +30,10 @@ const fs = require('fs');
 const path = require('path');
 
 const PUB = 'ca-pub-2936478425920310';
+const SLOT_LOADING = ''; // e.g. '1234567890' - set after AdSense approval (320x100 fixed unit)
 const FILE = path.join(process.cwd(), 'public', 'index.html');
-const ANCHOR = "renderS05();show('s05');";
-const REPL = "renderS05();(window.sekAdGate?sekAdGate():show('s05'));";
+const A_HOOK = "$('#adFix').innerHTML=loadHeroHtml();";
+const A_DIV = '<div id="adFix" style="flex:none;padding:14px 18px 0"></div>';
 
 function log(m) { console.log('[build-ads] ' + m); }
 
@@ -45,40 +44,40 @@ const HEAD = '<meta name="google-adsense-account" content="' + PUB + '">\n' +
   'e.src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=' + PUB + '";' +
   'e.crossOrigin="anonymous";document.head.appendChild(e);}catch(_){}})();</script>\n';
 
-const BODY = '<style>.sek-go{margin:18px 0 6px;text-align:center}.sek-go .sek-go-h{font-size:15px;font-weight:800;margin-bottom:10px}.sek-go a{text-decoration:none}</style>\n' +
+const AD_BLOCK = '<div id="adTop" style="flex:none;padding:12px 18px 0;display:none">' +
+  '<div style="font-size:12.5px;line-height:1.45;color:#6b7280;margin:0 2px 6px;display:flex;justify-content:space-between;gap:8px">' +
+  '<span>\uacc4\uc0b0\ud558\ub294 \ub3d9\uc548 \uc7a0\uae50 \uad11\uace0\uac00 \ub098\uc640\uc694. \uc138\uaf3c\uc774\ub294 \uad11\uace0 \uc218\uc775\uc73c\ub85c <b>\ubb34\ub8cc</b>\ub85c \uc6b4\uc601\ub3fc\uc694</span><span style="flex:none;font-weight:700;color:#9ca3af">\uad11\uace0</span></div>' +
+  '<div style="text-align:center;min-height:100px"><ins class="adsbygoogle" style="display:inline-block;width:320px;height:100px"' +
+  ' data-ad-client="' + PUB + '" data-ad-slot="' + SLOT_LOADING + '"></ins></div></div>';
+
+const BODY = '<style>#adTop:has(ins.adsbygoogle[data-ad-status="unfilled"]){display:none!important}</style>\n' +
   '<script id="sek-ads">(function(){\n' +
-  'var KEY="sek_res_v1";\n' +
-  'window.sekAdGate=function(){\n' +
-  ' try{sessionStorage.setItem(KEY,JSON.stringify({enc:encodeState(),at:Date.now(),paid:(typeof PAID!=="undefined"&&PAID)}));}catch(e){show("s05");return;}\n' +
-  ' var sc=document.getElementById("loadScroll");if(!sc){show("s05");return;}\n' +
-  ' if(document.getElementById("sekGo"))return;\n' +
-  ' var d=document.createElement("div");d.className="sek-go";\n' +
-  ' d.innerHTML=\'<div class="sek-go-h">\uacb0\uacfc\uac00 \uc900\ube44\ub410\uc5b4\uc694</div><a class="btn-main" id="sekGo" href="/?view=result">\uacb0\uacfc \ubcf4\uae30 \u2192</a>\';\n' +
-  ' sc.appendChild(d);sc.scrollTop=sc.scrollHeight;\n' +
-  '};\n' +
-  'function home(){try{history.replaceState(null,"","/");}catch(_){}}\n' +
-  'function boot(){try{\n' +
-  ' var p=new URLSearchParams(location.search);if(p.get("view")!=="result")return;\n' +
-  ' var raw=sessionStorage.getItem(KEY),o=raw?JSON.parse(raw):null;\n' +
-  ' if(!o||!o.enc||!restoreState(o.enc)){home();return;}\n' +
-  ' A._calcLogged=true;A._resultMailed=true;if(o.paid)PAID=true;\n' +
-  ' A.R=calc();renderS05();show("s05");\n' +
-  ' try{track("result_view",{});}catch(_){}\n' +
-  '}catch(e){home();}}\n' +
-  'if(document.readyState==="complete")boot();else window.addEventListener("load",boot);\n' +
+  'var pushed=false;\n' +
+  'window.sekAdShow=function(){try{\n' +
+  ' var b=document.getElementById("adTop");if(!b)return;\n' +
+  ' if(!(window.adsbygoogle&&window.adsbygoogle.loaded))return;\n' +
+  ' b.style.display="";\n' +
+  ' if(!pushed){pushed=true;(window.adsbygoogle=window.adsbygoogle||[]).push({});}\n' +
+  '}catch(_){}};\n' +
   'try{if(typeof LEGAL!=="undefined"&&LEGAL.privacy)LEGAL.privacy[1]+=\'<h4>\uad11\uace0 \uac8c\uc7ac \ubc0f \ucfe0\ud0a4</h4><p>\uc11c\ube44\uc2a4\ub294 Google AdSense\ub97c \ud1b5\ud574 \uad11\uace0\ub97c \uac8c\uc7ac\ud569\ub2c8\ub2e4. Google \ub4f1 \uc81c3\uc790 \uad11\uace0 \uc0ac\uc5c5\uc790\ub294 \ucfe0\ud0a4\ub97c \uc0ac\uc6a9\ud574 \uc774\uc6a9\uc790\uc758 \uc774\uc804 \ubc29\ubb38 \uae30\ub85d\uc744 \ubc14\ud0d5\uc73c\ub85c \uad11\uace0\ub97c \uc81c\uacf5\ud560 \uc218 \uc788\uc2b5\ub2c8\ub2e4. \uc774\uc6a9\uc790\ub294 Google \uad11\uace0 \uc124\uc815(https://adssettings.google.com)\uc5d0\uc11c \ub9de\ucda4 \uad11\uace0\ub97c \ud574\uc81c\ud560 \uc218 \uc788\uc2b5\ub2c8\ub2e4. \uc11c\ube44\uc2a4\ub294 \uc785\ub825\ud558\uc2e0 \uc774\uba54\uc77c\u00b7\uc8fc\uc18c \ub4f1 \uac1c\uc778\uc815\ubcf4\ub97c \uad11\uace0 \uc0ac\uc5c5\uc790\uc5d0\uac8c \uc81c\uacf5\ud558\uc9c0 \uc54a\uc73c\uba70, \uacc4\uc0b0 \uacb0\uacfc\uac00 \ub2f4\uae34 \ub9c1\ud06c(\uba54\uc77c\ub85c \ubcf4\ub0b4\ub4dc\ub9ac\ub294 \uacb0\uacfc \ub9c1\ud06c)\ub85c \uc811\uc18d\ud55c \ud654\uba74\uc5d0\ub294 \uad11\uace0\ub97c \ubd88\ub7ec\uc624\uc9c0 \uc54a\uc2b5\ub2c8\ub2e4.</p>\';}catch(_){}\n' +
   '})();</script>\n';
+
+function once(html, needle) { return html.split(needle).length - 1 === 1; }
 
 function main() {
   try {
     if (!fs.existsSync(FILE)) { log('no public/index.html - skip'); return; }
     let html = fs.readFileSync(FILE, 'utf8');
     if (html.indexOf('id="sek-ads"') !== -1) { log('already applied - skip'); return; }
-    const n = html.split(ANCHOR).length - 1;
-    if (n !== 1) { log('anchor count ' + n + ' (expected 1) - skip, no change'); return; }
     if (html.indexOf('</head>') === -1 || html.lastIndexOf('</body>') === -1) { log('head/body not found - skip'); return; }
-    html = html.replace(ANCHOR, REPL);
     html = html.replace('</head>', HEAD + '</head>');
+    if (SLOT_LOADING) {
+      if (once(html, A_HOOK) && once(html, A_DIV)) {
+        html = html.replace(A_DIV, A_DIV + '\n  ' + AD_BLOCK);
+        html = html.replace(A_HOOK, A_HOOK + 'window.sekAdShow&&sekAdShow();');
+        log('loading-screen unit ' + SLOT_LOADING);
+      } else { log('loading-screen anchors not unique - unit skipped'); }
+    } else { log('SLOT_LOADING empty - meta/loader only'); }
     const i = html.lastIndexOf('</body>');
     html = html.slice(0, i) + BODY + html.slice(i);
     fs.writeFileSync(FILE, html);
