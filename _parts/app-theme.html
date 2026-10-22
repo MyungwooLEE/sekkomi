@@ -15,7 +15,9 @@
    ===================================================================== */
 :root{
   --bg:#FFFFFF; --card:#FFFFFF; --ink:#141414;
-  --sub:#5E5E5E; --sub2:#767676; --line:#E9E9E7;
+  --sub:#5E5E5E; --sub2:#707070; --line:#E9E9E7;
+  /* status colors darkened to pass 4.5:1 on white and on their tinted boxes (audit 2026-10-22) */
+  --bad:#C0262D; --warn:#9A5B00; --good:#177A3F;
   --bot:#F3F3F1; --user:#163300;
   --r-card:16px; --r-btn:999px;
   --shadow:0 1px 2px rgba(20,20,20,.05);
@@ -170,4 +172,18 @@ details.dis,.dis-card{background:#F8F8F6;border:1px solid var(--line)}
 
 /* ---------- legal sheet ---------- */
 .legal-body h4{color:var(--ink)}
+
+/* ---------- contrast fixes (audit 2026-10-22) ----------
+   part01 hard-codes #9A9D92 / #CFCDC3 greys that read 2.76:1 / 1.59:1 on white. */
+.bd-hint,.ad-tag,.arrow,.mp-foot-note,.sv-foot .note,.arch-card .ac-when,.prepay .pp-hint,.consent-detail,.acc .chev{color:#707070}
+[style*="color:#9A9D92"]{color:#707070 !important}  /* same grey hard-coded inline in JS templates */
+.loadbub{opacity:.6}
+.loadbub.cur{opacity:1}
+.sv-star{color:#8E8E8B}
+.sv-star.on{color:#B26A00}
+.sec.sec-loss{background:#FDF1F1;border-color:#F3D3D3}
+.tease-card .loss,.scn-card .ls,.prem-loss{color:var(--bad)}
+.prem-urg,.teaser-inline b{color:var(--warn)}
+.trapbub,.trap{background:#FBF6EC;border-color:#EFE0C2;color:#7A4A00}
+.dday-line .go,.teaser-inline .go{color:var(--brand)}
 </style>
