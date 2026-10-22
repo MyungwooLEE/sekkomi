@@ -96,6 +96,32 @@ function applyLightHeroSwaps(html) {
   return html;
 }
 
+/* 2026-10-22: calculator screens (s03..s12, survey) follow the landing's visual standard.
+   _parts/app-theme.html is a single <style id="sk-app-theme"> placed right before </head>,
+   i.e. after the app's own <style>, so equal-specificity rules there win.
+   Independent of the landing injection above. Idempotent via the style id. */
+const APP_THEME = path.join(ROOT, '_parts', 'app-theme.html');
+
+function injectAppTheme() {
+  if (!fs.existsSync(INDEX) || !fs.existsSync(APP_THEME)) {
+    console.log('[landing] index.html or app-theme.html missing - skip app theme');
+    return;
+  }
+  let html = fs.readFileSync(INDEX, 'utf8');
+  if (html.indexOf('id="sk-app-theme"') !== -1) {
+    console.log('[landing] app theme already present - skip');
+    return;
+  }
+  const n = html.split('</head>').length - 1;
+  if (n !== 1) {
+    console.log('[landing] </head> matched ' + n + ' times (want 1) - skip app theme');
+    return;
+  }
+  const theme = fs.readFileSync(APP_THEME, 'utf8');
+  fs.writeFileSync(INDEX, html.replace('</head>', theme + '</head>'));
+  console.log('[landing] app theme injected (+' + Buffer.byteLength(theme) + ' bytes)');
+}
+
 const BLOG_ANCHOR = '</div>\n\n<div class="tabs"><div class="tabs-in">';
 
 function injectBlogBanner() {
@@ -120,4 +146,5 @@ function injectBlogBanner() {
 }
 
 try { injectLanding(); } catch (e) { console.log('[landing] landing inject failed:', e.message); }
+try { injectAppTheme(); } catch (e) { console.log('[landing] app theme inject failed:', e.message); }
 try { injectBlogBanner(); } catch (e) { console.log('[landing] banner inject failed:', e.message); }

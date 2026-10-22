@@ -1,0 +1,173 @@
+<style id="sk-app-theme">
+/* =====================================================================
+   app-theme.html - calculator screens (s03 chat .. s12 mypage, survey)
+   2026-10-22: same visual standard as the landing (time.fyi-style).
+   Injected before </head> by scripts/build-landing.cjs, i.e. right after
+   the app's own <style> in _parts/index.html.part01, so equal-specificity
+   rules here win. Source chunks are not edited.
+
+   What changes
+   - tokens: cream -> white, olive greys -> neutral greys, hairline lines
+   - weight 800 -> 700 (the 37 selectors below were extracted from part01)
+   - gradient cards -> flat brand green, colored glow shadows removed
+   - chips -> keycap style, primary actions -> dark pill
+   What stays: the 420px chat layout, every id/class, all copy.
+   ===================================================================== */
+:root{
+  --bg:#FFFFFF; --card:#FFFFFF; --ink:#141414;
+  --sub:#5E5E5E; --sub2:#767676; --line:#E9E9E7;
+  --bot:#F3F3F1; --user:#163300;
+  --r-card:16px; --r-btn:999px;
+  --shadow:0 1px 2px rgba(20,20,20,.05);
+  --sk-line2:rgba(20,20,20,.13);
+  --sk-fill:rgba(20,20,20,.05);
+  --sk-acc:#2F7A1F;
+  --sk-tint:#F4F9EF;
+}
+body{
+  background:#F5F5F3;
+  font-family:'Pretendard Variable',Pretendard,-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo','Noto Sans KR',sans-serif;
+  letter-spacing:-.01em;
+}
+#frame{box-shadow:0 0 0 1px rgba(20,20,20,.06)}
+
+/* ---------- weight: 800 -> 700 ---------- */
+.btn-main,.legal-body h4,.chip.cta,.chip.cta::after,.rate-tbl tr.on td,.zone-title,.bd-row.em,
+.res-head .rh-save b,.res-head .amt,.tip-badge,.blurnum,.prem-chip,.prem-rank,.prem-name,.s06-title,
+.s07-hero-amt,.conv-badge,.conv-h,.s07-head,.rescard .rc-t,.rescard .rc-big,.slidecard label .v,
+.slidecard .so .b,.s11-h,.psec .pst,.sim .simt,.sim .ctrl .val,.sim .out .big,.mp-hd h2,.mp-prop .tax,
+.mp-sec-t,.arch-card .ac-head,.dday-card .dd-n,.sv-hero .t,.sv-value .svv-t,.sv-value li::before,
+.sv-slider .sv-slider-val{font-weight:700}
+
+/* numbers that animate or align: tabular figures */
+.res-head .amt,.s07-hero-amt,.slidecard .so .b,.sim .out .big,.dday-card .dd-n,.bd-row .amt,
+.rescard .rc-big,.rescard .rc-row b,.rate-tbl td,.cmp-tbl td,#dock input,#s11Dock input{font-variant-numeric:tabular-nums}
+
+/* ---------- primary buttons: dark pill ---------- */
+.btn-main{
+  background:var(--brand);color:#fff;font-size:16px;font-weight:600;letter-spacing:-.012em;
+  border-radius:999px;padding:16px;transition:opacity .15s ease,transform .15s ease;
+}
+.btn-main:active{background:var(--brand);opacity:.9;transform:scale(.98)}
+.chip.cta{
+  background:var(--brand);color:#fff;font-size:15.5px;font-weight:600;
+  padding:14px 22px;border-radius:999px;box-shadow:none;
+}
+.chip.cta:active{background:var(--brand);opacity:.9;transform:scale(.98)}
+.chip.cta::after{content:' \2192';font-weight:600}
+.savechip{background:var(--brand);font-weight:600}
+.restartchip{border:1px solid var(--sk-line2)}
+
+/* ---------- progress ---------- */
+.pbar{height:3px;background:var(--sk-fill)}
+
+/* ---------- chat bubbles ---------- */
+.bub{background:var(--bot);font-size:16px;line-height:1.6;letter-spacing:-.012em;border-radius:4px 16px 16px 16px}
+.bub .sub{color:var(--sub)}
+.bub-user{border-radius:16px 4px 16px 16px;line-height:1.55;letter-spacing:-.012em}
+.typing{background:var(--bot)}
+.typing s{background:#9A9A98}
+
+/* ---------- answer chips: keycaps ---------- */
+.chip{
+  background:#fff;border:1px solid var(--sk-line2);box-shadow:0 1.5px 0 var(--sk-line2);
+  color:var(--ink);font-size:15.5px;font-weight:500;letter-spacing:-.012em;border-radius:12px;
+}
+.chip:active{background:var(--sk-fill);transform:translateY(1px);box-shadow:0 .5px 0 var(--sk-line2)}
+.chip.sm{background:var(--sk-fill);border-color:transparent;box-shadow:none;color:var(--sub);font-weight:500}
+.chip.sm:active{background:rgba(20,20,20,.09)}
+.chip .q{background:var(--sk-fill);color:var(--sub)}
+.chip-pair{background:#fff;border:1px solid var(--sk-line2);box-shadow:0 1.5px 0 var(--sk-line2)}
+.chip-pair:active{background:var(--sk-fill)}
+.chip-pair .chip{box-shadow:none;border:0;background:none}
+.chip-pair .chip-help{border-left:1px solid var(--line);color:var(--sub);font-weight:600}
+.chip-pair.sm{background:var(--sk-fill);border-color:transparent;box-shadow:none}
+.chip-pair.sm .chip-help{border-left-color:rgba(20,20,20,.1)}
+
+/* ---------- inputs ---------- */
+.inline-input,.emailcard,.rescard,.slidecard{border-color:var(--line);border-radius:14px}
+.inline-input select,.inline-input .ym input,.emailcard input[type=email],.prepay input,.sim .numrow input,
+.sv-q input[type=email],.sv-q textarea{background:#fff;border:1px solid var(--sk-line2)}
+#dock input,#s11Dock input,.sheet .addr-in{border:1px solid rgba(20,20,20,.22)}
+#dock input:focus,#s11Dock input:focus,.sheet .addr-in:focus,.inline-input select:focus,.inline-input .ym input:focus,
+.emailcard input[type=email]:focus,.prepay input:focus,.sim .numrow input:focus,.sv-q input:focus,.sv-q textarea:focus{
+  outline:none;border-color:var(--brand);box-shadow:0 0 0 3px rgba(22,51,0,.12);
+}
+.inline-input .ok,#dock .ok,#s11Dock .ok,.prepay .pp-go{font-weight:600}
+#dock .kor,#s11Dock .kor,.prepay .pp-kor{color:var(--sk-acc)}
+.help-body,.consent-detail{background:var(--bot)}
+.sheet{border-radius:20px 20px 0 0}
+.sheet .close{background:var(--sk-fill);border-radius:999px}
+.modal{background:rgba(20,20,20,.42)}
+
+/* ---------- loading ---------- */
+.load-hero{background:var(--brand);border-radius:16px}
+.rate-tbl{border-color:var(--line);border-radius:12px}
+.rate-tbl th{background:#F6F6F4;color:var(--sub);font-weight:600}
+.rate-tbl tr.on td{background:var(--sk-tint);color:var(--brand)}
+.loadbub .bub{border-color:var(--line)}
+.ad-slot{border-color:var(--line)}
+.ad-native .thumb{background:var(--sk-fill)}
+
+/* ---------- result (s05) ---------- */
+.zone-title{font-size:16px;letter-spacing:-.02em}
+.res-head{background:var(--brand);border-radius:18px;box-shadow:none}
+.res-head .amt{letter-spacing:-.03em}
+.bd-card,.stepcard,.tease-card,.scn-card,.arch-card,.mp-prop,.psec,.acc,.sv-q,.sec{border-color:var(--line)}
+.bd-row{border-bottom-style:solid;border-bottom-color:var(--line)}
+.bd-det{border-bottom-style:solid;border-bottom-color:var(--line)}
+.bd-row.total .amt{color:var(--brand)}
+.stepcard .slab,.sec .stitle,.psec .pst,.rescard .rc-t{color:var(--sk-acc)}
+.qico{background:var(--sk-fill);color:var(--sub)}
+.dday-line,.teaser-inline{background:#FBF6EC;border-color:#EFE0C2}
+details.dis,.dis-card{background:#F8F8F6;border:1px solid var(--line)}
+.dis-always{background:#F6F6F4}
+.value-card,.price-card{border:1px solid var(--sk-line2);border-radius:16px}
+.value-card h4,.price-card h4{color:var(--ink)}
+.prem-chip{background:var(--brand)}
+.prem-rank{background:var(--sk-fill);color:var(--ink)}
+.prem-card{background:#fff;border:1px solid var(--sk-line2);box-shadow:none;border-radius:16px}
+.prem-name{color:var(--ink)}
+.prem-save{background:#F8F8F6}
+.prem-teaser{background:#F8F8F6;border:1px solid var(--line)}
+.prem-give{border-top-style:solid}
+
+/* ---------- s06 / s07 ---------- */
+.tab{background:var(--sk-fill);color:var(--sub);font-weight:500}
+.tab.cur{background:var(--ink);color:#fff;font-weight:600}
+.s06-badge,.s11-badge{background:var(--sk-tint);color:var(--sk-acc)}
+.s07-hero{background:var(--brand);border-radius:18px;box-shadow:none}
+.conv-card{border:1px solid var(--sk-line2);box-shadow:none;border-radius:18px}
+.conv-badge{background:var(--sk-tint);color:var(--sk-acc)}
+.conv-h{color:var(--ink)}
+.prepay{background:#F8F8F6;border-color:var(--line)}
+
+/* ---------- s11 paid detail ---------- */
+.slidecard .slw-hint{background:var(--sk-tint);color:var(--sk-acc)}
+.slidecard .so{background:var(--brand);box-shadow:none;border-radius:14px}
+.s11-info .ci-main{color:var(--sk-acc)}
+.hero11{background:#1C1C1C}
+.acc .acount{background:var(--sk-fill);color:var(--sub)}
+.psec .expert,.acc .abody .expert{background:#F6F6F4;border-left:0;border-radius:10px;color:#3A3A3A}
+.checklist li{border-bottom-style:solid}
+.sim{background:#fff;border:1px solid var(--sk-line2);border-radius:14px}
+.sim .simt{color:var(--ink)}
+.sim .out{background:#1C1C1C}
+.sim .savebtn{background:var(--brand);border-radius:999px;font-weight:600}
+
+/* ---------- s12 mypage ---------- */
+.paid-banner{background:var(--good)}
+.dday-card{background:#1C1C1C}
+.mp-alert{background:var(--sk-tint)}
+.mp-empty{border-style:solid}
+
+/* ---------- survey gate ---------- */
+.sv-hero{background:var(--brand)}
+.sv-opt{border:1px solid var(--sk-line2);font-weight:500}
+.sv-opt.on{border-color:var(--brand);background:var(--sk-tint);color:var(--brand);font-weight:600}
+.sv-value{background:var(--sk-tint);border-color:rgba(47,122,31,.18)}
+.sv-value .svv-t{color:var(--sk-acc)}
+
+/* ---------- legal sheet ---------- */
+.legal-body h4{color:var(--ink)}
+</style>
