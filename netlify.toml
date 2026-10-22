@@ -15,7 +15,12 @@
   # indexnow-notify가 이번 빌드에서 바뀐 URL을 네이버·Bing IndexNow로 전송한다(둘 다 실패해도 빌드 계속).
   # 2026-10-22 추가: build-theme가 블로그 전 페이지에 /theme/blog.css 링크·가변 폰트·밝은 푸터 로고를 주입한다
   #   (원본 HTML 무변경 → public/blog git diff 없음 → IndexNow 대량 전송 없음. 실패해도 빌드 계속).
-  command = "if [ -f _parts/index.sha256 ]; then cat _parts/index.html.part* > public/index.html && echo \"$(cat _parts/index.sha256)  public/index.html\" | sha256sum -c - && cp _parts/index.sha256 public/build-index.sha256; fi && node scripts/build-blog-featured.cjs && (node scripts/build-seo-meta.cjs || true) && (node scripts/build-llms-txt.cjs || true) && (node scripts/build-rss.cjs || true) && (node scripts/build-landing.cjs || true) && (node scripts/build-theme.cjs || true) && (node scripts/build-noindex.cjs || true) && (node scripts/indexnow-notify.cjs || true)"
+  # 2026-10-22 추가: build-utm이 블로그 CTA 의 위치 전용 utm_content(nav·mid·mid2·final·end)를
+  #   "<슬러그>-<위치>" 로 바꿔 페이지별 전환 귀속을 가능하게 한다. 65편·라벨 110개가 대상이고
+  #   이미 고유한 라벨(yangdose-serul-top 등)·series-nav·list-nav 는 건드리지 않는다. 멱등이다
+  #   (바 위치 라벨만 매칭하므로 "<슬러그>-mid" 는 다시 걸리지 않는다). 원본 HTML 무변경이라
+  #   IndexNow 대량 전송이 발생하지 않는다 — build-theme 와 같은 이유다.
+  command = "if [ -f _parts/index.sha256 ]; then cat _parts/index.html.part* > public/index.html && echo \"$(cat _parts/index.sha256)  public/index.html\" | sha256sum -c - && cp _parts/index.sha256 public/build-index.sha256; fi && node scripts/build-blog-featured.cjs && (node scripts/build-seo-meta.cjs || true) && (node scripts/build-llms-txt.cjs || true) && (node scripts/build-rss.cjs || true) && (node scripts/build-landing.cjs || true) && (node scripts/build-theme.cjs || true) && (node scripts/build-utm.cjs || true) && (node scripts/build-noindex.cjs || true) && (node scripts/indexnow-notify.cjs || true)"
   # ★ 배포 예산: 프로덕션 배포 1회 = 15 크레딧(월 1,000). 여러 커밋으로 쪼개 올릴 때는
   #   마지막 1개를 뺀 모든 커밋 메시지 끝에 [skip ci] 를 붙여 발행 1건 = 배포 1회로 유지한다.
   # 빌드 스킵 규칙 (2026-08-05, 크레딧 절약): 사이트 산출물에 영향 없는 커밋(tools/·claude/ 문서만 변경 등)은 빌드를 생략한다.
