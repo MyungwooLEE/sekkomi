@@ -61,8 +61,39 @@ function injectLanding() {
     block += '\n' + fs.readFileSync(DESKTOP, 'utf8');
   }
   html = html.replace(FOOT_RE, '   </div>\n' + block + '\n  </div>\n</div>');
+  html = applyLightHeroSwaps(html);
   fs.writeFileSync(INDEX, html);
   console.log('[landing] sections injected (+' + Buffer.byteLength(block) + ' bytes)');
+}
+
+/* 2026-10-22 light (time.fyi-style) landing.
+   The hero moved from dark green to white, which the CSS layer alone cannot finish:
+   - the hero logo is the light-on-dark asset -> swap to the dark-on-light one
+   - theme-color paints the mobile browser bar dark green -> white
+   - Pretendard: the static CSS pulls whole-font files per weight (no unicode-range);
+     the variable dynamic-subset CSS downloads only the glyph slices a page uses.
+     Family name becomes 'Pretendard Variable' (font stacks in landing-desktop.html
+     list it first and keep 'Pretendard' as fallback).
+   Runs only after the sections were injected, so a skipped injection leaves the page
+   exactly as before. Every swap is exact-match ASCII and requires exactly one hit. */
+const SWAPS = [
+  ['logo', '<div class="lp-brand"><img src="/logo_full_dark.png"', '<div class="lp-brand"><img src="/logo_full.png"'],
+  ['theme-color', '<meta name="theme-color" content="#163300">', '<meta name="theme-color" content="#FFFFFF">'],
+  ['font', 'https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css',
+           'https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css'],
+];
+
+function applyLightHeroSwaps(html) {
+  for (const [name, from, to] of SWAPS) {
+    const n = html.split(from).length - 1;
+    if (n !== 1) {
+      console.log('[landing] swap ' + name + ': matched ' + n + ' times (want 1) - skip');
+      continue;
+    }
+    html = html.replace(from, to);
+    console.log('[landing] swap ' + name + ': ok');
+  }
+  return html;
 }
 
 const BLOG_ANCHOR = '</div>\n\n<div class="tabs"><div class="tabs-in">';
