@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#163300">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<!-- Google Tag Manager -->
+<script>window.GTM_ID='GTM-5JTC8935';window.dataLayer=window.dataLayer||[];(function(w,d,s,l,i){if(!i||i==='GTM-XXXXXXX'||i.indexOf('GTM-')!==0)return;w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer',window.GTM_ID);</script>
+<!-- End Google Tag Manager -->
+
+<title>증여세 세율 2026 — 10~50% 5단계와 누진공제액 계산법 | 세꼼</title>
+<meta name="description" content="증여세 세율은 과세표준 1억 원 이하 10%부터 30억 원 초과 50%까지 5단계입니다. 누진공제액 계산법을 정리했어요.">
+<link rel="canonical" href="https://sekkomi.com/blog/jeungyeose-serul">
+<meta property="og:type" content="article">
+<meta property="og:title" content="증여세 세율은 10~50% 5단계 — 법은 ‘기본금액 + 초과분’으로 적고, 계산은 누진공제액으로 합니다">
+<meta property="og:description" content="증여세 세율은 과세표준 1억 원 이하 10%, 5억 원 이하 20%, 10억 원 이하 30%, 30억 원 이하 40%, 30억 원 초과 50%의 5단계 누진세율입니다. 세율은 받은 금액이 아니라 증여재산공제를 빼고 남은 과세표준에 붙습니다. 법령 안내문의 기본금액 + 초과분 표기와 누진공제액 표기가 같은 값인지 경계값마다 직접 계산해 맞췄습니다.">
+<meta property="og:image" content="https://sekkomi.com/blog/assets/hero_1sedae.png">
+<meta property="og:url" content="https://sekkomi.com/blog/jeungyeose-serul">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "Article", "headline": "증여세 세율은 10~50% 5단계 — 법은 ‘기본금액 + 초과분’으로 적고, 계산은 누진공제액으로 합니다", "description": "증여세 세율은 과세표준 1억 원 이하 10%, 5억 원 이하 20%, 10억 원 이하 30%, 30억 원 이하 40%, 30억 원 초과 50%의 5단계 누진세율입니다. 세율은 받은 금액이 아니라 증여재산공제를 빼고 남은 과세표준에 붙습니다. 법령 안내문의 기본금액 + 초과분 표기와 누진공제액 표기가 같은 값인지 경계값마다 직접 계산해 맞췄습니다.", "author": {"@type": "Organization", "name": "세꼼이", "url": "https://sekkomi.com"}, "publisher": {"@type": "Organization", "name": "세꼼(Sekkomi)", "url": "https://sekkomi.com"}, "datePublished": "2026-11-03", "dateModified": "2026-11-03", "mainEntityOfPage": "https://sekkomi.com/blog/jeungyeose-serul"}
+</script>
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "증여세율은 몇 퍼센트인가요?", "acceptedAnswer": {"@type": "Answer", "text": "과세표준 구간에 따라 10%, 20%, 30%, 40%, 50%의 다섯 단계입니다. 1억 원 이하는 10%, 1억 원 초과 5억 원 이하는 20%, 5억 원 초과 10억 원 이하는 30%, 10억 원 초과 30억 원 이하는 40%, 30억 원 초과는 50%입니다. 여기서 과세표준은 받은 금액이 아니라 증여재산공제를 빼고 남은 금액입니다."}}, {"@type": "Question", "name": "증여세 세율과 증여세율, 어느 쪽이 맞는 말인가요?", "acceptedAnswer": {"@type": "Answer", "text": "둘 다 같은 것을 가리키는 말이고 법령에서 쓰는 표현은 ‘세율’입니다. 「상속세 및 증여세법」 제56조가 증여세 세율을 정하고 있습니다. 검색에서는 증여세율, 증여세 세율, 증여세율표, 증여세 과세표준 등이 섞여 쓰이지만 찾는 내용은 같습니다."}}, {"@type": "Question", "name": "누진공제액은 왜 빼는 건가요?", "acceptedAnswer": {"@type": "Answer", "text": "과세표준 전체에 그 구간의 세율을 곱하면 앞 구간에 낮은 세율이 적용되어야 할 부분까지 높은 세율로 계산되기 때문입니다. 그 과하게 계산된 금액이 누진공제액입니다. 예를 들어 과세표준 5억 원에 20%를 통째로 곱하면 1억 원인데, 첫 1억 원에는 10%만 붙어야 하므로 1천만 원이 과합니다. 그래서 20% 구간의 누진공제액이 1천만 원입니다."}}, {"@type": "Question", "name": "부모에게 1억 원을 받으면 증여세가 1천만 원인가요?", "acceptedAnswer": {"@type": "Answer", "text": "아닙니다. 1억 원은 받은 금액이고 세율은 과세표준에 붙습니다. 성년 자녀가 직계존속에게 1억 원을 받고 10년 안에 다른 증여가 없었다면 증여재산공제 5천만 원을 빼서 과세표준은 5천만 원이 되고, 1억 원 이하 구간이므로 10%인 500만 원이 산출세액입니다. 기한 내 신고하면 신고세액공제 3%가 추가로 빠집니다."}}, {"@type": "Question", "name": "증여세 세율은 상속세 세율과 다른가요?", "acceptedAnswer": {"@type": "Answer", "text": "구간과 세율은 같습니다. 증여세는 제56조, 상속세는 제26조에서 정하는데 1억 원 이하 10%부터 30억 원 초과 50%까지 동일합니다. 차이가 나는 곳은 세율이 아니라 공제입니다. 상속에는 일괄공제·배우자상속공제 같은 항목이 있고 증여에는 10년 단위의 증여재산공제가 있어서 결론이 달라집니다."}}, {"@type": "Question", "name": "구간을 조금 넘기면 세금이 크게 뛰나요?", "acceptedAnswer": {"@type": "Answer", "text": "아닙니다. 누진세율이라 넘는 부분에만 높은 세율이 붙습니다. 과세표준이 1억 원에서 1억 100만 원으로 늘어나면, 초과한 100만 원에만 20%가 적용되어 세금은 20만 원 늘어납니다. 1억 100만 원 전체에 20%가 붙는 것이 아닙니다."}}, {"@type": "Question", "name": "세대를 건너뛰어 손자에게 증여하면 세율이 올라가나요?", "acceptedAnswer": {"@type": "Answer", "text": "세율표 자체는 같지만 산출세액에 할증이 붙는 별도 규정이 있습니다. 법령 안내문도 신고세액공제를 설명하면서 직계비속에 대한 증여의 할증과세를 산출세액에 포함한다고 적고 있습니다. 다만 이 글에서 확인한 자료에 할증률 수치가 없어 숫자는 적지 않았습니다. 세대생략 증여를 검토하신다면 그 부분은 따로 확인하시기 바랍니다."}}, {"@type": "Question", "name": "증여세 세율이 2026년에 바뀌었나요?", "acceptedAnswer": {"@type": "Answer", "text": "이 글을 쓴 2026년 11월 3일 시점까지 증여세 세율 구간이나 세율을 바꾼 법령 개정은 확인되지 않았습니다. 2026년 10월 1일에 상속세 및 증여세법 시행령 개정(대통령령 제36741호)이 공포·시행됐으나 세율을 바꾸는 내용은 확인되지 않았고, 개정이유 원문은 확보하지 못했습니다. 세법은 국회 심의 과정에서 바뀔 수 있으니 실제 신고 전에 다시 확인하시기 바랍니다."}}]}
+</script>
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "블로그", "item": "https://sekkomi.com/blog/"}, {"@type": "ListItem", "position": 2, "name": "증여세", "item": "https://sekkomi.com/blog/jeungyeose-serul"}, {"@type": "ListItem", "position": 3, "name": "증여세 세율"}]}
+</script>
+
+<style>
+  :root{--g:#163300;--g2:#0e2200;--lime:#9fe870;--cream:#fbfaf7;--ink:#1a2712;--accent:#ff6a3d;
+    --mute:#6e7d5c;--line:#e7e9e2;--box:#f2f4ec}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Pretendard',-apple-system,sans-serif;color:var(--ink);background:#fff;
+    line-height:1.7;-webkit-font-smoothing:antialiased}
+  a{color:inherit}
+  header{position:sticky;top:0;z-index:20;background:rgba(251,250,247,.9);backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line)}
+  .nav{max-width:960px;margin:0 auto;padding:14px 20px;display:flex;align-items:center;justify-content:space-between}
+  .logo{font-weight:800;font-size:22px;color:var(--g);text-decoration:none;display:inline-flex;align-items:center;gap:8px}
+  .logo-img{height:28px;display:block}
+  .nav-cta{background:var(--lime);color:var(--g);font-weight:800;font-size:14px;
+    padding:9px 16px;border-radius:10px;text-decoration:none}
+  article{max-width:720px;margin:0 auto;padding:0 20px 80px}
+  .crumb{font-size:13px;color:var(--mute);padding:26px 0 0}
+  .crumb a{text-decoration:none;color:var(--mute)}
+  .crumb-ep{color:#3a7d17;font-weight:800}
+  h1{font-size:clamp(28px,5.4vw,40px);line-height:1.25;font-weight:800;color:var(--g);letter-spacing:-.5px;margin:14px 0 16px}
+  .toc{background:var(--box);border-radius:12px;padding:16px 20px 16px;margin:0 0 28px}
+  .toc-t{font-size:13px;font-weight:800;color:var(--mute);letter-spacing:.4px;margin-bottom:8px}
+  .toc ol{margin:0;padding-left:20px}
+  .toc li{margin:5px 0;font-size:15px}
+  .toc a{color:#2f6b12;font-weight:600;text-decoration:none}
+  .toc a:hover{text-decoration:underline}
+  .byline{font-size:14px;color:var(--mute);border-bottom:1px solid var(--line);padding-bottom:20px;margin:14px 0 26px}
+  .byline b{color:var(--ink);font-weight:700}
+  article h2{font-size:clamp(21px,3.8vw,26px);font-weight:800;color:var(--g);margin:56px 0 18px;padding-top:44px;border-top:1px solid var(--line);letter-spacing:-.3px}
+  article h2:first-of-type{border-top:none;padding-top:8px;margin-top:28px}
+  article h3{font-size:18px;font-weight:800;color:var(--g);margin:26px 0 12px}
+  article p{margin:0 0 16px;font-size:17px}
+  article strong{font-weight:700}
+  article ul,article ol{margin:0 0 18px;padding-left:22px}
+  article li{margin-bottom:8px;font-size:17px}
+  article a.inl{color:#2f6b12;font-weight:700;text-decoration:underline;text-underline-offset:2px}
+  article p.rel{background:var(--box);border-radius:10px;padding:11px 15px;margin:0 0 12px;font-size:15.5px}
+  article p.rel::before{content:'\21b3  ';color:var(--accent);font-weight:800}
+  article p.rel a{color:#2f6b12;font-weight:700;text-decoration:none}
+  .tldr{background:#eef6e2;border:1px solid #d4e8bd;border-left:5px solid var(--lime);
+    border-radius:12px;padding:18px 20px;margin:8px 0 28px}
+  .tldr .k{font-size:13px;font-weight:800;color:#3a7d17;letter-spacing:.3px;margin-bottom:6px}
+  .tldr p{font-size:16px;margin:0}
+  .note{background:#fff7ed;border:1px solid #fadcc4;border-left:5px solid var(--accent);
+    border-radius:12px;padding:15px 18px;margin:22px 0;font-size:15px;color:#5a4632;line-height:1.6}
+  .note strong{color:#b4471f}
+  .tbl{width:100%;border-collapse:collapse;margin:8px 0 20px;font-size:15.5px;overflow:hidden;
+    border-radius:12px;border:1px solid var(--line)}
+  .tbl th,.tbl td{padding:12px 14px;text-align:left;border-bottom:1px solid var(--line)}
+  .tbl thead th{background:var(--g);color:var(--cream);font-weight:700;font-size:14px}
+  .tbl tbody tr:last-child td{border-bottom:none}
+  .tbl td:first-child{font-weight:800;color:#3a7d17}
+  .cta{display:block;background:var(--g);border-radius:16px;padding:22px 22px;margin:26px 0;text-decoration:none}
+  .cta .t{color:var(--cream);font-weight:700;font-size:16px;line-height:1.5}
+  .cta .b{display:inline-block;margin-top:12px;background:var(--lime);color:var(--g);
+    font-weight:800;font-size:15px;padding:11px 18px;border-radius:10px}
+  .cta.final{padding:30px 24px;text-align:center;background:linear-gradient(160deg,#1c4300,#0e2200)}
+  .cta.final .h{color:var(--cream);font-weight:800;font-size:22px;margin-bottom:8px}
+  .cta.final .s{color:#dde7ce;font-size:15px;margin-bottom:18px}
+  .cta.final .b{background:var(--accent);color:#fff;font-size:17px;padding:14px 26px}
+  .faq{border-top:1px solid var(--line);margin-top:12px}
+  .faq details{border-bottom:1px solid var(--line);padding:6px 0}
+  .faq summary{font-weight:700;font-size:16.5px;color:var(--g);padding:14px 0;cursor:pointer;list-style:none;
+    display:flex;justify-content:space-between;align-items:center;gap:12px}
+  .faq summary::-webkit-details-marker{display:none}
+  .faq summary::after{content:'+';color:var(--accent);font-weight:800;font-size:22px;flex:0 0 auto}
+  .faq details[open] summary::after{content:'\2212'}
+  .faq p{padding:0 0 16px;font-size:16px;color:#33402a}
+  .author{background:var(--box);border-radius:12px;padding:18px 20px;margin:34px 0 0;font-size:15px;color:#33402a}
+  .author b{color:var(--g)}
+  .sources{margin-top:26px;font-size:14px;color:var(--mute)}
+  .sources h3{font-size:15px;color:var(--ink);margin-bottom:8px}
+  .sources a{color:#3a7d17}
+  .disc{font-size:13px;color:var(--mute);margin-top:20px;line-height:1.6}
+  footer{background:var(--g);color:#c7d3b6;padding:26px 20px}
+  .ft{max-width:640px;margin:0 auto;text-align:center}
+  .ft-logo{height:22px;margin-bottom:14px}
+  .ft-links{display:flex;justify-content:center;gap:22px;flex-wrap:wrap;margin-bottom:10px}
+  .ft-links a{color:#dde7ce;text-decoration:none;font-size:14px;font-weight:600}
+  .ft-legal{color:#8ea076;font-size:12px}
+  @media(max-width:520px){article p,article li{font-size:16px}}
+</style>
+</head>
+<body>
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5JTC8935" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+
+<header>
+  <div class="nav">
+    <a class="logo" href="/blog/"><img src="assets/logo_full.png" alt="세꼼이" class="logo-img"></a>
+    <a class="nav-cta" href="https://sekkomi.com/?utm_source=blog&amp;utm_medium=content&amp;utm_campaign=jeungyeose&amp;utm_content=nav" data-cta="nav" target="_blank" rel="noopener">내 양도세 계산 →</a>
+  </div>
+</header>
+
+<article>
+
+  <div class="crumb"><a href="/blog/">블로그</a> › <span class="crumb-ep">GUIDE</span> 증여세</div>
+
+  <h1>증여세 세율은 10~50% 5단계 — 법은 ‘기본금액 + 초과분’으로 적고, 계산은 누진공제액으로 합니다</h1>
+
+  <div class="byline">세꼼이 · <b>2026년 11월 3일</b> · 읽는 시간 8분</div>
+
+  <div class="tldr">
+    <div class="k">한 줄 답 · 2026년 11월 기준</div>
+    <p><strong>증여세 세율은 과세표준 1억 원 이하 10%, 5억 원 이하 20%, 10억 원 이하 30%, 30억 원 이하 40%, 30억 원 초과 50%의 5단계 누진세율입니다.</strong> 세율은 받은 금액 전체가 아니라 <strong>증여재산공제를 빼고 남은 과세표준</strong>에 붙습니다. 법령은 구간별로 ‘기본금액 + 초과분에 대한 세율’ 형식으로 적고 있고, 흔히 쓰는 <strong>누진공제액</strong> 표는 그 계산을 한 줄로 줄인 것으로 결과가 같습니다.</p>
+  </div>
+
+  <div class="toc">
+    <div class="toc-t">목차</div>
+    <ol>
+      <li><a href="#s1">증여세 세율표 — 10%부터 50%까지 5단계</a></li>
+      <li><a href="#s2">법령은 ‘누진공제액’이라는 말을 쓰지 않습니다</a></li>
+      <li><a href="#s3">두 방식이 같은 값인지 숫자로 확인해 봤습니다</a></li>
+      <li><a href="#s4">세율보다 공제가 먼저입니다 — 과세표준 만드는 순서</a></li>
+      <li><a href="#s5">실제 계산 세 가지</a></li>
+      <li><a href="#s6">상속세와 세율표가 같습니다</a></li>
+      <li><a href="#s7">신고기한과 신고세액공제 3%</a></li>
+      <li><a href="#s8">집을 증여할 때는 증여세만으로 끝나지 않습니다</a></li>
+      <li><a href="#faq">자주 묻는 질문</a></li>
+    </ol>
+  </div>
+
+  <h2 id="s1">1. 증여세 세율표 — 10%부터 50%까지 5단계</h2>
+
+  <p>증여세 세율은 과세표준 구간에 따라 다섯 단계로 올라갑니다. 법제처 생활법령정보가 「상속세 및 증여세법」 제56조의 세율로 안내하는 표는 다음과 같습니다.</p>
+
+  <table class="tbl">
+    <thead><tr><th>과세표준</th><th>세율</th><th>누진공제액</th></tr></thead>
+    <tbody>
+      <tr><td>1억 원 이하</td><td>10%</td><td>없음</td></tr>
+      <tr><td>1억 원 초과 5억 원 이하</td><td>20%</td><td>1천만 원</td></tr>
+      <tr><td>5억 원 초과 10억 원 이하</td><td>30%</td><td>6천만 원</td></tr>
+      <tr><td>10억 원 초과 30억 원 이하</td><td>40%</td><td>1억 6천만 원</td></tr>
+      <tr><td>30억 원 초과</td><td>50%</td><td>4억 6천만 원</td></tr>
+    </tbody>
+  </table>
+
+  <p>여기서 가장 많이 오해가 생기는 지점을 먼저 짚겠습니다. <strong>이 표의 ‘과세표준’은 받은 금액이 아닙니다.</strong> 받은 재산에서 공제를 빼고 남은 금액입니다. 부모에게 1억 원을 받았다고 해서 바로 1억 원 구간의 10%가 적용되는 것이 아닙니다. 순서는 <a class="inl" href="/blog/jeungyeose-myeonje-hando">증여재산공제</a>를 먼저 빼는 것이고, 그 부분은 4번에서 다시 보겠습니다.</p>
+
+  <div class="note"><strong>누진세율이란.</strong> 과세표준이 5억 원이면 5억 원 전체에 20%가 붙는 것이 아닙니다. 1억 원까지는 10%, 1억 원을 넘는 부분에만 20%가 붙습니다. 구간을 넘는 순간 전체 세율이 뛰는 구조가 아니라는 뜻입니다.</div>
+
+  <h2 id="s2">2. 법령은 ‘누진공제액’이라는 말을 쓰지 않습니다</h2>
+
+  <p>검색해서 나오는 세율표는 거의 모두 ‘누진공제액’ 열을 달고 있습니다. 그런데 법령을 안내하는 쪽을 보면 사정이 조금 다릅니다.</p>
+
+  <p>같은 세율표를 상속세 쪽(「상속세 및 증여세법」 제26조)에서 안내할 때는 <strong>누진공제액 열이 없고</strong>, 대신 구간별로 이렇게 적혀 있습니다.</p>
+
+  <table class="tbl">
+    <thead><tr><th>과세표준</th><th>법령 안내문의 세율 표기</th></tr></thead>
+    <tbody>
+      <tr><td>1억 원 이하</td><td>과세표준의 10%</td></tr>
+      <tr><td>1억 원 초과 5억 원 이하</td><td>1천만 원 + (1억 원을 초과하는 금액의 20%)</td></tr>
+      <tr><td>5억 원 초과 10억 원 이하</td><td>9천만 원 + (5억 원을 초과하는 금액의 30%)</td></tr>
+      <tr><td>10억 원 초과 30억 원 이하</td><td>2억 4천만 원 + (10억 원을 초과하는 금액의 40%)</td></tr>
+      <tr><td>30억 원 초과</td><td>10억 4천만 원 + (30억 원을 초과하는 금액의 50%)</td></tr>
+    </tbody>
+  </table>
+
+  <p>즉 제도의 원래 표기는 <strong>‘앞 구간까지 쌓인 세금 + 이 구간 초과분에 대한 세율’</strong>입니다. 누진공제액은 이 두 줄짜리 계산을 한 줄로 줄이기 위해 실무에서 쓰는 장치이고, 법령 안내문에 등장하는 용어가 아닙니다.</p>
+
+  <p>그래서 두 가지 식이 돌아다닙니다.</p>
+
+  <ul>
+    <li><strong>법령 안내문 방식</strong> — 산출세액 = 앞 구간까지의 기본금액 + (구간 하한을 초과하는 금액 × 그 구간 세율)</li>
+    <li><strong>누진공제액 방식</strong> — 산출세액 = 과세표준 × 그 구간 세율 − 누진공제액</li>
+  </ul>
+
+  <p>어느 쪽을 써야 하냐고 묻는다면, <strong>결과가 같으므로 편한 쪽을 쓰면 됩니다.</strong> 다만 ‘같다’는 말을 믿고 넘어가기보다 직접 맞춰 보는 편이 안전합니다. 다음 항목에서 확인해 보겠습니다.</p>
+
+  <h2 id="s3">3. 두 방식이 같은 값인지 숫자로 확인해 봤습니다</h2>
+
+  <p>구간이 바뀌는 경계값마다 두 방식을 각각 계산해 비교했습니다. 경계값에서 어긋나지 않으면 구간 내부에서도 어긋나지 않습니다.</p>
+
+  <table class="tbl">
+    <thead><tr><th>과세표준</th><th>법령 안내문 방식</th><th>누진공제액 방식</th></tr></thead>
+    <tbody>
+      <tr><td>1억 원</td><td>1억 × 10% = <strong>1천만 원</strong></td><td>1억 × 10% − 0 = <strong>1천만 원</strong></td></tr>
+      <tr><td>5억 원</td><td>1천만 + (4억 × 20%) = <strong>9천만 원</strong></td><td>5억 × 20% − 1천만 = <strong>9천만 원</strong></td></tr>
+      <tr><td>10억 원</td><td>9천만 + (5억 × 30%) = <strong>2억 4천만 원</strong></td><td>10억 × 30% − 6천만 = <strong>2억 4천만 원</strong></td></tr>
+      <tr><td>30억 원</td><td>2억 4천만 + (20억 × 40%) = <strong>10억 4천만 원</strong></td><td>30억 × 40% − 1억 6천만 = <strong>10억 4천만 원</strong></td></tr>
+      <tr><td>50억 원</td><td>10억 4천만 + (20억 × 50%) = <strong>20억 4천만 원</strong></td><td>50억 × 50% − 4억 6천만 = <strong>20억 4천만 원</strong></td></tr>
+    </tbody>
+  </table>
+
+  <p>다섯 경계 모두 일치합니다. 누진공제액이 왜 그 숫자인지도 여기서 드러납니다. <strong>누진공제액은 ‘전 구간에 그 구간 세율을 곱했을 때 과하게 걷힌 만큼’</strong>입니다. 예를 들어 과세표준 5억 원에 20%를 통째로 곱하면 1억 원인데, 실제로는 첫 1억 원에 10%만 붙어야 하므로 1천만 원이 과합니다. 그 1천만 원이 20% 구간의 누진공제액입니다.</p>
+
+  <h2 id="s4">4. 세율보다 공제가 먼저입니다 — 과세표준 만드는 순서</h2>
+
+  <p>세율표를 아무리 정확히 외워도 과세표준을 잘못 잡으면 결과가 틀립니다. 순서는 이렇습니다.</p>
+
+  <ol>
+    <li><strong>증여재산가액</strong> — 받은 재산의 평가액입니다. 부동산이라면 시가 평가가 따로 걸립니다.</li>
+    <li><strong>증여재산공제를 뺍니다</strong> — 관계별로 다르고 10년 단위로 적용됩니다.</li>
+    <li><strong>남은 금액이 과세표준</strong>입니다. 여기에 1번의 세율표를 적용합니다.</li>
+    <li><strong>산출세액에서 신고세액공제를 뺍니다</strong> — 기한 내 신고 시 3%입니다.</li>
+  </ol>
+
+  <p>2번의 공제 한도는 받는 사람(수증자) 기준으로, 주는 사람의 그룹별로 적용됩니다.</p>
+
+  <table class="tbl">
+    <thead><tr><th>증여자 그룹</th><th>공제 한도 (10년)</th></tr></thead>
+    <tbody>
+      <tr><td>배우자</td><td>6억 원</td></tr>
+      <tr><td>직계존속 (부모·조부모 등)</td><td>5천만 원 — 받는 사람이 미성년자면 2천만 원</td></tr>
+      <tr><td>직계비속 (자녀·손자녀 등)</td><td>5천만 원</td></tr>
+      <tr><td>6촌 이내 혈족 · 4촌 이내 인척</td><td>1천만 원</td></tr>
+    </tbody>
+  </table>
+
+  <p class="rel"><a href="/blog/jeungyeose-myeonje-hando">증여세 면제 한도는 얼마일까 — 성년 자녀 5천만 원, 배우자 6억 원이 10년 기준선입니다</a></p>
+
+  <h2 id="s5">5. 실제 계산 세 가지</h2>
+
+  <p>위 순서대로 세 경우를 계산했습니다. 모두 10년 안에 다른 증여가 없었다고 가정합니다.</p>
+
+  <h3>성년 자녀가 부모에게 현금 1억 5천만 원을 받은 경우</h3>
+
+  <ul>
+    <li>증여재산가액 1억 5천만 원 − 직계존속 공제 5천만 원 = <strong>과세표준 1억 원</strong></li>
+    <li>1억 원 이하 구간이므로 세율 10% → 산출세액 <strong>1천만 원</strong></li>
+    <li>기한 내 신고 시 신고세액공제 3%(30만 원) → <strong>납부세액 970만 원</strong></li>
+  </ul>
+
+  <h3>성년 자녀가 부모에게 4억 원을 받은 경우</h3>
+
+  <ul>
+    <li>4억 원 − 5천만 원 = <strong>과세표준 3억 5천만 원</strong></li>
+    <li>1억 초과 5억 이하 구간이므로 20%, 누진공제 1천만 원</li>
+    <li>3억 5천만 × 20% − 1천만 = <strong>산출세액 6천만 원</strong><br>(법령 안내문 방식으로도 1천만 + 2억 5천만 × 20% = 6천만 원입니다)</li>
+    <li>신고세액공제 3%(180만 원) → <strong>납부세액 5,820만 원</strong></li>
+  </ul>
+
+  <h3>배우자에게 8억 원을 받은 경우</h3>
+
+  <ul>
+    <li>8억 원 − 배우자 공제 6억 원 = <strong>과세표준 2억 원</strong></li>
+    <li>20% 구간, 누진공제 1천만 원 → 2억 × 20% − 1천만 = <strong>산출세액 3천만 원</strong></li>
+    <li>신고세액공제 3%(90만 원) → <strong>납부세액 2,910만 원</strong></li>
+  </ul>
+
+  <div class="note"><strong>받은 금액이 2배가 되면 세금은 2배보다 많이 늘어납니다.</strong> 위 두 번째 사례에서 4억 원이 아니라 8억 원을 받았다면 과세표준은 7억 5천만 원이 되고, 30% 구간으로 올라가 산출세액은 7억 5천만 × 30% − 6천만 = 1억 6,500만 원입니다. 받은 금액은 2배인데 세금은 약 2.75배입니다. 누진세율의 효과가 이 지점에서 나타납니다.</div>
+
+  <h2 id="s6">6. 상속세와 세율표가 같습니다</h2>
+
+  <p>증여세 세율(제56조)과 상속세 세율(제26조)은 <strong>구간과 세율이 동일합니다.</strong> 1억 원 이하 10%에서 30억 원 초과 50%까지 똑같습니다. 그래서 ‘증여가 유리한가, 상속이 유리한가’는 세율 차이 문제가 아닙니다.</p>
+
+  <p>갈리는 곳은 <strong>공제</strong>입니다. 상속에는 일괄공제·배우자상속공제처럼 증여에 없는 공제 항목들이 있고, 증여에는 10년 단위로 다시 쓸 수 있는 증여재산공제가 있습니다. 같은 세율표에 서로 다른 공제가 붙기 때문에 결론이 달라집니다.</p>
+
+  <p class="rel"><a href="/blog/sangsokse-myeonje-hando">상속세 면제 한도는 얼마일까 — 배우자 유무로 5억과 10억이 갈립니다</a></p>
+
+  <h2 id="s7">7. 신고기한과 신고세액공제 3%</h2>
+
+  <p>신고기한은 <strong>증여받은 날이 속하는 달의 말일부터 3개월 이내</strong>입니다(「상속세 및 증여세법」 제68조제1항). 11월 10일에 증여를 받았다면 11월 말일부터 3개월, 즉 다음 해 2월 말일까지입니다.</p>
+
+  <p>기한 내에 신고하면 <strong>신고세액공제 3%</strong>를 받습니다(제69조제2항). 법령 안내문은 이 공제를 ‘증여세산출세액에서 일정 금액을 공제한 금액의 100분의 3에 상당하는 금액을 공제하는 것’으로 적고 있고, 직계비속에 대한 증여의 할증과세도 산출세액에 포함해 계산한다고 함께 적고 있습니다.</p>
+
+  <div class="note"><strong>세액이 0원이어도 신고 대상입니다.</strong> 공제 범위 안에 들어와 낼 세금이 없는 경우에도 신고는 하는 쪽이 안전합니다. 특히 부동산이라면 신고한 평가액이 나중에 그 집을 팔 때의 취득가액 기준이 되기 때문에 실익이 있습니다.</div>
+
+  <h2 id="s8">8. 집을 증여할 때는 증여세만으로 끝나지 않습니다</h2>
+
+  <p>부동산을 증여하면 받는 사람에게 증여세만 붙는 것이 아닙니다. 적어도 세 가지가 더 걸립니다.</p>
+
+  <ul>
+    <li><strong>취득세</strong> — 증여도 취득입니다. 무상취득 세율이 별도로 적용되고, 집이 몇 채째인지와 조정대상지역 여부에 따라 달라집니다.</li>
+    <li><strong>나중에 팔 때의 양도소득세</strong> — 증여받은 집을 일정 기간 안에 팔면 취득가액을 증여 당시 평가액이 아니라 원래 증여자의 취득가액으로 계산하는 이월과세가 적용될 수 있습니다.</li>
+    <li><strong>부담부증여라면 양도세가 동시에 발생</strong> — 대출을 함께 넘기면 그 부분은 증여가 아니라 유상양도로 봅니다. 증여세와 양도세가 같이 나옵니다.</li>
+  </ul>
+
+  <p class="rel"><a href="/blog/apateu-chwideukse-serul">아파트 취득세 — 집값과 주택 수 두 단계로 세율이 정해집니다</a></p>
+  <p class="rel"><a href="/blog/jeungyeo-hu-yangdo-iwolgwase">증여받은 집을 10년 안에 팔면 — 취득가액이 증여자가 산 값이 됩니다</a></p>
+  <p class="rel"><a href="/blog/budambu-jeungyeo-yangdose">부담부증여 양도세·증여세 계산 전 과정 — 전세 낀 아파트 물려줄 때 세금</a></p>
+
+  <a class="cta" href="https://sekkomi.com/?utm_source=blog&amp;utm_medium=content&amp;utm_campaign=jeungyeose&amp;utm_content=mid" data-cta="mid" target="_blank" rel="noopener">
+    <div class="t">증여받은 집을 팔면 양도세가 얼마일까 — 취득가액과 양도가액만 넣으면 됩니다.</div>
+    <div class="b">무료로 계산해 보기 →</div>
+  </a>
+
+  <h2 id="faq">자주 묻는 질문</h2>
+
+  <div class="faq">
+    <details><summary>증여세율은 몇 퍼센트인가요?</summary>
+    <p>과세표준 구간에 따라 10%, 20%, 30%, 40%, 50%의 다섯 단계입니다. 1억 원 이하는 10%, 1억 원 초과 5억 원 이하는 20%, 5억 원 초과 10억 원 이하는 30%, 10억 원 초과 30억 원 이하는 40%, 30억 원 초과는 50%입니다. 여기서 과세표준은 받은 금액이 아니라 증여재산공제를 빼고 남은 금액입니다.</p></details>
+
+    <details><summary>증여세 세율과 증여세율, 어느 쪽이 맞는 말인가요?</summary>
+    <p>둘 다 같은 것을 가리키는 말이고 법령에서 쓰는 표현은 ‘세율’입니다. 「상속세 및 증여세법」 제56조가 증여세 세율을 정하고 있습니다. 검색에서는 증여세율, 증여세 세율, 증여세율표, 증여세 과세표준 등이 섞여 쓰이지만 찾는 내용은 같습니다.</p></details>
+
+    <details><summary>누진공제액은 왜 빼는 건가요?</summary>
+    <p>과세표준 전체에 그 구간의 세율을 곱하면 앞 구간에 낮은 세율이 적용되어야 할 부분까지 높은 세율로 계산되기 때문입니다. 그 과하게 계산된 금액이 누진공제액입니다. 예를 들어 과세표준 5억 원에 20%를 통째로 곱하면 1억 원인데, 첫 1억 원에는 10%만 붙어야 하므로 1천만 원이 과합니다. 그래서 20% 구간의 누진공제액이 1천만 원입니다.</p></details>
+
+    <details><summary>부모에게 1억 원을 받으면 증여세가 1천만 원인가요?</summary>
+    <p>아닙니다. 1억 원은 받은 금액이고 세율은 과세표준에 붙습니다. 성년 자녀가 직계존속에게 1억 원을 받고 10년 안에 다른 증여가 없었다면 증여재산공제 5천만 원을 빼서 과세표준은 5천만 원이 되고, 1억 원 이하 구간이므로 10%인 500만 원이 산출세액입니다. 기한 내 신고하면 신고세액공제 3%가 추가로 빠집니다.</p></details>
+
+    <details><summary>증여세 세율은 상속세 세율과 다른가요?</summary>
+    <p>구간과 세율은 같습니다. 증여세는 제56조, 상속세는 제26조에서 정하는데 1억 원 이하 10%부터 30억 원 초과 50%까지 동일합니다. 차이가 나는 곳은 세율이 아니라 공제입니다. 상속에는 일괄공제·배우자상속공제 같은 항목이 있고 증여에는 10년 단위의 증여재산공제가 있어서 결론이 달라집니다.</p></details>
+
+    <details><summary>구간을 조금 넘기면 세금이 크게 뛰나요?</summary>
+    <p>아닙니다. 누진세율이라 넘는 부분에만 높은 세율이 붙습니다. 과세표준이 1억 원에서 1억 100만 원으로 늘어나면, 초과한 100만 원에만 20%가 적용되어 세금은 20만 원 늘어납니다. 1억 100만 원 전체에 20%가 붙는 것이 아닙니다.</p></details>
+
+    <details><summary>세대를 건너뛰어 손자에게 증여하면 세율이 올라가나요?</summary>
+    <p>세율표 자체는 같지만 산출세액에 할증이 붙는 별도 규정이 있습니다. 법령 안내문도 신고세액공제를 설명하면서 직계비속에 대한 증여의 할증과세를 산출세액에 포함한다고 적고 있습니다. 다만 이 글에서 확인한 자료에 할증률 수치가 없어 숫자는 적지 않았습니다. 세대생략 증여를 검토하신다면 그 부분은 따로 확인하시기 바랍니다.</p></details>
+
+    <details><summary>증여세 세율이 2026년에 바뀌었나요?</summary>
+    <p>이 글을 쓴 2026년 11월 3일 시점까지 증여세 세율 구간이나 세율을 바꾼 법령 개정은 확인되지 않았습니다. 2026년 10월 1일에 상속세 및 증여세법 시행령 개정(대통령령 제36741호)이 공포·시행됐으나 세율을 바꾸는 내용은 확인되지 않았고, 개정이유 원문은 확보하지 못했습니다. 세법은 국회 심의 과정에서 바뀔 수 있으니 실제 신고 전에 다시 확인하시기 바랍니다.</p></details>
+
+  </div>
+
+  <a class="cta final" href="https://sekkomi.com/?utm_source=blog&amp;utm_medium=content&amp;utm_campaign=jeungyeose&amp;utm_content=final" data-cta="final" target="_blank" rel="noopener">
+    <div class="h">증여받은 집, 팔면 세금이 얼마일까</div>
+    <div class="s">취득가액과 양도가액만 넣으면 3분 만에 나옵니다. 가입도 결제도 없습니다.</div>
+    <div class="b">무료로 계산해 보기 →</div>
+  </a>
+
+  <div class="author"><b>세꼼이</b>는 부동산 세금을 스스로 확인해 볼 수 있게 만드는 무료 계산 도구입니다. 이 글은 정보 제공을 위한 것이며 개별 사안에 대한 세무 자문이 아닙니다.</div>
+
+  <div class="sources">
+    <h3>출처</h3>
+    <p>· 법제처 찾기쉬운 생활법령정보 — 증여 관련 세금 — 「상속세 및 증여세법」 제56조 증여세 세율표(1억 원 이하 10%, 1억~5억 20%·누진공제 1천만 원, 5억~10억 30%·6천만 원, 10억~30억 40%·1억 6천만 원, 30억 초과 50%·4억 6천만 원), 제53조 증여재산공제 한도, 제68조제1항 신고기한, 제69조제2항 신고세액공제 3%<br>
+    · 법제처 찾기쉬운 생활법령정보 — 상속 관련 세금 — 「상속세 및 증여세법」 제26조 세율표의 ‘기본금액 + 초과분에 대한 세율’ 표기(1천만 원·9천만 원·2억 4천만 원·10억 4천만 원). 본문 3번의 두 방식 대조는 이 표기와 위 누진공제액 표기를 경계값마다 직접 계산해 맞춘 것입니다<br>
+    · 상속세 및 증여세법 시행령 개정(대통령령 제36741호, 2026년 10월 1일 공포·시행) — 공포 사실만 확인했고 개정이유 원문은 미확인입니다. 증여세 세율을 바꾸는 내용은 확인되지 않았습니다</p>
+  </div>
+
+  <div class="disc">이 글은 2026년 11월 3일 기준으로 확인된 공개 자료를 바탕으로 작성했습니다. 국가법령정보센터와 국세청 사이트 접근이 막혀 있어 「상속세 및 증여세법」 제56조·제53조·제68조·제69조 본문은 직접 대조하지 못했고, 법제처 생활법령정보의 안내문을 근거로 삼았습니다. 세대생략 증여의 할증률은 확인된 자료에 수치가 없어 적지 않았습니다. 세법은 국회 심의 과정에서 바뀔 수 있고 개별 사안의 결론은 재산 평가액·관계·증여 시점에 따라 달라집니다. 실제 신고 전에는 관할 세무서나 세무 전문가에게 확인하시기 바랍니다.</div>
+</article>
+
+<footer>
+  <div class="ft">
+    <img src="assets/logo_full_dark.png" alt="세꼼이" class="ft-logo">
+    <div class="ft-links">
+      <a href="https://sekkomi.com/" target="_blank" rel="noopener">계산기</a>
+      <a href="/blog/">블로그</a>
+      <a href="mailto:sekkomi.com@gmail.com">문의</a>
+    </div>
+    <div class="ft-legal">© 2026 세꼼이(Sekkomi)</div>
+  </div>
+</footer>
+
+<script>
+  function track(ev,params){try{window.dataLayer=window.dataLayer||[];window.dataLayer.push(Object.assign({event:ev},params||{}));}catch(e){}}
+  track('blog_article_view',{article_id:'jeungyeose-serul',episode:'GUIDE',category:'증여세'});
+  document.querySelectorAll('a[data-cta]').forEach(function(a){
+    a.addEventListener('click',function(){ track('blog_cta_click',{cta_position:a.getAttribute('data-cta'),article:'jeungyeose-serul'}); });
+  });
+  document.querySelectorAll('.faq details').forEach(function(d,i){
+    d.addEventListener('toggle',function(){ if(d.open) track('faq_open',{q_index:i+1,article:'jeungyeose-serul'}); });
+  });
+  (function(){
+    var f=document.getElementById('sub-form');
+    if(f) f.addEventListener('submit',function(e){
+      e.preventDefault();
+      var em=document.getElementById('sub-email').value.trim();
+      var btn=f.querySelector('button'); btn.disabled=true;
+      fetch('/api/subscribe',{method:'POST',headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({email:em,source:'blog:jeungyeose-serul'})})
+        .then(function(r){return r.json();})
+        .then(function(d){
+          var m=document.getElementById('sub-msg');
+          if(d&&d.ok){f.style.display='none';m.textContent=d.already?'이미 구독 중이에요. 확정되면 알려드릴게요!':'등록됐어요. 확정되면 알려드릴게요!';m.style.display='block';track('subscribe_submit',{article:'jeungyeose-serul'});}
+          else{m.textContent='등록에 실패했어요. 이메일 주소를 확인해 주세요.';m.style.display='block';btn.disabled=false;}
+        })
+        .catch(function(){var m=document.getElementById('sub-msg');m.textContent='일시적인 오류예요. 잠시 후 다시 시도해 주세요.';m.style.display='block';btn.disabled=false;});
+    });
+  })();
+  document.querySelectorAll('.toc a').forEach(function(a){
+    a.addEventListener('click',function(){ track('blog_toc_click',{anchor:a.getAttribute('href'),article:'jeungyeose-serul'}); });
+  });
+  (function(){var hit={};var marks=[25,50,75,100];
+    window.addEventListener('scroll',function(){
+      var h=document.documentElement,b=document.body;
+      var st=h.scrollTop||b.scrollTop, sh=(h.scrollHeight||b.scrollHeight)-h.clientHeight;
+      if(sh<=0)return; var pct=Math.round(st/sh*100);
+      marks.forEach(function(m){ if(pct>=m&&!hit[m]){hit[m]=1;track('blog_scroll_depth',{depth:m,article:'jeungyeose-serul'});} });
+    },{passive:true});
+  })();
+</script>
+</body>
+</html>
