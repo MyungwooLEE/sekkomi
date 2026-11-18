@@ -154,6 +154,15 @@ function kstDay(d = new Date()) {
   return new Date(d.getTime() + 9 * 3600 * 1000).toISOString().slice(0, 10);
 }
 
+/**
+ * ★ 2026-11-18 오너 결정: 릴스 "우선 중단, 재기획 후 재개".
+ * REELS_PAUSED 가 true 인 동안 이 함수는 토큰 갱신만 하고 큐를 보지 않는다(게시 경로 자체에 도달하지 않음).
+ * 토큰 갱신을 남겨 둔 이유: 장기 토큰은 60일 안에 갱신하지 않으면 죽고, 죽으면 재개 때 오너가 토큰을 재발급해야 한다.
+ * 재개 절차: 아래 상수를 false 로 바꾸고, config.schedule 을 원래 값("*\/5 10-13 * * *")으로 되돌리고,
+ *            .github/workflows/render-reel.yml 의 push 트리거를 복원한다.
+ */
+const REELS_PAUSED = true;
+
 export default async () => {
   const log = [];
   const store = getStore(STORE);
@@ -162,6 +171,11 @@ export default async () => {
     let tok = await getToken(store);
     tok = await maybeRefreshToken(store, tok, log);
     const token = tok.access_token;
+
+    if (REELS_PAUSED) {
+      log.push("PAUSED (2026-11-18 오너 결정) — 토큰 갱신만 수행, 게시 안 함");
+      return;
+    }
 
     const items = await loadQueue();
     const now = Date.now();
@@ -290,6 +304,7 @@ export default async () => {
 };
 
 export const config = {
-  // UTC 10:00~13:59 매 5분 = KST 19:00~22:59 (숏폼 기준의 권장 게시 창)
-  schedule: "*/5 10-13 * * *",
+  // 중단 중(2026-11-18~): 하루 1회 토큰 갱신만. UTC 11:17 = KST 20:17.
+  // 재개 시 원래 값: "*/5 10-13 * * *" (UTC 10:00~13:59 매 5분 = KST 19:00~22:59)
+  schedule: "17 11 * * *",
 };
