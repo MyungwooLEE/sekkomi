@@ -6,6 +6,8 @@
   functions = "netlify/functions"
   # _parts/에 조각이 있으면 빌드 시 index.html을 조립한다 (자동화 도구의 대용량 커밋 한도 우회).
   # 체크섬이 안 맞으면 빌드가 실패해 기존 배포가 유지된다(안전). 검증용 사본을 build-index.sha256로 공개.
+  # 2026-11-18 추가: build-blog-cards가 카드·ItemList 없는 글을 index.html 빌드 산출물에 주입한다
+  #   (원본 무변경. 레포의 public/blog/index.html 은 라이브보다 카드가 적다 — 의도된 드리프트, 스크립트 머리말 참조).
   # 이어서 블로그 featured(히어로) 카드를 시리즈 그리드 최신글로 자동 동기화한다.
   # 이어서 build-seo-meta가 디스커버용 robots 메타·RSS 링크·글 전용 OG 이미지를 주입하고,
   # llms.txt와 rss.xml을 ItemList 기준으로 자동 재생성한다(전부 실패해도 빌드는 계속 — || true).
@@ -20,7 +22,7 @@
   #   이미 고유한 라벨(yangdose-serul-top 등)·series-nav·list-nav 는 건드리지 않는다. 멱등이다
   #   (바 위치 라벨만 매칭하므로 "<슬러그>-mid" 는 다시 걸리지 않는다). 원본 HTML 무변경이라
   #   IndexNow 대량 전송이 발생하지 않는다 — build-theme 와 같은 이유다.
-  command = "if [ -f _parts/index.sha256 ]; then cat _parts/index.html.part* > public/index.html && echo \"$(cat _parts/index.sha256)  public/index.html\" | sha256sum -c - && cp _parts/index.sha256 public/build-index.sha256; fi && node scripts/build-blog-featured.cjs && (node scripts/build-seo-meta.cjs || true) && (node scripts/build-llms-txt.cjs || true) && (node scripts/build-rss.cjs || true) && (node scripts/build-landing.cjs || true) && (node scripts/build-theme.cjs || true) && (node scripts/build-utm.cjs || true) && (node scripts/build-noindex.cjs || true) && (node scripts/indexnow-notify.cjs || true)"
+  command = "if [ -f _parts/index.sha256 ]; then cat _parts/index.html.part* > public/index.html && echo \"$(cat _parts/index.sha256)  public/index.html\" | sha256sum -c - && cp _parts/index.sha256 public/build-index.sha256; fi && (node scripts/build-blog-cards.cjs || true) && node scripts/build-blog-featured.cjs && (node scripts/build-seo-meta.cjs || true) && (node scripts/build-llms-txt.cjs || true) && (node scripts/build-rss.cjs || true) && (node scripts/build-landing.cjs || true) && (node scripts/build-theme.cjs || true) && (node scripts/build-utm.cjs || true) && (node scripts/build-noindex.cjs || true) && (node scripts/indexnow-notify.cjs || true)"
   # ★ 배포 예산: 프로덕션 배포 1회 = 15 크레딧(월 1,000). 여러 커밋으로 쪼개 올릴 때는
   #   마지막 1개를 뺀 모든 커밋 메시지 끝에 [skip ci] 를 붙여 발행 1건 = 배포 1회로 유지한다.
   # 빌드 스킵 규칙 (2026-08-05, 크레딧 절약): 사이트 산출물에 영향 없는 커밋(tools/·claude/ 문서만 변경 등)은 빌드를 생략한다.
