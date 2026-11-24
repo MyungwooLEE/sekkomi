@@ -30,18 +30,32 @@ function brokerFee(priceMan){
   return Math.round(Math.min(p*rate,cap)/10000); // 만원
 }
 
-/* 조정대상지역 간이 판정 (매트릭스 v0 근사) */
+/* 조정대상지역 판정 — 2026-11-24 갱신 (월 단위 근사)
+   현행 지정(정확): 서울 25개구 = 강남·서초·송파·용산(계속) + 21개구(2025.10.16~)
+     경기 12곳(2025.10.16~): 과천·광명·의왕·하남, 성남 분당·수정·중원, 수원 영통·장안·팔달, 안양 동안, 용인 수지
+     경기 3곳(2026.7.1~): 화성 동탄구, 용인 기흥구, 구리시
+   과거 이력: 2022.11.14 서울+과천·성남(분당·수정)·하남·광명 외 전부 해제 / 2023.1.5 강남·서초·송파·용산 외 전부 해제
+   ⚠ 2017~2022년 그 밖 지역(경기 대부분·인천·세종·광역시 등)의 지정 이력은 반영하지 않았다 → adjHistoryUnknown()으로 결과에 고지 */
+const RX_GG_1015=/과천|광명|의왕|하남|분당|수정구|중원구|영통구|장안구|팔달구|동안구|수지구/;
+const RX_GG_CORE22=/과천|광명|하남|분당|수정구/; // 2022.11.14 해제에서 남았던 곳
+const RX_GG_2607=/동탄|기흥|구리/;
 function isAdj(region,y,m){
   const t=ymNum(y,m);
   const gangnam=/강남|서초|송파|용산/.test(region);
   const seoul=/서울/.test(region);
-  const gyeonggiCore=/과천|분당|하남|광명/.test(region);
-  const newJul26=/동탄|기흥|구리/.test(region); // 2026.06.30 지정, 효력 2026.07.01
-  if(gangnam)return t>=ymNum(2017,9);
-  if(seoul)return (t>=ymNum(2017,9)&&t<ymNum(2023,1))||t>=ymNum(2025,10);
-  if(gyeonggiCore)return (t>=ymNum(2017,9)&&t<ymNum(2023,1))||t>=ymNum(2025,10);
-  if(newJul26)return t>=ymNum(2026,7); // 효력 2026.07.01부터 (월 단위 근사)
+  if(gangnam)return t>=ymNum(2017,8);
+  if(seoul)return (t>=ymNum(2017,8)&&t<ymNum(2023,1))||t>=ymNum(2025,10);
+  if(RX_GG_CORE22.test(region))return (t>=ymNum(2017,8)&&t<ymNum(2023,1))||t>=ymNum(2025,10);
+  if(RX_GG_1015.test(region))return t>=ymNum(2025,10);
+  if(RX_GG_2607.test(region))return t>=ymNum(2026,7);
   return false;
+}
+/* 2016.11~2022.12 취득인데 위 표에 이력이 없는 지역(서울·과천 등 확정분 제외) — 취득 당시 조정 여부를 확정할 수 없음 */
+function adjHistoryUnknown(region,y,m){
+  const t=ymNum(y,m);
+  if(t<ymNum(2016,11)||t>=ymNum(2023,1))return false;
+  if(/서울/.test(region)||/강남|서초|송파|용산/.test(region)||RX_GG_CORE22.test(region))return false;
+  return true;
 }
 
 /* ================= flow ================= */
@@ -410,6 +424,13 @@ async function flow(){
     if(oe<12)await bot('최근에 취득하셨네요. 일시적 2주택 기한이 충분히 남아 있어요.');
     else if(oe<36)await bot(Math.floor(oe/12)+'년 전이시네요. 일시적 2주택 기한 안에 매도해야 할 수도 있어요.');
     else await bot('3년 넘게 보유하셨네요. 일시적 2주택 비과세는 어려울 수 있어요. 결과에서 다른 시나리오를 봐드릴게요.');
+    A.otherAdj=null;
+    if(A.otherCount===1&&ymNum(A.otherAcq.y,A.otherAcq.m)>=ymNum(2026,8)){
+      await bot('하나만 더요. 2026년 10월부터 두 집이 모두 조정대상지역이면 처분 기한이 3년에서 2년으로 줄었어요.');
+      await bot('그 집을 사실 때, 그 집이 있는 곳이 조정대상지역이었나요?\nℹ️ 지금 조정대상지역: 서울 전역, 경기 과천·광명·의왕·하남·구리, 성남 분당·수정·중원, 수원 영통·장안·팔달, 안양 동안, 용인 수지·기흥, 화성 동탄');
+      A.otherAdj=await chips([{label:'네, 조정대상지역이에요',value:true},{label:'아니요',value:false},{label:'모르겠어요',value:null}]);
+      await bot(A.otherAdj===false?'그러면 기한은 3년으로 계산할게요.':(A.otherAdj?'그러면 두 집 다 조정대상지역인지 함께 보고 기한을 계산할게요.':'괜찮아요. 더 짧은 기한(2년)이 걸릴 수 있다고 보고 보수적으로 계산할게요.'));
+    }
     prog();
   }
 
