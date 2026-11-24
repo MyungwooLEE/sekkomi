@@ -317,13 +317,13 @@ SCRIPT.decide12=async(sc,g)=>{
       let why;
       if(taxSave>1) why='이 시점엔 <b>매도세도 '+fmtMan(taxSave)+' 줄어</b>(보유 길어져 공제↑) 임대에 유리해요.';
       else if(taxSave<-1) why='이 구간엔 매도세가 오히려 <b>'+fmtMan(-taxSave)+' 늘 수 있어요.</b>';
-      else why='매도세 변화는 거의 없어요. 임대수입에서 이자·재산세를 뺨 게 순손익이에요.';
+      else why='매도세 변화는 거의 없어요. 임대수입에서 이자·재산세를 뺀 게 순손익이에요.';
       return {big:(net>=0?'+':'−')+fmtMan(Math.abs(net)),sub:fmtYM(sd.y,sd.m)+'까지 임대 후 매도 시 순손익 (지금 매도 대비)',
         rows:'<span>임대수입 +'+fmtMan(rentInc)+'</span><span>대출이자 −'+fmtMan(interest)+'</span></div><div class="r"><span>재산세 등 −'+fmtMan(propTax)+'</span><span>매도세 '+(taxSave>=0?'절감 +':'증가 −')+fmtMan(Math.abs(taxSave))+'</span></div><div class="rwhy">💡 '+why,
         verd:net>0?{cls:'rc-good',txt:'✓ '+v+'개월('+fmtYM(sd.y,sd.m)+') 임대 후 매도가 지금보다 +'+fmtMan(net)}:{cls:'rc-bad',txt:v+'개월 임대해도 지금 매도가 '+fmtMan(-net)+' 더 나아요'},
         snap:{scnId:'decide12',scnName:'임대 vs 매도',headline:fmtYM(sd.y,sd.m)+'까지 임대 → 순'+(net>=0?'이득 ':'손해 ')+fmtMan(Math.abs(net)),param:v+'개월 임대 · 월세 '+fmtMan(A.sim.rentMonthly||0)}};}}),g);
   await c2simGate(g);
-  await c2bot('임대로 돌리면 그동안 <b>거주 요건이 멈춰요.</b> 위 계산은 그 정지를 반영했어요 — 비과세를 노리신다면 꼭 같이 보셔야 해요. (보증금은 돌려줄 돈이라 순수익에서 뺽어요)',g);
+  await c2bot('임대로 돌리면 그동안 <b>거주 요건이 멈춰요.</b> 위 계산은 그 정지를 반영했어요 — 비과세를 노리신다면 꼭 같이 보셔야 해요. (보증금은 돌려줄 돈이라 순수익에서 뺐어요)',g);
   await c2traps(sc,g); await c2actions(sc,g); await c2finish(sc,g);
 };
 SCRIPT.expenses=async(sc,g)=>{
