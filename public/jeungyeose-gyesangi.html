@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>증여세 계산기 — 증여세·취득세·부담부증여까지 한 번에 | 세꼼이</title>
+<meta name="description" content="무료 증여세 계산기. 증여세와 취득세, 부담부증여 때 주시는 분 양도세까지 가족 전체 부담으로 계산합니다.">
+<link rel="canonical" href="https://sekkomi.com/jeungyeose-gyesangi">
+<meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large">
+<meta name="theme-color" content="#163300">
+<script>window.GTM_ID='GTM-5JTC8935';window.dataLayer=window.dataLayer||[];
+(function(w,d,s,l,i){if(!i||i==='GTM-XXXXXXX'||i.indexOf('GTM-')!==0)return;w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer',window.GTM_ID);</script>
+<meta property="og:title" content="증여세 계산기 — 가족 전체 부담까지 | 세꼼이">
+<meta property="og:description" content="증여세·취득세·부담부증여 양도세를 한 화면에서 계산하는 무료 증여세 계산기.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://sekkomi.com/jeungyeose-gyesangi">
+<meta property="og:site_name" content="세꼼이">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:image" content="https://sekkomi.com/logo_full.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="증여세 계산기 — 가족 전체 부담까지 | 세꼼이">
+<meta name="twitter:description" content="증여세·취득세·부담부증여 양도세를 한 화면에서 계산하는 무료 증여세 계산기.">
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebApplication","@id":"https://sekkomi.com/jeungyeose-gyesangi#calculator","name":"세꼼이 증여세 계산기","alternateName":["증여세계산기","증여세 계산"],"url":"https://sekkomi.com/jeungyeose-gyesangi","applicationCategory":"FinanceApplication","operatingSystem":"Web","browserRequirements":"JavaScript 사용 가능한 최신 브라우저","inLanguage":"ko-KR","description":"받는 사람과의 관계, 재산 종류와 금액, 인수 채무, 10년 내 이전 증여를 답하면 증여세와 증여 취득세, 부담부증여일 때 주시는 분의 양도소득세까지 가족 전체 부담으로 계산하는 무료 웹 계산기.","featureList":["증여재산공제 10년 합산 반영","혼인·출산 증여재산공제 반영","세대생략 할증 30·40퍼센트 반영","증여 취득세 중과 12퍼센트 계산","부담부증여 채무 안분","주시는 분 양도소득세 동시 계산","신고기한 계산"],"offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"isAccessibleForFree":true,"publisher":{"@id":"https://sekkomi.com/#org"}},{"@type":"Organization","@id":"https://sekkomi.com/#org","name":"세꼼이","url":"https://sekkomi.com/","logo":"https://sekkomi.com/logo_full.png","email":"sekkomi.com@gmail.com"},{"@type":"BreadcrumbList","@id":"https://sekkomi.com/jeungyeose-gyesangi#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"세꼼이","item":"https://sekkomi.com/"},{"@type":"ListItem","position":2,"name":"증여세 계산기","item":"https://sekkomi.com/jeungyeose-gyesangi"}]}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","@id":"https://sekkomi.com/jeungyeose-gyesangi#faq","mainEntity":[{"@type":"Question","name":"증여세 계산기는 무엇을 계산해 주나요?","acceptedAnswer":{"@type":"Answer","text":"증여세와 증여 취득세를 계산하고, 대출이나 전세보증금을 함께 넘기는 부담부증여라면 주시는 분에게 생기는 양도소득세까지 더해 가족 전체 부담을 보여 줍니다. 간이 계산이므로 실제 신고 전에는 원문 자료로 다시 확인하셔야 합니다."}},{"@type":"Question","name":"증여재산공제는 얼마까지인가요?","acceptedAnswer":{"@type":"Answer","text":"상속세 및 증여세법 제53조 기준으로 배우자 6억원, 직계존속에게서 받으면 성년 5천만원·미성년 2천만원, 직계비속에게서 받으면 5천만원, 기타친족은 1천만원입니다. 10년 동안 같은 관계 그룹에서 통산합니다. 기타친족 범위는 2025년 3월 14일 개정으로 4촌 이내 혈족·3촌 이내 인척입니다."}},{"@type":"Question","name":"부담부증여가 항상 유리한가요?","acceptedAnswer":{"@type":"Answer","text":"아닙니다. 인수한 채무만큼 증여세 과세가액은 줄지만 그 채무는 주시는 분의 양도로 보아 양도소득세가 생깁니다. 주시는 분이 다주택이고 조정대상지역이면 중과가 붙어 가족 전체 부담이 더 커질 수 있습니다. 이 계산기는 두 세금을 함께 더해 보여 줍니다."}},{"@type":"Question","name":"증여세 신고기한은 언제까지인가요?","acceptedAnswer":{"@type":"Answer","text":"증여일이 속하는 달의 말일부터 3개월 이내입니다. 기한 안에 신고하면 신고세액공제 3퍼센트가 적용됩니다."}},{"@type":"Question","name":"증여 취득세가 12퍼센트가 되는 경우는 언제인가요?","acceptedAnswer":{"@type":"Answer","text":"조정대상지역에 있고 시가표준액 3억원 이상인 주택을 증여받으면 지방세법 제13조의2에 따라 12퍼센트가 적용됩니다. 다만 1세대 1주택자가 배우자나 직계존비속에게 증여하는 경우에는 중과에서 제외되어 3.5퍼센트가 적용됩니다."}}]}</script>
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script src="/gift-engine.js"></script>
+<script src="/yangdo-engine.js"></script>
+<style>
+:root{
+  --bg:#FBFAF7; --card:#FFFFFF; --ink:#161A14; --sub:#5F6358; --sub2:#9A9D92; --line:#E7E5DD;
+  --brand:#163300; --brand-dk:#0E2200; --accent:#9FE870; --good:#1DA45A; --warn:#C77700; --bad:#E5484D;
+  --bot:#F1EFEA; --user:#163300;
+  --r-card:20px; --r-btn:14px; --shadow:0 2px 8px rgba(22,51,0,.05), 0 10px 28px rgba(22,51,0,.06);
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{background:#EDEBE3;font-family:'Pretendard','Apple SD Gothic Neo','Noto Sans KR',-apple-system,sans-serif;color:var(--ink);display:flex;justify-content:center;-webkit-font-smoothing:antialiased;letter-spacing:-0.3px}
+#frame{width:100%;max-width:420px;height:100dvh;background:var(--bg);position:relative;overflow:hidden;box-shadow:0 0 60px rgba(17,24,39,.12)}
+.screen{position:absolute;inset:0;display:none;flex-direction:column;overflow:hidden;background:var(--bg)}
+.screen.on{display:flex}
+.scroll{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch}
+button{font-family:inherit;cursor:pointer;border:none}
+.btn-main{display:block;width:100%;padding:17px;background:var(--accent);color:var(--brand);font-size:17px;font-weight:800;border-radius:var(--r-btn);letter-spacing:-0.3px;transition:transform .08s,background .15s}
+.btn-main:active{background:#8FDB5F;transform:scale(.99)}
+.btn-ghost{display:block;width:100%;padding:13px;background:none;color:var(--sub);font-size:15.5px;font-weight:600;text-decoration:none;text-align:center}
+
+/* ===== S1 landing ===== */
+#g1{background:radial-gradient(125% 80% at 50% -5%, #24460f 0%, #163300 42%, #0E2200 100%)}
+#g1 .scroll{padding:0}
+.lp{position:relative;min-height:100%;display:flex;flex-direction:column;padding:calc(env(safe-area-inset-top) + 24px) 24px calc(env(safe-area-inset-bottom) + 20px);color:#fff;overflow:hidden}
+.lp::before{content:'';position:absolute;top:-14%;left:50%;transform:translateX(-50%);width:min(460px,120%);height:360px;background:radial-gradient(circle,rgba(159,232,112,.20),transparent 60%);pointer-events:none}
+.lp-top{position:relative;z-index:1;display:flex;align-items:center;justify-content:space-between}
+.lp-brand{font-size:21px;font-weight:800;letter-spacing:-.5px}
+.lp-brand b{color:var(--accent)}
+.lp-live{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:rgba(255,255,255,.85);background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.15);padding:5px 10px;border-radius:999px}
+.lp-live i{width:6px;height:6px;border-radius:50%;background:var(--accent)}
+.lp-hero{position:relative;z-index:1;flex:1;display:flex;flex-direction:column;justify-content:center;padding:18px 0}
+.lp-eyebrow{font-size:15px;font-weight:700;color:var(--accent);letter-spacing:-.3px}
+.lp-h1{font-size:33px;font-weight:800;line-height:1.26;letter-spacing:-1.2px;margin-top:13px;word-break:keep-all}
+.lp-h1 .hl{color:var(--accent)}
+.lp-sub{font-size:16px;line-height:1.62;color:rgba(255,255,255,.82);margin-top:16px;word-break:keep-all}
+.lp-steps{display:flex;gap:8px;margin-top:24px}
+.lp-steps div{flex:1;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:13px;padding:13px 8px;text-align:center;font-size:12.5px;color:rgba(255,255,255,.82);line-height:1.4;word-break:keep-all}
+.lp-steps b{display:block;color:#fff;font-size:15.5px;margin-bottom:3px}
+.lp-cta-wrap{position:relative;z-index:1;margin-top:22px;text-align:center}
+.lp-cta{width:100%;padding:19px;background:var(--accent);color:var(--brand);font-size:18px;font-weight:800;border-radius:16px;letter-spacing:-.3px;box-shadow:0 12px 32px rgba(159,232,112,.30);transition:transform .08s}
+.lp-cta:active{transform:scale(.98)}
+.lp-cta::after{content:'  \2192'}
+.lp-micro{text-align:center;font-size:13px;color:rgba(255,255,255,.72);margin-top:22px;line-height:1.6}
+.lp-links{display:flex;flex-direction:column;gap:2px;text-align:center;margin-top:26px;padding-top:18px;border-top:1px solid rgba(255,255,255,.12)}
+.lp-links a{color:var(--accent);font-weight:700;font-size:14.5px;text-decoration:underline;text-underline-offset:3px;padding:5px 0}
+.lp-foot{position:relative;z-index:1;text-align:center;font-size:12px;color:rgba(255,255,255,.5);margin-top:22px;padding-top:16px;border-top:1px solid rgba(255,255,255,.12);line-height:1.9}
+.lp-foot a{color:rgba(255,255,255,.62);text-decoration:none}
+
+/* ===== chat ===== */
+.pbar{height:4px;background:#E7E5DD;flex:none}
+.pbar i{display:block;height:100%;width:0;background:var(--brand);transition:width .4s}
+#chatScroll{padding:16px 14px 140px}
+.row-bot{display:flex;gap:8px;margin-bottom:10px;align-items:flex-start}
+.avatar{width:30px;height:30px;background:url('/logo_icon.png') center/contain no-repeat;color:transparent;font-size:0;flex:none;margin-top:2px}
+.avatar.hide{visibility:hidden}
+.bub{max-width:78%;background:var(--bot);padding:10px 13px;border-radius:4px 14px 14px 14px;font-size:16px;line-height:1.55;white-space:pre-wrap;word-break:keep-all}
+.bub .sub{display:block;margin-top:5px;font-size:14px;color:var(--sub)}
+.row-user{display:flex;justify-content:flex-end;margin-bottom:10px}
+.bub-user{max-width:78%;background:var(--user);color:#fff;padding:10px 13px;border-radius:14px 4px 14px 14px;font-size:16px;line-height:1.5;word-break:keep-all}
+.typing{display:inline-flex;gap:4px;padding:13px 14px;background:var(--bot);border-radius:4px 14px 14px 14px}
+.typing s{width:6px;height:6px;border-radius:50%;background:#9A9D92;animation:tp 1s infinite;text-decoration:none}
+.typing s:nth-child(2){animation-delay:.15s}.typing s:nth-child(3){animation-delay:.3s}
+@keyframes tp{0%,60%,100%{transform:translateY(0);opacity:.5}30%{transform:translateY(-4px);opacity:1}}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:4px 0 14px 34px}
+.chips.chips-cta{margin-top:8px}
+.chip{background:#EFF3E9;border:1px solid transparent;color:var(--brand);font-size:15.5px;font-weight:600;padding:10px 16px;border-radius:12px;transition:transform .08s}
+.chip:active{transform:scale(.97);background:#E2EAD3}
+.chip.cta{background:var(--accent);color:var(--brand);font-weight:800;font-size:16px;padding:14px 22px;border-radius:12px;box-shadow:0 4px 14px rgba(22,51,0,.16)}
+.chip.cta::after{content:' \2192';font-weight:800}
+.chip.sm{background:#F3F1EB;color:var(--sub);font-size:14.5px;padding:8px 13px}
+.qico{display:inline-block;width:17px;height:17px;border-radius:50%;background:#D8E7C4;color:var(--brand);font-size:13px;line-height:17px;text-align:center;font-weight:700;cursor:pointer;vertical-align:1px;margin-left:3px}
+.inline-input{margin:4px 0 14px 34px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px}
+.inline-input .drum{display:flex;gap:8px}
+.inline-input select{flex:1;padding:11px;border:1px solid var(--line);border-radius:10px;font-size:16.5px;background:#FBFAF7;font-family:inherit}
+.inline-input .ok{margin-top:10px;width:100%;padding:12px;background:var(--brand);color:#fff;border-radius:10px;font-size:16px;font-weight:700}
+.inline-input .ym{display:flex;gap:8px;align-items:center}
+.inline-input .ym input{width:60px;padding:11px;border:1px solid var(--line);border-radius:10px;font-size:16.5px;text-align:center}
+#dock{position:absolute;left:0;right:0;bottom:0;background:#fff;border-top:1px solid var(--line);padding:10px 12px calc(10px + env(safe-area-inset-bottom));display:none}
+#dock.on{display:block}
+#dock .hint{font-size:14px;color:var(--sub);margin-bottom:6px}
+#dock .moneyrow{display:flex;gap:8px}
+#dock input{flex:1;min-width:0;padding:12px;border:1.5px solid var(--brand);border-radius:10px;font-size:17px;font-family:inherit}
+#dock .ok{flex:0 0 auto;white-space:nowrap;padding:0 20px;background:var(--brand);color:#fff;border-radius:10px;font-weight:700;font-size:16px}
+#dock .kor{margin-top:6px;font-size:14.5px;color:var(--brand);font-weight:600;min-height:16px}
+#dock .subchips{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
+
+/* modal */
+.modal{position:absolute;inset:0;background:rgba(15,23,42,.45);display:none;align-items:flex-end;z-index:90}
+.modal.on{display:flex}
+.sheet{background:#fff;width:100%;border-radius:18px 18px 0 0;padding:20px 18px calc(22px + env(safe-area-inset-bottom));max-height:82%;overflow-y:auto}
+.sheet h3{font-size:17px;margin-bottom:12px}
+.sheet .addr-in{width:100%;padding:12px;border:1.5px solid var(--brand);border-radius:10px;font-size:16.5px;font-family:inherit}
+.help-body{font-size:15px;line-height:1.7;color:var(--ink);background:#FBFAF7;border-radius:10px;padding:14px;white-space:pre-wrap}
+.sheet .close{margin-top:14px;width:100%;padding:12px;background:#F3F1EB;border-radius:10px;font-size:15.5px;font-weight:600;color:var(--ink)}
+.sheet .hint{font-size:13.5px;color:var(--sub);margin-top:8px;line-height:1.6}
+
+/* ===== result ===== */
+#g3 .scroll{padding:18px 16px 40px}
+.res-top{background:var(--brand);color:#fff;border-radius:var(--r-card);padding:20px 18px;text-align:center}
+.res-top .lb{font-size:14px;color:rgba(255,255,255,.78);font-weight:600}
+.res-top .big{font-size:33px;font-weight:800;letter-spacing:-1.2px;margin-top:6px}
+.res-top .ss{font-size:13.5px;color:rgba(255,255,255,.72);margin-top:8px;line-height:1.6;word-break:keep-all}
+.zone-title{font-size:15.5px;font-weight:800;margin:24px 0 2px;letter-spacing:-0.2px}
+.zone-note{font-size:13.5px;color:var(--sub);margin-top:3px;line-height:1.6;word-break:keep-all}
+.bd-card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:6px 16px;margin-top:12px}
+.bd-row{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:11px 0;border-bottom:1px dashed var(--line);font-size:15px}
+.bd-row:last-child{border-bottom:none}
+.bd-row .lb{color:var(--sub);display:flex;align-items:center;gap:5px}
+.bd-row .amt{font-weight:600;white-space:nowrap}
+.bd-row.tot{font-weight:800}
+.bd-row.tot .lb{color:var(--ink);font-weight:800}
+.bd-row.sub0 .lb,.bd-row.sub0 .amt{color:var(--sub2);font-size:14px}
+.payer{display:flex;gap:8px;margin-top:12px}
+.payer>div{flex:1;background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px 12px;text-align:center}
+.payer .who{font-size:13px;color:var(--sub);font-weight:600}
+.payer .amt{font-size:19px;font-weight:800;margin-top:5px;letter-spacing:-.5px}
+.payer .det{font-size:12.5px;color:var(--sub2);margin-top:5px;line-height:1.5}
+.disc{margin-top:14px;background:#FFF8EC;border:1px solid #F2E2C4;border-radius:14px;padding:14px 16px}
+.disc b{display:block;font-size:14.5px;color:#8A5A00;margin-bottom:7px}
+.disc li{font-size:13.5px;color:#6B4E12;line-height:1.65;margin-left:16px;margin-bottom:5px;word-break:keep-all}
+.links{margin-top:14px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:6px 16px}
+.links a{display:block;padding:12px 0;border-bottom:1px solid var(--line);font-size:15px;color:var(--brand);font-weight:600;text-decoration:none}
+.links a:last-child{border-bottom:none}
+.links a::after{content:' \2192';color:var(--sub2)}
+.foot{text-align:center;font-size:12.5px;color:var(--sub2);margin-top:26px;padding-top:16px;border-top:1px solid var(--line);line-height:1.9}
+.foot a{color:var(--sub);text-decoration:none}
+.asof{display:inline-block;margin-top:10px;background:#EFF3E9;color:var(--brand);font-size:13px;font-weight:700;padding:6px 12px;border-radius:999px}
+</style>
+</head>
+<body>
+<div id="frame">
+
+  <!-- ===== 랜딩 ===== -->
+  <section class="screen on" id="g1">
+    <div class="scroll">
+      <div class="lp">
+        <div class="lp-top">
+          <div class="lp-brand">세<b>꼼</b>이</div>
+          <span class="lp-live"><i></i> 무료 · 가입 없음</span>
+        </div>
+        <div class="lp-hero">
+          <div class="lp-eyebrow">증여세 계산기</div>
+          <h1 class="lp-h1">증여세만 보면<br><span class="hl">절반을 못 본 거예요</span></h1>
+          <p class="lp-sub">집을 넘기면 받는 분은 증여세와 취득세를 내고, 대출을 같이 넘기면 주시는 분에게 양도소득세가 생깁니다. 세꼼이는 세 가지를 더해 <b>가족 전체가 내는 금액</b>으로 보여 드려요.</p>
+          <div class="lp-steps">
+            <div><b>1</b>관계와 금액</div>
+            <div><b>2</b>채무·이전 증여</div>
+            <div><b>3</b>전체 부담</div>
+          </div>
+        </div>
+        <div class="lp-cta-wrap">
+          <button class="lp-cta" id="startBtn">증여세 계산 시작하기</button>
+          <p class="lp-micro">상황에 따라 질문 6~22개 · 약 2~4분<br>입력값은 이 브라우저 안에서만 계산하고 보내지 않습니다</p>
+        </div>
+        <div class="lp-links">
+          <a href="/">양도세 계산기 →</a>
+          <a href="/blog/jeungyeose-serul">증여세 세율 글 읽기 →</a>
+          <a href="/blog/jeungyeose-myeonje-hando">증여세 면제 한도 글 읽기 →</a>
+        </div>
+        <div class="lp-foot">
+          <div>세꼼이는 세무 자격이 없는 1인 운영 서비스입니다. 세무 자문이 아니라 정보 제공입니다.</div>
+          <div style="margin-top:6px"><a href="/">세꼼이 홈</a> · <a href="/blog/">블로그</a></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 채팅 ===== -->
+  <section class="screen" id="g2">
+    <div class="pbar"><i id="pfill"></i></div>
+    <div class="scroll" id="chatScroll"></div>
+    <div id="dock">
+      <div class="hint" id="dockHint">만원 단위로 입력해주세요</div>
+      <div class="moneyrow">
+        <input id="dockIn" inputmode="numeric" placeholder="예: 80000">
+        <button class="ok" id="dockOk">확인</button>
+      </div>
+      <div class="kor" id="dockKor"></div>
+      <div class="subchips" id="dockChips"></div>
+    </div>
+  </section>
+
+  <!-- ===== 결과 ===== -->
+  <section class="screen" id="g3">
+    <div class="scroll" id="resScroll"></div>
+  </section>
+
+  <!-- 주소 -->
+  <div class="modal" id="addrModal">
+    <div class="sheet">
+      <h3>부동산 주소를 알려주세요</h3>
+      <div id="addrEmbed" style="width:100%;height:380px;display:none"></div>
+      <div id="addrManual" style="display:none">
+        <input class="addr-in" id="addrText" placeholder="예: 서울 강남구 역삼동">
+        <p class="hint" id="addrTextHint">시·구까지 적어주시면 조정대상지역 여부를 반영합니다.</p>
+        <button class="close" id="addrTextOk" style="background:var(--brand);color:#fff">확인</button>
+      </div>
+      <button class="btn-ghost" id="addrManualToggle">직접 입력하기</button>
+    </div>
+  </div>
+
+  <!-- 도움말 -->
+  <div class="modal" id="helpModal">
+    <div class="sheet">
+      <h3 id="helpTitle">도움말</h3>
+      <div class="help-body" id="helpBody"></div>
+      <button class="close" onclick="closeHelp()">닫기</button>
+    </div>
+  </div>
+
+</div>
+<script>
+/* ================= 세꼼이 증여세 계산기 — 화면 흐름 =================
+   세법 수치는 이 파일에 하나도 없다. 전부 /gift-engine.js(증여세·취득세)와
+   /yangdo-engine.js(부담부증여 때 주시는 분 양도세)가 계산한다.
+   두 파일은 scripts/build-tax-engines.cjs 가 tools/tax/gift-engine.cjs 와
+   _parts/index.html.part* 에서 그대로 복사·추출한다(운영 기준 §17).
+   이 화면은 입력을 모아 엔진에 넘기고, 엔진이 돌려준 값을 포맷만 해서 보여 준다. */
+/* ================= helpers ================= */
+const $=s=>document.querySelector(s);
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+const now=new Date(); const NOWY=now.getFullYear(), NOWM=now.getMonth()+1;
+function fmtMan(v){
+  v=Math.round(v);
+  const neg=v<0; v=Math.abs(v);
+  const eok=Math.floor(v/10000), man=v%10000;
+  let s='';
+  if(eok>0) s+=eok+'억'+(man>0?' ':'');
+  if(man>0||eok===0) s+=man.toLocaleString()+'만';
+  return (neg?'-':'')+s+'원';
+}
+function fmtYM(y,m){return y+'년 '+m+'월'}
+function track(ev,params){try{window.dataLayer=window.dataLayer||[];window.dataLayer.push(Object.assign({event:ev},params||{}));}catch(e){}}
+function show(id){document.querySelectorAll('.screen').forEach(e=>e.classList.remove('on'));$('#'+id).classList.add('on');}
+
+const HELP={
+ value:['재산 금액은 무엇을 적나요?','세법은 증여일 전후 6개월 안의 시가를 기준으로 봅니다.\n\n아파트라면 같은 단지·비슷한 면적·비슷한 층의 최근 매매가가 1순위이고, 그런 거래가 없으면 감정가액, 그다음이 공시가격 순서입니다.\n\n공시가격을 적으시면 실제 평가액보다 낮게 나와 세금이 적게 계산될 수 있습니다. 이 계산기는 입력한 금액을 그대로 씁니다.'],
+ debt:['대출·보증금을 함께 넘기면','받는 분이 그 채무를 같이 떠안는 것을 부담부증여라고 합니다.\n\n채무만큼은 증여가 아니라 주시는 분이 유상으로 넘긴 것으로 보아, 주시는 분에게 양도소득세가 생깁니다. 받는 분의 증여세 과세가액에서는 그 채무를 뺍니다.\n\n배우자·직계존비속 사이에서는 채무를 실제로 받는 분이 떠안고 갚는다는 사실이 자료로 확인되어야 유상으로 인정됩니다.'],
+ std3:['시가표준액','취득세에서 쓰는 지방자치단체 고시 가격입니다. 주택은 보통 공시가격과 같습니다.\n\n조정대상지역에 있고 이 금액이 3억원 이상인 주택을 증여받으면 취득세율이 올라갑니다.'],
+ over85:['전용면적 85제곱미터','아파트 분양 평수로 흔히 말하는 34평이 대략 전용 84제곱미터입니다. 85제곱미터를 넘으면 농어촌특별세가 더 붙습니다.'],
+ onehouse:['주시는 분의 주택 수','주시는 분이 세대 전체로 집이 이것 하나뿐이라면, 배우자나 직계존비속에게 증여할 때 취득세 중과에서 빠집니다.\n\n주택 수는 세대 단위로 세고, 분양권·조합원입주권·주거용 오피스텔도 들어갈 수 있습니다.'],
+ skip:['한 세대를 건너뛴 증여','할아버지가 손자에게 바로 주는 것처럼 중간 세대를 건너뛰면 산출세액에 할증이 붙습니다.\n\n다만 중간 세대(아버지)가 이미 돌아가셔서 손자가 그 자리를 대신 받는 경우에는 할증이 없습니다.'],
+ prior:['10년 안의 이전 증여','같은 분에게 10년 안에 받은 재산은 이번 증여와 합쳐서 세율을 매깁니다. 부모님이라면 아버지·어머니를 한 분으로 봅니다.\n\n합친 금액이 1천만원에 못 미치면 더하지 않습니다. 그때 낸 세금은 이번 세액에서 빼 줍니다.'],
+ deductother:['다른 분에게 이미 쓴 공제','증여재산공제는 받는 사람 기준으로 관계 그룹마다 10년 통산 한도가 있습니다.\n\n예를 들어 할아버지에게 받으면서 직계존속 공제 5천만원을 이미 썼다면, 이번에 아버지에게 받을 때 그 그룹의 남은 한도가 줄어듭니다.'],
+ mb:['혼인·출산 증여재산공제','직계존속에게서 받은 증여에만 적용됩니다. 혼인신고일 전후 2년 안, 또는 자녀의 출생·입양 신고일부터 2년 안의 증여가 대상입니다.\n\n혼인과 출산을 합쳐 평생 1억원 한도이고, 위의 증여재산공제와는 별도로 더 빼 줍니다.'],
+ filetime:['기한 안에 신고하면','증여일이 속한 달의 말일부터 3개월 안에 신고하면 산출세액의 3퍼센트를 깎아 줍니다.'],
+ priortax:['그때 낸 세금','이전 증여를 신고하고 낸 산출세액입니다. 모르시면 0으로 두셔도 계산은 되지만, 그만큼 이번 세액이 크게 나옵니다. 결과 화면에 그 사실을 적어 드립니다.']
+};
+function openHelp(k){const h=HELP[k];if(!h)return;$('#helpTitle').textContent=h[0];$('#helpBody').textContent=h[1];$('#helpModal').classList.add('on')}
+function closeHelp(){$('#helpModal').classList.remove('on')}
+
+/* ================= chat primitives ================= */
+const chat=$('#chatScroll');
+let firstBubbleOfTurn=true, step=0;
+const STEPS_EST=14;
+function bump(){step++;$('#pfill').style.width=Math.min(97,Math.round(step/STEPS_EST*100))+'%'}
+function scrollBottom(){chat.scrollTop=chat.scrollHeight}
+async function bot(text,opt){
+  opt=opt||{};
+  const t=document.createElement('div');t.className='row-bot';
+  t.innerHTML='<div class="avatar'+(firstBubbleOfTurn?'':' hide')+'"></div><div class="typing"><s></s><s></s><s></s></div>';
+  chat.appendChild(t);scrollBottom();
+  await sleep(opt.slow?760:420);
+  t.remove();
+  const r=document.createElement('div');r.className='row-bot';
+  const inner=text.replace(/\?icon:(\w+)/g,function(_,k){return '<span class="qico" onclick="openHelp(\''+k+'\')">?</span>'});
+  r.innerHTML='<div class="avatar'+(firstBubbleOfTurn?'':' hide')+'"></div><div class="bub">'+inner+(opt.sub?'<span class="sub">└ '+opt.sub+'</span>':'')+'</div>';
+  chat.appendChild(r);scrollBottom();
+  firstBubbleOfTurn=false;
+}
+function userSay(text){
+  const r=document.createElement('div');r.className='row-user';
+  r.innerHTML='<div class="bub-user">'+text+'</div>';
+  chat.appendChild(r);scrollBottom();
+  firstBubbleOfTurn=true;
+}
+function chips(list){
+  return new Promise(function(res){
+    const w=document.createElement('div');w.className='chips';
+    const isCta=list.length===1;
+    if(isCta)w.classList.add('chips-cta');
+    list.forEach(function(it){
+      const b=document.createElement('button');
+      b.className=(isCta?'chip cta':'chip')+(it.small?' sm':'');
+      b.textContent=it.label;
+      b.onclick=function(){w.remove();userSay(it.label);bump();res(it.value)};
+      w.appendChild(b);
+    });
+    chat.appendChild(w);scrollBottom();
+  });
+}
+function dateYM(opt){
+  opt=opt||{};
+  return new Promise(function(res){
+    const w=document.createElement('div');w.className='inline-input';
+    const y0=opt.minY||1980, y1=opt.maxY||NOWY;
+    let ys='';for(let y=y1;y>=y0;y--)ys+='<option value="'+y+'">'+y+'년</option>';
+    let ms='';for(let m=1;m<=12;m++)ms+='<option value="'+m+'">'+m+'월</option>';
+    w.innerHTML='<div class="drum"><select class="yy">'+ys+'</select><select class="mm">'+ms+'</select></div><button class="ok">확인</button>';
+    w.querySelector('.yy').value=Math.min(Math.max(opt.defY||2015,y0),y1);
+    w.querySelector('.mm').value=opt.defM||6;
+    w.querySelector('.ok').onclick=function(){
+      const v={y:+w.querySelector('.yy').value,m:+w.querySelector('.mm').value};
+      w.remove();userSay(fmtYM(v.y,v.m));bump();res(v);
+    };
+    chat.appendChild(w);scrollBottom();
+  });
+}
+function yearsMonths(){
+  return new Promise(function(res){
+    const w=document.createElement('div');w.className='inline-input';
+    w.innerHTML='<div class="ym"><input class="iy" inputmode="numeric" placeholder="0">년 <input class="im" inputmode="numeric" placeholder="0">개월</div><button class="ok">확인</button>';
+    w.querySelector('.ok').onclick=function(){
+      const yv=+w.querySelector('.iy').value||0, mv=+w.querySelector('.im').value||0;
+      w.remove();userSay(yv+'년 '+mv+'개월');bump();res(yv*12+mv);
+    };
+    chat.appendChild(w);scrollBottom();
+  });
+}
+function money(opt){
+  opt=opt||{};
+  return new Promise(function(res){
+    const dock=$('#dock');dock.classList.add('on');
+    $('#dockHint').textContent=opt.hint||'만원 단위로 입력해주세요';
+    const inp=$('#dockIn');inp.value='';inp.placeholder=opt.placeholder||'예: 80000';
+    $('#dockKor').textContent='';
+    const chipsEl=$('#dockChips');chipsEl.innerHTML='';
+    (opt.chips||[]).forEach(function(c){
+      const b=document.createElement('button');b.className='chip sm';b.textContent=c.label;
+      b.onclick=function(){cleanup();userSay(c.label);bump();res({chip:c.value})};
+      chipsEl.appendChild(b);
+    });
+    inp.oninput=function(){const v=parseInt(inp.value.replace(/[^0-9]/g,''))||0;$('#dockKor').textContent=v?fmtMan(v):''};
+    function cleanup(){dock.classList.remove('on');$('#dockOk').onclick=null;inp.oninput=null}
+    $('#dockOk').onclick=function(){
+      const v=parseInt(inp.value.replace(/[^0-9]/g,''))||0;
+      const min=(opt.min===undefined)?1:opt.min;
+      if(v<min||v>100000000){$('#dockHint').textContent=opt.rangeMsg||'숫자를 다시 확인해주세요';return}
+      cleanup();userSay(fmtMan(v));bump();res(v);
+    };
+    try{inp.focus()}catch(e){}
+  });
+}
+function address(){
+  return new Promise(function(res){
+    const m=$('#addrModal');m.classList.add('on');
+    const embed=$('#addrEmbed'), manual=$('#addrManual');
+    function pick(a){m.classList.remove('on');userSay(a.road);bump();res(a)}
+    function useManual(){
+      embed.style.display='none';manual.style.display='block';
+      const inp=$('#addrText');inp.value='';
+      $('#addrTextOk').onclick=function(){
+        const t=(inp.value||'').trim();
+        if(t.length<4){$('#addrTextHint').textContent='시·구까지 적어주세요 (예: 서울 강남구 역삼동)';$('#addrTextHint').style.color='var(--bad)';return}
+        pick({road:t,region:t});
+      };
+      setTimeout(function(){try{inp.focus()}catch(e){}},60);
+    }
+    $('#addrManualToggle').onclick=useManual;
+    if(window.daum&&window.daum.Postcode){
+      embed.style.display='block';manual.style.display='none';embed.innerHTML='';
+      try{
+        new daum.Postcode({oncomplete:function(data){
+          const road=(data.roadAddress||data.jibunAddress||data.address);
+          const region=(data.sido+' '+data.sigungu).replace(/\s+/g,' ').trim();
+          pick({road:road,region:region});
+        },width:'100%',height:'100%',maxSuggestItems:5}).embed(embed);
+      }catch(e){useManual()}
+    }else useManual();
+  });
+}
+
+/* ================= 입력 수집 ================= */
+const IN={};   /* 엔진에 그대로 넘길 입력 */
+const META={}; /* 화면에만 쓰는 메모 (고지문 등) */
+
+async function flow(){
+  if(!window.SekkomiGift||!window.SekkomiYangdo){
+    await bot('계산 엔진을 불러오지 못했어요. 잠시 뒤 새로고침해 주세요.');
+    return;
+  }
+  await bot('안녕하세요. 증여세 계산기예요.\n몇 가지만 여쭤보고 가족 전체가 내는 금액을 계산해 드릴게요.',{slow:true});
+
+  /* Q1 관계 */
+  await bot('먼저, 누구에게 주시나요?');
+  const who=await chips([
+    {label:'배우자',value:'spouse'},
+    {label:'자녀',value:'child'},
+    {label:'손자·손녀',value:'grandchild'},
+    {label:'부모님',value:'parent'},
+    {label:'사위·며느리 등 친척',value:'kin'},
+    {label:'친족이 아닌 사람',value:'none'}
+  ]);
+  META.who=who;
+  IN.rel=(who==='spouse')?'spouse':(who==='child'||who==='grandchild')?'ascendant':(who==='parent')?'descendant':(who==='kin')?'other_kin':'none';
+
+  /* Q2 미성년 */
+  if(who==='child'||who==='grandchild'){
+    await bot('받는 분이 만 19세 미만인가요?');
+    IN.minor=await chips([{label:'네, 미성년입니다',value:true},{label:'아니요, 성년입니다',value:false}]);
+  }
+
+  /* Q2b 세대생략 */
+  if(who==='grandchild'){
+    await bot('중간 세대(받는 분의 부모)가 살아 계신가요? ?icon:skip');
+    IN.skipGeneration=await chips([{label:'네, 살아 계십니다',value:true},{label:'아니요, 돌아가셨습니다',value:false}]);
+  }
+
+  /* Q3 재산 종류 */
+  await bot('무엇을 주시나요?');
+  const asset=await chips([
+    {label:'현금·예금',value:'cash'},
+    {label:'아파트·주택',value:'house'},
+    {label:'토지·상가 등',value:'land'}
+  ]);
+  META.asset=asset;
+
+  /* Q4 금액 */
+  if(asset==='cash'){
+    await bot('금액이 얼마인가요?');
+    IN.value=await money({hint:'만원 단위로 입력해주세요 (1억 = 10000)',placeholder:'예: 10000'});
+  }else{
+    await bot('그 재산의 시가가 얼마인가요? ?icon:value',{sub:'증여일 전후 6개월 안의 시가 기준이에요'});
+    IN.value=await money({hint:'만원 단위로 입력해주세요 (8억 = 80000)',placeholder:'예: 80000'});
+  }
+
+  /* Q5 채무 */
+  IN.debt=0;
+  if(asset!=='cash'){
+    await bot('대출이나 전세보증금도 같이 넘기시나요? ?icon:debt');
+    const hasDebt=await chips([{label:'아니요',value:false},{label:'네, 같이 넘깁니다',value:true}]);
+    if(hasDebt){
+      await bot('받는 분이 떠안는 채무가 얼마인가요?');
+      const d=await money({hint:'만원 단위로 입력해주세요',placeholder:'예: 40000'});
+      IN.debt=Math.min(d,IN.value);
+      if(d>IN.value)META.debtCapped=true;
+    }
+  }
+
+  /* Q6~Q9 부동산 상세 */
+  if(asset==='house'||asset==='land'){
+    IN.re={isHouse:asset==='house'};
+    if(asset==='house'){
+      await bot('그 집 주소를 알려주세요.',{sub:'조정대상지역인지에 따라 취득세율이 달라져요'});
+      const a=await address();
+      META.region=a.region; META.road=a.road;
+      IN.re.adj=window.SekkomiYangdo.isAdj(a.region,NOWY,NOWM);
+      await bot('그 집의 시가표준액이 3억원 이상인가요? ?icon:std3');
+      const s3=await chips([{label:'네, 3억원 이상',value:'y'},{label:'아니요',value:'n'},{label:'잘 모르겠어요',value:'u'}]);
+      IN.re.stdPrice3eok=(s3!=='n');
+      if(s3==='u')META.std3Unknown=true;
+      await bot('전용면적이 85제곱미터를 넘나요? ?icon:over85');
+      const o85=await chips([{label:'네, 넘습니다',value:'y'},{label:'아니요',value:'n'},{label:'잘 모르겠어요',value:'u'}]);
+      IN.re.over85=(o85!=='n');
+      if(o85==='u')META.over85Unknown=true;
+      await bot('주시는 분은 세대 전체로 집이 이것 하나인가요? ?icon:onehouse');
+      const dOne=await chips([{label:'네, 이 집 하나입니다',value:true},{label:'아니요, 두 채 이상입니다',value:false}]);
+      IN.re.donorOneHouse=dOne;
+      META.donorOneHouse=dOne;
+    }
+  }
+
+  /* Q10~Q12 부담부증여 — 주시는 분 양도세 입력 */
+  META.cgt=null;
+  if(IN.debt>0&&asset==='house'){
+    await bot('이제 주시는 분 쪽을 여쭤볼게요.\n채무만큼은 주시는 분이 넘긴 것으로 보아 양도소득세가 생겨요.',{slow:true});
+    await bot('주시는 분이 이 집을 언제 사셨나요?');
+    const dAcq=await dateYM({defY:2015,defM:6,maxY:NOWY});
+    await bot('그때 사신 가격이 얼마인가요?');
+    const dPrice=await money({hint:'만원 단위로 입력해주세요',placeholder:'예: 40000'});
+    let dRes=0;
+    if(IN.re.donorOneHouse){
+      await bot('주시는 분이 그 집에 실제로 사신 기간은 얼마나 되나요?',{sub:'전입신고하고 실제로 거주한 기간을 합해서 알려주세요'});
+      dRes=await yearsMonths();
+    }
+    META.donor={acqDate:dAcq,acqPrice:dPrice,resMonths:dRes};
+  }else if(IN.debt>0&&asset==='land'){
+    META.cgtSkipped=true;
+  }
+
+  /* Q13 10년 내 이전 증여 */
+  IN.priorSameDonor={value:0,calcTax:0};
+  await bot('지난 10년 안에 같은 분에게 받은 재산이 있나요? ?icon:prior',{sub:'부모님이라면 아버지·어머니를 한 분으로 봐요'});
+  const hasPrior=await chips([{label:'없습니다',value:false},{label:'있습니다',value:true}]);
+  if(hasPrior){
+    await bot('그 금액을 모두 합하면 얼마인가요?');
+    IN.priorSameDonor.value=await money({hint:'만원 단위로 입력해주세요',placeholder:'예: 5000'});
+    await bot('그때 낸 증여세 산출세액은 얼마인가요? ?icon:priortax');
+    const pt=await money({hint:'만원 단위로 입력해주세요',placeholder:'예: 485',min:0,chips:[{label:'모르겠어요',value:'unknown'},{label:'0원이었어요',value:'zero'}]});
+    if(typeof pt==='number')IN.priorSameDonor.calcTax=pt;
+    else if(pt.chip==='unknown'){IN.priorSameDonor.calcTax=0;META.priorTaxUnknown=true}
+    else IN.priorSameDonor.calcTax=0;
+  }
+
+  /* Q14 같은 그룹 다른 분에게 쓴 공제 */
+  IN.deductUsedOther=0;
+  if(IN.rel!=='none'){
+    await bot('같은 관계의 다른 분에게 받으면서 이미 쓴 증여재산공제가 있나요? ?icon:deductother',{sub:'예를 들어 할아버지에게 받으며 직계존속 공제를 쓴 경우예요'});
+    const hasOther=await chips([{label:'없습니다',value:false},{label:'있습니다',value:true}]);
+    if(hasOther){
+      await bot('이미 쓴 공제 금액이 얼마인가요?');
+      IN.deductUsedOther=await money({hint:'만원 단위로 입력해주세요',placeholder:'예: 5000'});
+    }
+  }
+
+  /* Q15 혼인·출산 공제 */
+  IN.marriageBirth={eligible:false,usedBefore:0};
+  if(IN.rel==='ascendant'&&!IN.minor){
+    await bot('혼인신고 전후 2년 또는 출산·입양 신고 후 2년 안에 받는 증여인가요? ?icon:mb');
+    const mb=await chips([{label:'해당 없습니다',value:'no'},{label:'혼인에 해당합니다',value:'marriage'},{label:'출산·입양에 해당합니다',value:'birth'}]);
+    if(mb!=='no'){
+      IN.marriageBirth.eligible=true;
+      META.mbKind=(mb==='marriage')?'혼인':'출산·입양';
+      await bot('혼인·출산 공제를 전에 쓰신 금액이 있나요?',{sub:'둘을 합쳐 평생 1억원 한도예요'});
+      const used=await money({hint:'만원 단위로 입력해주세요',placeholder:'예: 0',min:0,chips:[{label:'쓴 적 없어요',value:'none'}]});
+      IN.marriageBirth.usedBefore=(typeof used==='number')?used:0;
+    }
+  }
+
+  /* Q16 기한 내 신고 */
+  await bot('증여세를 기한 안에 신고하실 계획인가요? ?icon:filetime');
+  IN.fileOnTime=await chips([{label:'네, 기한 안에 신고합니다',value:true},{label:'아니요',value:false}]);
+
+  await bot('다 여쭤봤어요. 계산해 볼게요.',{slow:true});
+  $('#pfill').style.width='100%';
+  await sleep(500);
+  compute();
+}
+</script>
+<script>
+/* ================= 계산 — 엔진 호출만 한다 ================= */
+function compute(){
+  const G=window.SekkomiGift, Y=window.SekkomiYangdo;
+  const g=G.giftTax(IN);
+  let cgt=null;
+  if(IN.debt>0&&META.donor){
+    const bt=G.burdenTransfer(IN.value,IN.debt,META.donor.acqPrice);
+    META.bt=bt;
+    META.adjHistUnknown=Y.adjHistoryUnknown(META.region,META.donor.acqDate.y,META.donor.acqDate.m);
+    Y.setA({
+      salePrice:bt.salePrice, acqPrice:bt.acqPrice, acqExp:0, saleExp:0,
+      acqDate:META.donor.acqDate, saleDate:{y:NOWY,m:NOWM},
+      currentlyLiving:META.donor.resMonths>0,
+      resMonthsAtSale:META.donor.resMonths, resMonthsNow:META.donor.resMonths,
+      ptype:'apartment', offiUse:null,
+      otherCount:META.donorOneHouse?0:1,
+      otherAcq:META.donorOneHouse?null:{y:2010,m:1},
+      memberOtherHouse:false,
+      address:{region:META.region},
+      acqAdj:Y.isAdj(META.region,META.donor.acqDate.y,META.donor.acqDate.m),
+      isResident:true, own:'single', myShare:100, members:[], resRatio:100
+    });
+    cgt=Y.calc();
+  }
+  window.__SEKKOMI_LAST__={input:JSON.parse(JSON.stringify(IN)),gift:g,cgt:cgt,meta:JSON.parse(JSON.stringify(META))};
+  track('calc_complete_gift',{calc_type:'gift',family_total:Math.round(g.familyTotal+(cgt?cgt.total:0)),has_debt:IN.debt>0?1:0});
+  render(g,cgt);
+  show('g3');
+  $('#resScroll').scrollTop=0;
+}
+
+/* ================= 결과 화면 ================= */
+function row(lb,amt,cls){
+  return '<div class="bd-row'+(cls?' '+cls:'')+'"><span class="lb">'+lb+'</span><span class="amt">'+amt+'</span></div>';
+}
+function render(g,cgt){
+  const donorCgt=cgt?cgt.total:0;
+  const familyTotal=g.giftTax+g.acqTax+donorCgt;
+  const relName={spouse:'배우자',child:'자녀',grandchild:'손자·손녀',parent:'부모님',kin:'친척',none:'친족이 아닌 사람'}[META.who];
+  const assetName={cash:'현금·예금',house:'아파트·주택',land:'토지·상가 등'}[META.asset];
+  const dl=window.SekkomiGift.fileDeadline(NOWY,NOWM);
+  let h='';
+
+  /* 1) 가족 전체 부담 */
+  h+='<div class="res-top">';
+  h+='<div class="lb">가족 전체가 내는 금액</div>';
+  h+='<div class="big">'+fmtMan(familyTotal)+'</div>';
+  h+='<div class="ss">'+relName+'에게 '+assetName+' '+fmtMan(IN.value)+(IN.debt>0?' (채무 '+fmtMan(IN.debt)+' 포함)':'')+'을 넘기는 경우<br>증여세 + 취득세'+(cgt?' + 주시는 분 양도소득세':'')+'를 더한 금액이에요</div>';
+  h+='</div>';
+
+  /* 2) 누가 얼마 */
+  h+='<div class="payer">';
+  h+='<div><div class="who">받는 분</div><div class="amt">'+fmtMan(g.giftTax+g.acqTax)+'</div><div class="det">증여세 '+fmtMan(g.giftTax)+(g.acqTax>0?'<br>취득세 '+fmtMan(g.acqTax):'')+'</div></div>';
+  h+='<div><div class="who">주시는 분</div><div class="amt">'+fmtMan(donorCgt)+'</div><div class="det">'+(cgt?'채무분 양도소득세<br>(지방소득세 포함)':(META.cgtSkipped?'이 화면에서 계산하지 않았어요':'채무를 넘기지 않아 없어요'))+'</div></div>';
+  h+='</div>';
+
+  /* 3) 증여세 계산 과정 */
+  h+='<div class="zone-title">증여세는 이렇게 나왔어요</div>';
+  h+='<div class="bd-card">';
+  h+=row('증여재산가액',fmtMan(IN.value));
+  if(IN.debt>0)h+=row('받는 분이 떠안는 채무','-'+fmtMan(IN.debt));
+  if(g.priorAdded>0)h+=row('10년 내 같은 분에게 받은 금액','+'+fmtMan(g.priorAdded));
+  h+=row('증여세 과세가액',fmtMan(g.taxableValue),'tot');
+  h+=row('증여재산공제','-'+fmtMan(Math.min(g.taxableValue,g.groupDeduct)));
+  if(g.mbDeduct>0)h+=row((META.mbKind||'혼인·출산')+' 증여재산공제','-'+fmtMan(Math.max(0,g.deduct-Math.min(g.taxableValue,g.groupDeduct))));
+  h+=row('과세표준',fmtMan(g.base),'tot');
+  h+=row('산출세액',fmtMan(g.calcTax));
+  if(g.surRate>0)h+=row('세대생략 할증 '+g.surRate+'퍼센트','+'+fmtMan(g.surcharge));
+  if(g.priorTaxCredit>0)h+=row('이전 증여에 낸 세액 공제','-'+fmtMan(g.priorTaxCredit));
+  if(g.fileCredit>0)h+=row('기한 내 신고 세액공제','-'+fmtMan(g.fileCredit));
+  h+=row('받는 분이 낼 증여세',fmtMan(g.giftTax),'tot');
+  h+='</div>';
+  if(g.belowMin)h+='<p class="zone-note">과세표준이 과세최저한에 못 미쳐 증여세를 부과하지 않는 구간이에요.</p>';
+  if(IN.deductUsedOther>0)h+='<p class="zone-note">같은 관계의 다른 분에게 받으며 이미 쓴 공제 '+fmtMan(IN.deductUsedOther)+'을 빼고 남은 한도만 적용했어요. 그래서 위 증여재산공제가 한도보다 작습니다.</p>';
+
+  /* 4) 취득세 */
+  if(g.acqTax>0||(IN.re&&IN.value>0)){
+    h+='<div class="zone-title">취득세</div>';
+    h+='<p class="zone-note">'+(g.acqHeavy?'조정대상지역 + 시가표준액 3억원 이상 주택이라 중과 세율이 적용됐어요.':'중과 세율 대상이 아니라 기본 세율이 적용됐어요.')+(META.donorOneHouse&&IN.re&&IN.re.adj&&IN.re.stdPrice3eok&&!g.acqHeavy?' 주시는 분이 1세대 1주택이라 중과에서 빠졌어요.':'')+'</p>';
+    h+='<div class="bd-card">';
+    h+=row('증여분 '+fmtMan(IN.value-IN.debt)+' × '+(Math.round(g.acqGiftRate*100)/100)+'퍼센트',fmtMan(g.acqGift));
+    if(g.acqDebt>0)h+=row('채무분 '+fmtMan(IN.debt)+' (간이 계산)',fmtMan(g.acqDebt));
+    h+=row('취득세 합계',fmtMan(g.acqTax),'tot');
+    h+='</div>';
+  }
+
+  /* 5) 부담부증여 — 주시는 분 양도세 */
+  if(cgt){
+    h+='<div class="zone-title">주시는 분에게 생기는 양도소득세</div>';
+    h+='<p class="zone-note">채무 '+fmtMan(IN.debt)+'만큼을 유상으로 넘긴 것으로 보고 계산했어요. 취득가액은 원래 사신 가격을 채무 비율로 나눈 금액이에요.</p>';
+    h+='<div class="bd-card">';
+    h+=row('양도가액 (떠안는 채무)',fmtMan(META.bt.salePrice));
+    h+=row('취득가액 '+fmtMan(META.donor.acqPrice)+' × '+fmtMan(IN.debt)+'/'+fmtMan(IN.value),fmtMan(META.bt.acqPrice));
+    h+=row('양도차익',fmtMan(cgt.gain));
+    if(cgt.exempt)h+=row('1세대 1주택 비과세','적용','sub0');
+    if(cgt.ltdRate>0&&Math.round(cgt.ltdAmt)>0)h+=row('장기보유특별공제 '+cgt.ltdRate+'퍼센트','-'+fmtMan(cgt.ltdAmt));
+    else if(cgt.ltdRate>0)h+=row('장기보유특별공제 '+cgt.ltdRate+'퍼센트','과세되는 차익이 없어 적용액 0','sub0');
+    if(cgt.surcharge>0)h+=row('다주택 중과','+'+cgt.surcharge+'퍼센트포인트','sub0');
+    if(cgt.shortRate>0)h+=row('단기보유 세율',cgt.shortRate+'퍼센트','sub0');
+    h+=row('양도소득세',fmtMan(cgt.taxSum));
+    h+=row('지방소득세',fmtMan(cgt.localTax));
+    h+=row('주시는 분이 낼 세금',fmtMan(cgt.total),'tot');
+    h+='</div>';
+    h+='<p class="zone-note">채무를 넘기면 증여세 과세가액은 줄지만 이 양도소득세가 생깁니다. 두 금액을 함께 보셔야 전체가 보여요.</p>';
+  }
+
+  /* 6) 신고기한 */
+  h+='<div class="zone-title">신고기한</div>';
+  h+='<div class="bd-card">';
+  h+=row('증여일',NOWY+'년 '+NOWM+'월로 계산');
+  h+=row('증여세 신고기한',dl.y+'년 '+dl.m+'월 '+dl.d+'일','tot');
+  h+='</div>';
+  h+='<p class="zone-note">증여일이 속한 달의 말일부터 3개월입니다. 취득세는 증여세와 별도로 신고·납부하고, 그 기한은 이 화면에서 계산하지 않았습니다.</p>';
+
+  /* 7) 유의사항 */
+  const d=[];
+  d.push('이 결과는 간이 계산입니다. 실제 신고 전에 원문 자료로 다시 확인하셔야 합니다.');
+  d.push('재산 금액은 입력하신 값을 그대로 썼습니다. 공시가격을 넣으셨다면 실제 평가액보다 낮게 계산됐을 수 있습니다.');
+  if(IN.debt>0)d.push('배우자·직계존비속 사이의 부담부증여는 받는 분이 그 채무를 실제로 떠안고 갚는다는 사실이 자료로 확인되어야 유상으로 인정됩니다. 확인되지 않으면 전체가 증여로 계산됩니다.');
+  if(g.notes.indexOf('acq_debt_approx')>=0)d.push('채무분 취득세는 받는 분이 무주택에서 1주택이 되는 경우를 가정한 간이값입니다. 받는 분의 주택 수와 지역에 따라 달라집니다.');
+  if(g.notes.indexOf('prior_under_1000')>=0)d.push('10년 내 이전 증여액 합계가 1천만원에 못 미쳐 합산하지 않았습니다.');
+  if(g.notes.indexOf('prior_credit_simplified')>=0)d.push('이전 증여에 낸 세액의 공제 한도는 간이 계산입니다. 산출세액 범위 안에서만 잘라 반영했습니다.');
+  if(META.priorTaxUnknown)d.push('이전 증여에 낸 세액을 0으로 두고 계산했습니다. 실제로 내신 세액이 있으면 그만큼 줄어듭니다.');
+  if(META.std3Unknown)d.push('시가표준액 3억원 여부를 모른다고 하셔서 3억원 이상으로 보고 계산했습니다. 3억원 미만이면 취득세가 줄어듭니다.');
+  if(META.over85Unknown)d.push('전용면적 85제곱미터 초과 여부를 모른다고 하셔서 초과로 보고 계산했습니다. 85제곱미터 이하면 농어촌특별세만큼 줄어듭니다.');
+  if(META.debtCapped)d.push('채무가 재산 금액보다 커서 재산 금액까지만 반영했습니다.');
+  if(cgt&&!META.donorOneHouse)d.push('주시는 분이 두 채 이상인 경우로 계산했고, 일시적 2주택 특례는 반영하지 않았습니다. 집을 갈아타는 중이라면 결과가 달라집니다.');
+  if(META.adjHistUnknown)d.push('주시는 분이 그 집을 사신 시점(2016년 11월~2022년 12월)의 조정대상지역 지정 이력은 일부 지역이 반영되지 않았습니다. 비과세 거주요건이 달라질 수 있습니다.');
+  if(META.cgtSkipped)d.push('토지·상가의 부담부증여는 주시는 분의 양도소득세를 이 화면에서 계산하지 않았습니다. 세꼼이 양도세 계산기는 주택을 기준으로 만들어져 있습니다.');
+  d.push('비거주자, 합산배제 증여재산, 저가 양도에 따른 증여의제, 비상장주식, 가업승계 특례는 계산에 넣지 않았습니다.');
+  h+='<div class="disc"><b>꼭 함께 보셔야 하는 것</b><ul>';
+  d.forEach(function(x){h+='<li>'+x+'</li>'});
+  h+='</ul></div>';
+
+  /* 8) 관련 글 */
+  h+='<div class="zone-title">같이 보면 좋은 글</div>';
+  h+='<div class="links">';
+  h+='<a href="/blog/jeungyeose-serul">증여세 세율과 누진공제</a>';
+  h+='<a href="/blog/jeungyeose-myeonje-hando">증여세 면제 한도와 10년 합산</a>';
+  h+='<a href="/blog/budambu-jeungyeo-yangdose">부담부증여와 양도소득세</a>';
+  h+='<a href="/blog/jeungyeo-hu-yangdo-iwolgwase">증여받은 집을 팔 때 이월과세</a>';
+  h+='<a href="/blog/chwideukse-gwase-pyojun">취득세 과세표준 시가인정액</a>';
+  h+='<a href="/">양도세 계산기로 직접 계산해 보기</a>';
+  h+='</div>';
+
+  h+='<div style="margin-top:20px"><button class="btn-main" onclick="location.reload()">처음부터 다시 계산하기</button></div>';
+  const asofG=(window.SekkomiGift&&window.SekkomiGift.ASOF)||'미표기', asofY=(window.SekkomiYangdo&&window.SekkomiYangdo.LAW_ASOF)||'미표기';
+  h+='<div class="foot"><span class="asof">세법 기준일 — 증여·취득세 '+asofG+' · 양도세 '+asofY+'</span><div style="margin-top:10px">세꼼이는 세무 자격이 없는 1인 운영 서비스입니다. 세무 자문이 아니라 정보 제공이고, 계산 결과에 대한 책임을 지지 않습니다.</div><div style="margin-top:6px"><a href="/">세꼼이 홈</a> · <a href="/blog/">블로그</a> · <a href="mailto:sekkomi.com@gmail.com">sekkomi.com@gmail.com</a></div></div>';
+
+  $('#resScroll').innerHTML=h;
+}
+
+/* ================= 시작 ================= */
+$('#startBtn').onclick=function(){
+  track('start_calc_gift',{calc_type:'gift'});
+  show('g2');
+  flow().catch(function(e){
+    try{bot('계산 중에 문제가 생겼어요. 새로고침해 주세요.')}catch(_){}
+    if(window.console)console.error(e);
+  });
+};
+document.querySelectorAll('.modal').forEach(function(m){
+  m.addEventListener('click',function(e){if(e.target===m)m.classList.remove('on')});
+});
+</script>
+</body>
+</html>

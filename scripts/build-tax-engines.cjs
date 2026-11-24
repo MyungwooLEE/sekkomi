@@ -66,8 +66,9 @@ fs.writeFileSync(yangdoDst, yangdo, 'utf8');
 const yBack = fs.readFileSync(yangdoDst, 'utf8');
 assert(yBack === yangdo, 'yangdo-engine 기록 내용 == 생성 내용 (' + Buffer.byteLength(yangdo) + '바이트, ' + sha(yangdo).slice(0, 16) + '…)');
 slices.forEach((sl, k) => assert(yBack.indexOf(sl) >= 0, 'yangdo-engine 산출물에 구간 ' + (k + 1) + ' 바이트 그대로 포함'));
-assert(yBack.indexOf('�') < 0, 'yangdo-engine U+FFFD 0건');
-assert(giftBuf.toString('utf8').indexOf('�') < 0, 'gift-engine U+FFFD 0건');
+const FFFD = String.fromCharCode(0xFFFD); /* 대체문자. 이스케이프 표기도 리터럴도 쓰지 않는다 — 전송 계층이 둘 다 바꿔 놓는다(11/25 실측) */
+assert(yBack.indexOf(FFFD) < 0, 'yangdo-engine U+FFFD 0건');
+assert(giftBuf.toString('utf8').indexOf(FFFD) < 0, 'gift-engine U+FFFD 0건');
 
 /* ---------- 3) 산출물이 실제로 돌아가는지 ---------- */
 try {
