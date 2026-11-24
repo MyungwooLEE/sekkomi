@@ -86,6 +86,7 @@
   function burdenTransfer(value,debt,donorAcqPrice){return {salePrice:debt,acqPrice:donorAcqPrice*debt/value};}
   /* 신고기한: 증여일이 속하는 달의 말일부터 3개월 → 3개월 뒤 달의 말일 */
   function fileDeadline(y,m){var mm=m+3,yy=y+Math.floor((mm-1)/12);mm=((mm-1)%12)+1;return {y:yy,m:mm,d:new Date(yy,mm,0).getDate()};}
-  var api={giftTax:giftTax,giftRateTax:giftRateTax,groupLimit:groupLimit,burdenTransfer:burdenTransfer,fileDeadline:fileDeadline,RATE:RATE};
+  /* ASOF — 이 엔진이 반영한 법령 기준일. 화면이 날짜를 손으로 적지 않게 여기서 내보낸다(운영 기준 §16.6·§17). */
+  var api={giftTax:giftTax,giftRateTax:giftRateTax,groupLimit:groupLimit,burdenTransfer:burdenTransfer,fileDeadline:fileDeadline,RATE:RATE,ASOF:'2026.11.24'};
   if(typeof module!=='undefined'&&module.exports)module.exports=api;else root.SekkomiGift=api;
 })(typeof globalThis!=='undefined'?globalThis:this);
