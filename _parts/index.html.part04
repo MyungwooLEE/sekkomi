@@ -24,7 +24,19 @@
 
 /* ================= tax engine (근사) ================= */
 const BR=[[1400,6,0],[5000,15,126],[8800,24,576],[15000,35,1544],[30000,38,1994],[50000,40,2594],[100000,42,3594],[Infinity,45,6594]];
-const LAW_ASOF='2026.7.1'; // 세법 기준일 — 개정 반영 시 이 값만 갱신
+const LAW_ASOF='2026.10.1'; // 세법 기준일 — 개정 반영 시 이 값만 갱신
+/* 일시적 2주택 처분기한 — 2026-11-24 반영 (소득세법 시행령 개정, 2026.10.1 시행)
+   종전주택·신규주택이 모두 조정대상지역 + 신규주택 2026.8.4 이후 취득 + 종전주택 2026.10.1 이후 양도 → 2년, 그 외 3년.
+   월 단위 근사: 2026년 8월 취득은 2년으로 본다(8.1~8.3 취득, 8.3 이전 계약·계약금 지급분은 실제 3년 — 결과에 고지).
+   신규주택 소재지는 묻는 질문(A.otherAdj)으로 받고, '모르겠어요'면 보수적으로 조정으로 본다. */
+function temp2Months(saleD){
+  if(!A.otherAcq)return 36;
+  const newAfter=ymNum(A.otherAcq.y,A.otherAcq.m)>=ymNum(2026,8);
+  const saleAfter=!saleD||ymNum(saleD.y,saleD.m)>=ymNum(2026,10);
+  const oldAdj=isAdj(A.address.region,A.otherAcq.y,A.otherAcq.m);
+  const newAdj=A.otherAdj!==false;
+  return (newAfter&&saleAfter&&oldAdj&&newAdj)?24:36;
+}
 function progTaxN(base,sur=0){if(base<=0)return 0;for(const[l,r,d]of BR)if(base<=l)return Math.max(0,base*(r+sur)/100-d)}
 function calc(opt={}){
   const salePrice=A.salePrice, acq=A.acqPrice+A.acqExp+A.saleExp;
@@ -40,7 +52,7 @@ function calc(opt={}){
   // 일시적 2주택 간이 판정
   let temp2=false,temp2Deadline=null;
   if(A.otherCount===1&&!A.memberOtherHouse&&A.otherAcq){
-    const dl=addMonths(A.otherAcq.y,A.otherAcq.m,36);
+    const dl=addMonths(A.otherAcq.y,A.otherAcq.m,temp2Months(saleD));
     temp2Deadline=dl;
     temp2=ymNum(saleD.y,saleD.m)<=ymNum(dl.y,dl.m)&&monthsBetween(A.acqDate,A.otherAcq)>=12;
   }
@@ -65,7 +77,10 @@ function calc(opt={}){
   // 상가주택: 주택 부분만 비과세 (간이)
   if(A.ptype==='mixed'&&exempt&&A.resRatio<100){
     taxableGain=taxableGain*( A.resRatio>=50?1:1 ) + gain*(1-(A.resRatio/100))*(salePrice<=120000?1:0)*0; // 단순화: 비과세는 주택부분만
-    if(salePrice<=120000){taxableGain=gain*(1-A.resRatio/100);caseId='exempt_under_mixed'}
+    if(salePrice<=120000){
+      if(A.resRatio>50){taxableGain=0;} // 12억 이하 겸용주택: 주택 면적이 더 크면 전부 주택으로 봄 → exempt_under 유지
+      else{taxableGain=gain*(1-A.resRatio/100);caseId='exempt_under_mixed'}
+    }
   }
   // 다주택 중과 (양도 시 조정지역 + 2026.5 이후)
   let surcharge=0;
@@ -126,14 +141,15 @@ function buildScenarios(){
   // ② 일시적 2주택 — 처분기한 이내 + '종전 취득 1년 후 신규 취득' 요건을 모두 충족할 때만 추천
   //    (기한이 이미 지났거나 1년 요건 미충족이면 적용 불가라 절세 플랜으로 제시하지 않음)
   if(A.otherCount===1&&A.otherAcq&&A.acqDate){
-    const dl=addMonths(A.otherAcq.y,A.otherAcq.m,36);
+    const t2m=temp2Months(null);
+    const dl=addMonths(A.otherAcq.y,A.otherAcq.m,t2m);
     const past=ymNum(today.y,today.m)>ymNum(dl.y,dl.m);
     const acq1=addMonths(A.acqDate.y,A.acqDate.m,12);
     const oneYrOk=ymNum(A.otherAcq.y,A.otherAcq.m)>=ymNum(acq1.y,acq1.m);
     if(!past&&oneYrOk){
       list.push({id:'temp2',no:'②',name:'일시적 2주택 비과세',save:R.exempt?null:Math.round(R.total*0.8),
         loss:fmtYM(dl.y,dl.m)+'까지 매도 안 하시면 비과세 못 받아요',
-        urgency:'신규 취득('+fmtYM(A.otherAcq.y,A.otherAcq.m)+') 후 3년 = '+fmtYM(dl.y,dl.m)+'까지 양도',
+        urgency:'신규 취득('+fmtYM(A.otherAcq.y,A.otherAcq.m)+') 후 '+(t2m/12)+'년 = '+fmtYM(dl.y,dl.m)+'까지 양도',
         diag:'종전주택 '+fmtYM(A.acqDate.y,A.acqDate.m)+' 취득 + 신규주택 '+fmtYM(A.otherAcq.y,A.otherAcq.m)+' 취득. 일시적 2주택 구조예요.',
         cmp:[['기한 내 매도','비과세 적용 가능'],['기한 후 매도','일반 과세'+(R.surcharge?' + 중과':'')]],
         traps:['처분기한은 신규 취득일 기준이에요. 하루라도 넘기면 비과세가 사라져요.','신규 자산이 주거용 오피스텔이어도 주택으로 봐요. 업무용 오피스텔·오피스텔 분양권은 주택 수에서 빠져요.'],
@@ -403,7 +419,10 @@ function renderS05(){
     +'• 양도일: '+fmtYM(A.saleDate.y,A.saleDate.m)+' 기준 (월 중간일 가정) — 실제 매도일에 따라 달라질 수 있어요<br>'
     +'• 부대비용: 영수증·세금계산서 증빙이 있어야 인정돼요'
     +(A.converted?'<br>• 취득가를 환산값으로 추정 계산했어요. 실제 자료가 있으면 결과가 달라질 수 있어요':'')
-    +(R.surcharge?'<br>• 2026.5.9 이전에 매매계약을 체결하셨다면 중과 유예 보완조치(계약 후 4~6개월 내 양도) 대상일 수 있어요':'')
+    +(R.surcharge&&ymNum(A.saleDate.y,A.saleDate.m)<=ymNum(2026,11)?'<br>• 2026.5.9 이전에 매매계약을 체결하셨다면 중과 유예 보완조치(계약 후 4~6개월 내 양도) 대상일 수 있어요':'')
+    +(adjHistoryUnknown(A.address.region,A.acqDate.y,A.acqDate.m)?'<br>• '+fmtYM(A.acqDate.y,A.acqDate.m)+' 취득 당시 이 지역의 조정대상지역 지정 여부는 이 계산에 반영되지 않았어요. 그때 조정대상지역이었다면 비과세에 거주 2년 요건이 붙어 결과가 달라져요':'')
+    +(R.temp2&&A.otherAcq&&A.otherAcq.y===2026&&A.otherAcq.m===8?'<br>• 신규 주택을 2026.8.3 이전에 취득했거나 그 전에 계약·계약금을 냈다면 처분 기한은 3년이에요(이 계산은 8월 취득을 2년으로 봤어요)':'')
+    +(A.ptype==='mixed'&&R.salePrice>120000?'<br>• 12억 초과 상가주택은 주택 부분만 주택으로 봐요. 이 계산은 간이 방식이라 상가 부분 세금이 적게 나올 수 있어요':'')
     +(A.method==='gift'?'<br>• 이월과세(증여자 취득가 재계산)는 이 계산에 반영되지 않았어요. 해당되면 세금이 늘 수 있어요':'')
     +(A.method==='inheritance'?'<br>• 상속 특례(피상속인 보유기간 합산, 주택 수 제외 등)는 단순화되어 있어요':'')
     +'<br>• 정확한 신고는 세무사 자문을 권장해요<br>'
