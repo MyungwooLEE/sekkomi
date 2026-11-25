@@ -265,7 +265,7 @@ function buildScenarios(){
       urgency:'미루는 동안에도 이자·재산세는 매일 쌓여요',
       diag:fmtYM(A.saleDate.y,A.saleDate.m)+' 매도 기준 '+fmtMan(R.total)+' vs 1년 뒤 '+fmtMan(alt1y.total)+'. 여기에 대출 이자·재산세를 합쳐야 진짜 답이 나와요. (잠금 해제 후 대출 정보 미니 입력)',
       cmp:[['지금 매도 시 세금',fmtMan(R.total)],['1년 뒤 매도 시 세금',fmtMan(alt1y.total)],['세금 차이',fmtMan(dTax)]],
-      traps:['세금만 보고 미루면 보유비용이 절세액을 잡아먹는 구간이 있어요.','미루는 사이 조정지역·세법이 바뀔 수 있어요 (알림으로 챙겨드려요).'],
+      traps:['세금만 보고 미루면 보유비용이 절세액을 잡아먹는 구간이 있어요.','미루는 사이 조정지역·세법이 바뀜 수 있어요 (알림으로 챙겨드려요).'],
       actions:['대출 잔액·금리 입력 → 순손익 타임라인 확인','최적 매도 월 확인 → 캘린더 등록']});
     // ⑬ 대출 이자 실수령액
     const daily=Math.max(1,Math.round(A.salePrice*0.03/365));
@@ -409,12 +409,14 @@ function renderS05(){
       +bdRow('+ 지방소득세 10% ?icon:local',fmtMan(R.localTax))
       +bdRow('총 예상 세액',fmtMan(R.total),null,{total:1,em:1})
       +'</div>';
-    html+='<div class="bd-hint">금액 줄을 누르면 설명이 펼쳐져요</div>';
+    html+='<div class="bd-hint">금액 줄을 누르면 설명이 펼쳤져요</div>';
     if(ddayS)html+='<div class="dday-line"><span class="tip-badge">절세 포인트</span> <b>거주 2년 채우시면 세금이 크게 줄어요</b> — 약 <span class="blurnum">'+fmtMan(ddayS.save)+'</span> <span class="go" onclick="openS06(\'dday\',\'s05\')">자세히 →</span></div>';
   }
 
   /* 면책 — 핵심 1줄 상시 노출 + 상세 접힘 */
   html+='<div class="dis-always">이 금액은 입력값 기반 <b>예상치</b>예요. 실제 신고 전 세무사 확인을 권해드려요.</div>';
+  /* 2027년 이후 양도 — 2026 세법개정안 국회 심사 중(2026-11-25 추가). 통과되면 엔진에 반영하고 이 문구를 바꾼다: claude/세제개편안-통과대비-2026-11-25.md */
+  if(R.total>0&&ymNum(A.saleDate.y,A.saleDate.m)>=ymNum(2027,1))html+='<div class="dday-line" data-reform="2026-pending">⚠ <b>2027년 이후 양도분은 세법이 바뀜 수 있어요.</b> 이 금액은 지금 법 기준이에요. 국회에서 심사 중인 개정안(2027년부터 다주택 중과 완화·10년 거주 1주택 기본공제 2,500만 원, 2028년부터 장기보유특별공제를 거주 기간 중심으로 개편)이 통과되면 세금이 달라져요. 확정되면 계산기에 반영할게요.</div>';
   html+='<details class="dis"><summary>이 결과의 가정 &amp; 유의사항 자세히</summary><div>'
     +'• 양도일: '+fmtYM(A.saleDate.y,A.saleDate.m)+' 기준 (월 중간일 가정) — 실제 매도일에 따라 달라질 수 있어요<br>'
     +'• 부대비용: 영수증·세금계산서 증빙이 있어야 인정돼요'

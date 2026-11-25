@@ -59,5 +59,9 @@ r = run(base({ salePrice: 100000, acqDate: { y: 2015, m: 3 }, resMonthsNow: 60, 
 r = run(base({ ptype: 'mixed', resRatio: 70, salePrice: 100000, acqDate: { y: 2015, m: 3 }, resMonthsNow: 60, resMonthsAtSale: 60, address: { region: '경기 고양시 일산동구' } }));
 ok(Math.round(r.total) === 0, '상가주택 12억 이하·주거 70% → 전부 주택, 비과세');
 
+// [6] 2026 세법개정안(국회 심사 중) — 2027년 이후 양도일 고지가 결과 화면에 있어야 한다(2026-11-25).
+//     의결되면 tools/tax/reform-2026/reform.cjs 로 엔진을 바꾸고, 이 테스트는 '반영됨' 문구 확인으로 바꾼다.
+ok(s.includes('data-reform="2026-pending"') && s.includes('ymNum(A.saleDate.y,A.saleDate.m)>=ymNum(2027,1)'), '2027년 이후 양도 — 개정안 심사 중 고지 존재');
+
 console.log((fail ? 'FAIL ' + fail + ' / ' : 'ALL PASS ') + n + ' tests');
 process.exit(fail ? 1 : 0);
