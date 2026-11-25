@@ -1,0 +1,3 @@
+# public/ change list for scripts/verify-public-sha.cjs (see the script header).
+# Format: <sha256>  <path> -- one line per public/ text file changed since the last deploy.
+# Generate from the LOCAL verified copy BEFORE push: node scripts/verify-public-sha.cjs --reset <files...>
