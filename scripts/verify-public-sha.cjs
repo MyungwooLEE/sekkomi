@@ -23,11 +23,17 @@
    범위: public/ 아래 텍스트 파일(html·xml·txt·js·css·json·md·webmanifest·svg).
    제외: public/reels/ (render-reel 워크플로 봇이 커밋한다 — 사람 손으로 옮겨 적지 않음).
    CACHED_COMMIT_REF 가 없거나 git diff 가 실패하면 범위 검사를 건너뛰고(경고 출력) 목록에 적힌
-   줄만 검사한다. */
+   줄만 검사한다.
+
+   --report (2026-11-25 추가, 빌드 맨 끝에서 || true 로 실행): --check 결과와 최종 산출물 점검을
+   public/build-guard.txt 로 공개한다. Netlify 빌드 로그를 볼 수 없는 세션이 가드가 실제로 돌았는지
+   (범위 검사를 했는지, 건너뛰었는지)와 계산기 고지 표식이 서빙본에 있는지를 라이브에서 확인하는 용도. */
 'use strict';
 const fs = require('fs'), path = require('path'), crypto = require('crypto'), cp = require('child_process');
 const root = path.resolve(__dirname, '..');
 const MAN = path.join(root, '_parts', 'public-changes.sha256');
+const RESULT = path.join(root, '.build-guard-result.json'); // 빌드 중에만 생기는 파일(커밋하지 않음)
+const REPORT = path.join(root, 'public', 'build-guard.txt');
 const TEXT = /\.(html|xml|txt|js|css|json|md|webmanifest|svg)$/i;
 const EXCLUDE = [/^public\/reels\//];
 const inScope = f => f.startsWith('public/') && TEXT.test(f) && !EXCLUDE.some(r => r.test(f));
@@ -66,6 +72,24 @@ if (mode === '--reset' || mode === '--add') {
   writeMan(m);
   process.exit(0);
 }
+if (mode === '--report') {
+  let r = null; try { r = JSON.parse(fs.readFileSync(RESULT, 'utf8')); } catch (e) { r = { error: '검사 결과 파일 없음 — --check 가 이 빌드에서 돌지 않았다' }; }
+  const out = ['# verify-public-sha 빌드 보고 — 매 빌드가 다시 쓴다(scripts/verify-public-sha.cjs --report)',
+    'built_at=' + new Date().toISOString(), 'commit_ref=' + (process.env.COMMIT_REF || ''), 'cached_commit_ref=' + (process.env.CACHED_COMMIT_REF || '')];
+  if (r.error) out.push('guard=' + r.error);
+  else {
+    out.push('guard=' + (r.fail ? 'FAIL' : 'PASS'), 'range_check=' + r.rangeCheck, 'range=' + (r.range || ''), 'changed_public_text_files=' + (r.changed == null ? '' : r.changed.length), 'listed=' + r.listed);
+    (r.changed || []).forEach(f => out.push('changed ' + f));
+  }
+  const idx = path.join(root, 'public', 'index.html');
+  if (fs.existsSync(idx)) {
+    const html = fs.readFileSync(idx, 'utf8');
+    out.push('public_index_sha256=' + sha('public/index.html'), 'marker_data_reform_2026_pending=' + (html.split('data-reform="2026-pending"').length - 1));
+  }
+  fs.writeFileSync(REPORT, out.join('\n') + '\n');
+  log('wrote public/build-guard.txt'); out.forEach(l => console.log('  ' + l));
+  process.exit(0);
+}
 if (mode !== '--check') { log('알 수 없는 옵션: ' + mode); process.exit(2); }
 
 const man = readMan();
@@ -77,6 +101,7 @@ for (const [f, h] of man) {
   else log('ok   ' + f);
 }
 const a = process.env.CACHED_COMMIT_REF, b = process.env.COMMIT_REF || 'HEAD';
+let rangeCheck = 'skipped', range = '', changedOut = null;
 if (!a || a === b) log('WARN 배포 범위 없음(CACHED_COMMIT_REF=' + a + ') — 범위 검사 생략, 목록 줄만 검사');
 else {
   let changed = null;
@@ -86,9 +111,11 @@ else {
       .split('\n').map(s => s.trim()).filter(Boolean).filter(inScope);
   } catch (e) { log('WARN git diff 실패 — 범위 검사 생략, 목록 줄만 검사: ' + (e && e.message)); }
   if (changed) {
+    rangeCheck = 'done'; range = a + '..' + b; changedOut = changed;
     log('배포 범위 ' + a.slice(0, 7) + '..' + String(b).slice(0, 7) + ' 에서 바뀐 public 텍스트 파일 ' + changed.length + '개');
     for (const f of changed) if (!man.has(f)) { log('FAIL 바뀌었는데 목록에 없음: ' + f); fail++; }
   }
 }
+try { fs.writeFileSync(RESULT, JSON.stringify({ fail, listed: man.size, rangeCheck, range, changed: changedOut })); } catch (e) { log('WARN 결과 파일 기록 실패: ' + e.message); }
 if (fail) { log('FAIL ' + fail + '건 — 배포를 멈춘다(기존 배포 유지). 로컬 검증본과 레포 파일을 cmp 로 대조하라.'); process.exit(1); }
 log('ALL PASS (' + man.size + ' listed)');
