@@ -1,0 +1,1 @@
+guard negative test 2026-11-25 - this file must never be served. If you can read it, verify-public-sha failed open.
